@@ -1,0 +1,94 @@
+\documentclass[12pt]{article}
+\usepackage[a4paper,margin=2cm]{geometry}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{mathptmx}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{pgfgantt}
+\usepackage{graphics}
+\usepackage{graphicx}
+\begin{document}
+
+\pagestyle{empty}
+
+\begin{centering}
+
+    \textbf{DEPARTAMENTO DE INFORMÁTICA E ESTATÍSTICA -- CTC -- UFSC}
+
+    \textbf{RATIFICAÇÃO DE PLANO DE TRABALHO DO SEMESTRE \\ PARA DESENVOLVIMENTO DE TCC}
+
+\end{centering}
+
+
+\vspace{1em}
+\setlength\extrarowheight{5pt}
+\begin{tabular}{l l l}
+    \textbf{Disciplina:} & ( \textbf{X} ) TCC 1  &  ( ) TCC 2\\
+    \textbf{Curso:}      & ( \textbf{X} ) CCO & ( ) SIN \\
+    \textbf{Autor:}      & David Grunheidt Vilela Ordine &\\
+\end{tabular}
+\vspace{0.5cm}
+\\
+\begin{tabular}{l l}
+\vspace{0.5cm}
+     \textbf{Título:} & \makecell{Comparação das tecnologias de comunicação entre clusters no processador \\ MPPA-256 atráves do CAP Bench}\\
+    \textbf{Professor responsável:} & Prof. Dr. Márcio Bastos Castro\\
+\end{tabular}
+
+
+\vspace{1em}
+{\large \textbf{Objetivos}}
+\\
+
+\textbf{Objetivo geral:}
+O objeto do TCC é comparar duas APIs de comunicação entre \textit{clusters} de processamento, implementadas para o processador \textit{manycore} de baixa potêmcia MPPA-256, uma que utiliza conceitos somente de sincronismo, e outra, focada em assincronismo. Para isso, utilizaremos o CAP Bench, \textit{benchmark} com duas versões implementadas para este processador, cada uma utilizando uma das APIs citadas. As métricas de comparação serão os tempos de execução de cada aplicação do \textit{benchmark} e o trafego total na rede em chip do processador após o final do processamento de certa aplicação. Com isso, visamos obter identificadores precisos, que no futuro, possam apontar qual das duas APIs seria mais recomendada para um certo problema.
+
+\vspace{1em}
+{\large \textbf{Cronograma}}
+
+\begin{figure}[!h]
+	\begin{center}
+
+		\begin{ganttchart}[
+                x unit=1.6cm,
+				y unit title=1cm,
+				y unit chart=1cm,
+				hgrid,
+				vgrid={{dotted, dotted, dotted, dotted, dotted, dotted}},
+				% title label font=\3scriptsize,
+				title/.append style={fill=gray!30},
+				title height=1,
+				bar/.append style={fill=gray!30,rounded corners=2pt},
+				bar label font=\scriptsize,
+				group label font=\scriptsize,
+			]{1}{6}
+			\gantttitle{\textbf{Meses}}{6} \\
+			\gantttitle{\textbf{2020}}{6} \\
+			\gantttitlelist{1,2,3,4,5,6}{1} \\
+            \ganttbar{1. Estudo e alteração das versões do CAP Bench}{1}{4} \\
+            \ganttbar{2. Estudo da fundamentação teórica}{2}{6} \\
+            \ganttbar{3. Escrita do relatório do TCC I}{3}{6} \\
+            \ganttbar{4. Entrega do relatório do TCC I}{6}{6} \\
+
+		\end{ganttchart}
+	\end{center}
+    \label{tab:cronograma}
+\end{figure}
+
+
+\begin{centering}
+
+    \fbox{\begin{minipage}[c][6em][c]{0.7\textwidth}
+        {\center \textbf{Preenchimento pelo Professor responsável pelo TCC}\\[1em]}
+
+        \qquad $(\quad)$ \ Ciente e de acordo.
+
+        \qquad Data: \_\_ / \_\_ / \_\_
+    \end{minipage}}
+
+\end{centering}
+\end{document}
