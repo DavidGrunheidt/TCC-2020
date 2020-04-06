@@ -1,7 +1,108 @@
 % Assume-se que \textual já foi feito
 
-\chapter{Exemplo}
-\label{ch:exemplo}
+\newcommand{\multicore}{\textit{multicore}\xspace}
+\newcommand{\chip}{\textit{chip}\xspace}
+\newcommand{\chips}{\textit{chips}\xspace}
+\newcommand{\singlecore}{\textit{singlecore}\xspace}
+\newcommand{\tradeoff}{\textit{trade-off}\xspace}
+\newcommand{\exaescale}{\textit{Exaescale}\xspace}
+\newcommand{\greencomputing}{\textit{Green Computing}\xspace}  
+\newcommand{\ranking}{\textit{ranking}\xspace}
+\newcommand{\bench}{\textit{benchmark}\xspace}
+\newcommand{\capb}{CAP Bench\xspace}
+\newcommand{\etal}{\textit{et al}.\xspace}
+
+\chapter{Introdução}
+\label{ch:introdução}
+
+Na última década, a indústria de semicondutores vem investindo largamente na pesquisa e produção de \chips com múltiplos núcleos de processamento em seu interior, chamados de \multicore. Os avanços nessa indústria, juntamente com a área de arquitetura de computadores, são notados desde a década de 1980 em diante, permitindo um crescimento anual em desempenho de 40\% a 50\% \cite{Larus2008} para uma outra classe de processadores nesse período, os de um único núcleo ou \singlecore. Porém, a necessidade de uma nova classe de processadores mostrou-se eminente ao se atingir um ponto onde o \tradeoff entre gasto energético e aumento em desempenho era desproporcional, havendo muita dissipação de calor para pouco crescimento em performance. Essa barreira de potência foi então a responsável pelo interesse da indústria de semicondutores na classe de processadores \multicore. 
+
+Arquiteturas paralelas do tipo \multicore atualmente seguem para uma barreira similar a encontrada pelas \singlecore, visto que, seu principal método de evolução, o aumento no número de núcleos em um mesmo \chip, possui uma limitação, sendo esta o tamanho mínimo que um \textit{transistor} pode alcançar, resultando no fim da possibilidade de alocação de mais núcleos em um mesmo espaço, tendo como única opção o aumento do tamanho do \chip. Além disso, soluções que utilizam esse tipo de arquitetura, por exemplo, supercomputadores, estão encontrando o mesmo problema de escalabilidade entre dissipação de calor e ganho em desempenho que os \singlecore encontraram no passado. A figura \ref{fig:eficienciaxcorestop500} exemplifica esse problema, pois, utilizando a medida de performance \Flops, ou seja, a quantidade de operações de ponto flutuante que um computador realiza por segundo, compara seu crescimento com o aumento no número de núcleos dos supercomputadores com maior poder de computação do mundo ao passar os anos, segundo o \ranking TOP500, mostrando ao mesmo tempo a tendência em aumentar o número de núcleos e a difícil tarefa de encontrar escalabilidade entre esse aumento e o ganho em eficiência.\footnote{Os dados do \ranking TOP500 estão disponíveis no site TOP500: https://www.top500.org/}
+
+Com o interesse atual da comunidade científica em atingir o \exaescale e, ao mesmo tempo, em computação voltada para a eficiência energética, pode-se então afirmar que as arquiteturas do tipo \multicore não são mais uma solução viável para os supercomputadores. O alerta do Departamento de Defesa do Governo dos Estados Unidos (DARPA), uma das organizações mais importante do país, serve também como base para essa afirmação, o qual mostrou em um relatório \cite{darpa:exascale} que, para ser viável, um supercomputador que realiza o \exaescale deve atingir uma performance de 50 G\Flops/W, enquanto que, atualmente, o supercomputador com o maior poder de processamento do mundo atinge 14.719 G\Flops/W e o de melhor eficiência energética atinge 16.876 G\Flops/W. A figura \ref{fig:eficienciaxyearstop500} mostra o crescimento na eficiência energética dos supercomputadores mais poderosos do mundo desde 2005\footnote{Foi escolhido este ano como início pois nos anos anteriores a eficiência energética ainda era menor que 0.1 GFlops/W.}, segundo o \ranking TOP500.
+
+\begin{figure}[tb]
+  \centering
+  \caption{Comparação da evolução da eficiência energética em relação ao número de núcleos do supercomputador número 1 do mundo ao passar dos anos segundo o \ranking TOP500.}
+  \label{fig:eficienciaxcorestop500}
+  \includegraphics[width=1\linewidth, keepaspectratio]{Figure_Efficiency_X_Cores_Top500.pdf}
+  \fonte{Gráfico desenvolvido pelo autor.}
+\end{figure}
+
+\begin{figure}[tb]
+  \centering
+  \caption{Evolução da eficiência energética do supercomputador número 1 do mundo segundo o \ranking TOP500.}
+  \label{fig:eficienciaxyearstop500}
+  \includegraphics[width=1\linewidth, keepaspectratio]{Figure_Efficiency_X_Years_Top500.pdf}
+  \fonte{Gráfico desenvolvido pelo autor.}
+\end{figure}
+
+Buscando novos tipos de arquiteturas paralelas que apresentem as características faltantes no problema de balanceamento apresentado acima, pesquisadores da área de \HPC realizaram diversos estudos voltados para essa questão, aplicando conceitos de \greencomputing \cite{greencomputingacm} no decorrer do desenvolvimento de suas soluções. Dentre estas soluções, temos o surgimento da classe de processadores \manycore de baixa potência, como o MPPA-256 \cite{mppa2562013}, objeto de estudo deste trabalho, o Adapteva Epiphany \cite{olofsson2014}, e o SW26010, utilizado no atual terceiro supercomputador mais poderoso do mundo, o \textit{Sunway TaihuLight} \cite{fu2016sunway}. Vale citar que o SW26010 desbancou em 2016 o supercomputador que assumia, desde 2013, a primeira posição do \ranking TOP500, obtendo duas vezes mais desempenho que esse e reduzindo em três vezes o consumo energético, explicando também o ganho elevado em eficiência em ambas as figuras \ref{fig:eficienciaxcorestop500} e \ref{fig:eficienciaxyearstop500} no mês de junho de 2016.
+
+Para avaliar o desempenho e consumo energético do MPPA-256, \textit{Souza} \etal propuseram o desenvolvimento do \bench \capb, o qual, em sua primeira versão, utilizava uma \API de comunicação síncrona entre processos denominada \IPC \cite{mppa2562013}. Essa \API possui algumas deficiências, como o baixo nível de abstração, requerendo conhecimento prévio da arquitetura alvo para implementações paralelas eficientes, e a realização de sincronizações implícitas muitas vezes não necessárias nas operações de envio e recebimento de dados, o que leva a queda de desempenho da aplicação. Ao realizar a otimização do \bench, \textit{David} \etal o portaram com a \ASYNC, uma \API com maior nível de abstração e com conceitos de assincronismo, aumentando o potencial de desempenho da aplicação. Além disso, alterações na implementação de todas as aplicações foram realizadas de modo a otimizá-las ainda mais.
+
+Portanto, para realizar uma comparação justa entre as \APIs citadas acima, faz-se necessário atualizar a lógica de implementação das aplicações da versão antiga do \bench, para que essas se equivalham às novas implementações, criando assim um ambiente propício para comparar aspectos puramente das tecnologias de comunicação citadas, utilizando as duas versões do \bench para isso. A comparação entre ambas as implementações será responsável por determinar qual \API se comporta de maneira mais robusta no MPPA-256 em certos contextos, onde os dados acerca do tempo de execução, quantidade de dados enviados e recebidos e gasto energético de cada aplicação serão as métricas para essa determinação. Assim, teremos dados de execução das duas \APIs numa mesma versão de placa do MPPA-256, resultando numa base de dados concreta para a tomada de decisão sobre qual das duas \APIs escolher na hora de implementar uma nova aplicação.
+
+\section{Objetivos}
+\label{sec:objetivos}
+
+Com base no que foi exposto, são apresentados abaixo o objetivo geral e os objetivos específicos deste trabalho.
+
+\subsection{Objetivo Geral}
+\label{sec:objetivogeral}
+
+O objetivo deste trabalho é obter dados concretos acerca da execução de aplicações de diversos domínios de problemas no MPPA-256, utilizando as duas \APIs já citadas e o \capb, podendo assim comparar as execuções de cada aplicação em cada cenário específico possível dentro do processador, obtendo identificadores precisos que, em momentos futuros, possam apontar qual das duas \APIs utilizar, dependendo do domínio de problema de uma certa aplicação.
+
+\subsection{Objetivos Específicos}
+\label{sec:objetivosespecifico}
+
+\begin{itemize}
+\item Investigar a viabilidade do uso do MPPA-256 para a área de \HPC.
+\item Estudar aspectos das \APIs de comunicação existentes no MPPA-256, mais especificamente, a \ASYNC e a \IPC.
+\item Avaliar os custos e benefícios do MPPA-256 em relação ao desempenho e gasto energético, assim como sua utilidade para a Computação Sustentável (\greencomputing)
+\item Comparar as \APIs \ASYNC e \IPC a fim de prover métricas precisas para a escolha de uma das duas numa futura implementação.
+\end{itemize}
+
+\section{Contribuições do trabalho}
+
+Este trabalho é continuação de um projeto de iniciação científica desenvolvido por \textit{David} \etal, o qual resultou em um resumo expandido publicado na Escola Regional de Alto Desempenho da Região Sul no ano de 2019:
+
+\begin{itemize}
+  \item ORDINE, D. G. V.; PODESTA JUNIOR, E. ; PENNA, P. H. ; CASTRO, M. \textbf{Otimização de Aplicações do CAP Bench para o Processador MPPA-256.} In: Escola Regional de Alto Desempenho da Região Sul (ERAD/RS), 2019, Três de Maio. Anais da Escola Regional de Alto Desempenho da Região Sul (ERAD/RS). Porto Alegre: Sociedade Brasileira de Computação (SBC), 2019.
+\end{itemize}
+
+\section{Organização do trabalho}
+
+Este trabalho está dividido da seguinte forma. O Capítulo 2 mostra os conceitos teóricos que foram utilizados para a produção dessa dissertação. O Capítulo 3 apresenta alguns trabalhos relacionados a este. O Capítulo 4 contém toda a proposta deste projeto, detalhando tudo que foi feito, assim como explicando as métricas que serão expostas nos resultados. O Capítulo 5 apresenta os resultados preliminares já obtidos. Para finalizar, o Capítulo 6 conclui este trabalho.
+
+\chapter{Fundamentação Teórica}
+\label{ch:fundamentacaoteorica}
+
+
+\section{Arquiteturas Paralelas}
+\label{sec:arquiteturasparalelas}
+
+
+\section{Processador Manycore MPPA-256}
+\label{sec:mppa256}
+
+
+\section{Bibliotecas de desenvolvimento de aplicações paralelas}
+\label{sec:bibliotecasdevparalelo}
+
+
+\chapter{Trabalhos Correlatos}
+\label{ch:trabcorrelatos}
+
+
+\section{Benchmarks Voltados para HPC}
+\label{sec:benchprahpc}
+
+
+\section{Benchmarks Específicos para Manycores}
+\label{sec:benchpramanycores}
+
+
 
 \index{bobagem} Primeiro parágrafo da seção com uma frase sem sentido que só serve para ocasionar uma quebra e de demonstrar a configuração de indentação da primeira linha. Essa frase está aqui pois parágrafos de uma linha são feios.
 
@@ -144,21 +245,6 @@ Resultado de \mla|\autoref|s:
   \end{tabular}
   \fonte{o autor.}
 \end{table}
-
-\section{Frutas}
-\label{sec:frutas}
-\lipsum[4]
-
-\subsection{Goiaba}
-\label{sec:goiaba}
-\lipsum[4]
-
-\subsubsection{Jabuticaba}
-\label{sec:jabuticaba}
-\lipsum[4]
-
-\subsubsubsection{Tomate}
-\label{sec:tomate}
 
 \begin{figure}[tb]
   \centering
