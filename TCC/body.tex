@@ -11,15 +11,22 @@
 \newcommand{\bench}{\textit{benchmark}\xspace}
 \newcommand{\capb}{CAP Bench\xspace}
 \newcommand{\etal}{\textit{et al}.\xspace}
+\newcommand{\thread}{\textit{thread}\xspace}
+\newcommand{\threads}{\textit{threads}\xspace}
+\newcommand{\cache}{\textit{cache}\xspace}
+\newcommand{\caches}{\textit{caches}\xspace}
+\newcommand{\byte}{\textit{byte}\xspace}
+\newcommand{\bytes}{\textit{bytes}\xspace}
+\newcommand{\hardware}{\textit{hardware}\xspace}
 
 \chapter{Introdução}
 \label{ch:introdução}
 
 Na última década, a indústria de semicondutores vem investindo largamente na pesquisa e produção de \chips com múltiplos núcleos de processamento em seu interior, chamados de \multicore. Os avanços nessa indústria, juntamente com a área de arquitetura de computadores, são notados desde a década de 1980 em diante, permitindo um crescimento anual em desempenho de 40\% a 50\% \cite{Larus2008} para uma outra classe de processadores nesse período, os de um único núcleo ou \singlecore. Porém, a necessidade de uma nova classe de processadores mostrou-se eminente ao se atingir um ponto onde o \tradeoff entre gasto energético e aumento em desempenho era desproporcional, havendo muita dissipação de calor para pouco crescimento em performance. Essa barreira de potência foi então a responsável pelo interesse da indústria de semicondutores na classe de processadores \multicore. 
 
-Arquiteturas paralelas do tipo \multicore atualmente seguem para uma barreira similar a encontrada pelas \singlecore, visto que, seu principal método de evolução, o aumento no número de núcleos em um mesmo \chip, possui uma limitação, sendo esta o tamanho mínimo que um \textit{transistor} pode alcançar, resultando no fim da possibilidade de alocação de mais núcleos em um mesmo espaço, tendo como única opção o aumento do tamanho do \chip. Além disso, soluções que utilizam esse tipo de arquitetura, por exemplo, supercomputadores, estão encontrando o mesmo problema de escalabilidade entre dissipação de calor e ganho em desempenho que os \singlecore encontraram no passado. A figura \ref{fig:eficienciaxcorestop500} exemplifica esse problema, pois, utilizando a medida de performance \Flops, ou seja, a quantidade de operações de ponto flutuante que um computador realiza por segundo, compara seu crescimento com o aumento no número de núcleos dos supercomputadores com maior poder de computação do mundo ao passar os anos, segundo o \ranking TOP500, mostrando ao mesmo tempo a tendência em aumentar o número de núcleos e a difícil tarefa de encontrar escalabilidade entre esse aumento e o ganho em eficiência.\footnote{Os dados do \ranking TOP500 estão disponíveis no site TOP500: https://www.top500.org/}
+Arquiteturas paralelas do tipo \multicore atualmente seguem para uma barreira similar a encontrada pelas \singlecore, visto que, seu principal método de evolução, o aumento no número de núcleos em um mesmo \chip, possui uma limitação, sendo esta o tamanho mínimo que um \textit{transistor} pode alcançar, resultando no fim da possibilidade de alocação de mais núcleos em um mesmo espaço, tendo como única opção o aumento do tamanho do \chip. Além disso, soluções que utilizam esse tipo de arquitetura, por exemplo, supercomputadores, estão encontrando o mesmo problema de escalabilidade entre dissipação de calor e ganho em desempenho que os \singlecore encontraram no passado. A Figura \ref{fig:eficienciaxcorestop500} exemplifica esse problema, pois, utilizando a medida de performance \Flops, ou seja, a quantidade de operações de ponto flutuante que um computador realiza por segundo, compara seu crescimento com o aumento no número de núcleos dos supercomputadores com maior poder de computação do mundo ao passar os anos, segundo o \ranking TOP500, mostrando ao mesmo tempo a tendência em aumentar o número de núcleos e a difícil tarefa de encontrar escalabilidade entre esse aumento e o ganho em eficiência.\footnote{Os dados do \ranking TOP500 estão disponíveis no site TOP500: https://www.top500.org/}
 
-Com o interesse atual da comunidade científica em atingir o \exaescale e, ao mesmo tempo, em computação voltada para a eficiência energética, pode-se então afirmar que as arquiteturas do tipo \multicore não são mais uma solução viável para os supercomputadores. O alerta do Departamento de Defesa do Governo dos Estados Unidos (DARPA), uma das organizações mais importante do país, serve também como base para essa afirmação, o qual mostrou em um relatório \cite{darpa:exascale} que, para ser viável, um supercomputador que realiza o \exaescale deve atingir uma performance de 50 G\Flops/W, enquanto que, atualmente, o supercomputador com o maior poder de processamento do mundo atinge 14.719 G\Flops/W e o de melhor eficiência energética atinge 16.876 G\Flops/W. A figura \ref{fig:eficienciaxyearstop500} mostra o crescimento na eficiência energética dos supercomputadores mais poderosos do mundo desde 2005\footnote{Foi escolhido este ano como início pois nos anos anteriores a eficiência energética ainda era menor que 0.1 GFlops/W.}, segundo o \ranking TOP500.
+Com o interesse atual da comunidade científica em atingir o \exaescale e, ao mesmo tempo, em computação voltada para a eficiência energética, pode-se então afirmar que as arquiteturas do tipo \multicore não são mais uma solução viável para os supercomputadores. O alerta do Departamento de Defesa do Governo dos Estados Unidos (DARPA), uma das organizações mais importante do país, serve também como base para essa afirmação, o qual mostrou em um relatório \cite{darpa:exascale} que, para ser viável, um supercomputador que realiza o \exaescale deve atingir uma performance de 50 G\Flops/W, enquanto que, atualmente, o supercomputador com o maior poder de processamento do mundo atinge 14.719 G\Flops/W e o de melhor eficiência energética atinge 16.876 G\Flops/W. A Figura \ref{fig:eficienciaxyearstop500} mostra o crescimento na eficiência energética dos supercomputadores mais poderosos do mundo desde 2005\footnote{Foi escolhido este ano como início pois nos anos anteriores a eficiência energética ainda era menor que 0.1 GFlops/W.}, segundo o \ranking TOP500.
 
 \begin{figure}[tb]
   \centering
@@ -37,7 +44,7 @@ Com o interesse atual da comunidade científica em atingir o \exaescale e, ao me
   \fonte{Gráfico desenvolvido pelo autor.}
 \end{figure}
 
-Buscando novos tipos de arquiteturas paralelas que apresentem as características faltantes no problema de balanceamento apresentado acima, pesquisadores da área de \HPC realizaram diversos estudos voltados para essa questão, aplicando conceitos de \greencomputing \cite{greencomputingacm} no decorrer do desenvolvimento de suas soluções. Dentre estas soluções, temos o surgimento da classe de processadores \manycore de baixa potência, como o MPPA-256 \cite{mppa2562013}, objeto de estudo deste trabalho, o Adapteva Epiphany \cite{olofsson2014}, e o SW26010, utilizado no atual terceiro supercomputador mais poderoso do mundo, o \textit{Sunway TaihuLight} \cite{fu2016sunway}. Vale citar que o SW26010 desbancou em 2016 o supercomputador que assumia, desde 2013, a primeira posição do \ranking TOP500, obtendo duas vezes mais desempenho que esse e reduzindo em três vezes o consumo energético, explicando também o ganho elevado em eficiência em ambas as figuras \ref{fig:eficienciaxcorestop500} e \ref{fig:eficienciaxyearstop500} no mês de junho de 2016.
+Buscando novos tipos de arquiteturas paralelas que apresentem as características faltantes no problema de balanceamento apresentado acima, pesquisadores da área de \HPC realizaram diversos estudos voltados para essa questão, aplicando conceitos de \greencomputing \cite{greencomputingacm} no decorrer do desenvolvimento de suas soluções. Dentre estas soluções, temos o surgimento da classe de processadores \manycore de baixa potência, como o MPPA-256 \cite{mppa2562013}, objeto de estudo deste trabalho, o Adapteva Epiphany \cite{olofsson2014}, e o SW26010, utilizado no atual terceiro supercomputador mais poderoso do mundo, o \textit{Sunway TaihuLight} \cite{fu2016sunway}. Vale citar que o SW26010 desbancou em 2016 o supercomputador que assumia, desde 2013, a primeira posição do \ranking TOP500, obtendo duas vezes mais desempenho que esse e reduzindo em três vezes o consumo energético, explicando também o ganho elevado em eficiência em ambas as Figuras \ref{fig:eficienciaxcorestop500} e \ref{fig:eficienciaxyearstop500} no mês de junho de 2016.
 
 Para avaliar o desempenho e consumo energético do MPPA-256, \textit{Souza} \etal propuseram o desenvolvimento do \bench \capb, o qual, em sua primeira versão, utilizava uma \API de comunicação síncrona entre processos denominada \IPC \cite{mppa2562013}. Essa \API possui algumas deficiências, como o baixo nível de abstração, requerendo conhecimento prévio da arquitetura alvo para implementações paralelas eficientes, e a realização de sincronizações implícitas muitas vezes não necessárias nas operações de envio e recebimento de dados, o que leva a queda de desempenho da aplicação. Ao realizar a otimização do \bench, \textit{David} \etal o portaram com a \ASYNC, uma \API com maior nível de abstração e com conceitos de assincronismo, aumentando o potencial de desempenho da aplicação. Além disso, alterações na implementação de todas as aplicações foram realizadas de modo a otimizá-las ainda mais.
 
@@ -73,23 +80,79 @@ Este trabalho é continuação de um projeto de iniciação científica desenvol
 
 \section{Organização do trabalho}
 
-Este trabalho está dividido da seguinte forma. O Capítulo 2 mostra os conceitos teóricos que foram utilizados para a produção dessa dissertação. O Capítulo 3 apresenta alguns trabalhos relacionados a este. O Capítulo 4 contém toda a proposta deste projeto, detalhando tudo que foi feito, assim como explicando as métricas que serão expostas nos resultados. O Capítulo 5 apresenta os resultados preliminares já obtidos. Para finalizar, o Capítulo 6 conclui este trabalho.
+Este trabalho está dividido da seguinte forma. O Capítulo \ref{ch:fundamentacaoteorica} mostra os conceitos teóricos que foram utilizados para a produção dessa dissertação. O Capítulo \ref{ch:trabcorrelatos} apresenta alguns trabalhos relacionados a este. O Capítulo \ref{ch:desenvolvimento} contém toda a proposta deste projeto, detalhando tudo que foi feito, assim como explicando as métricas que serão expostas nos resultados. O Capítulo \ref{ch:resultados} apresenta os resultados preliminares já obtidos. Para finalizar, o Capítulo \ref{ch:conclusao} conclui este trabalho.
 
 \chapter{Fundamentação Teórica}
 \label{ch:fundamentacaoteorica}
 
+Neste capítulo são apresentados conceitos relacionados a Computação Paralela, por exemplo, padrões arquiteturais, na Seção \ref{sec:arquiteturasparalelas}, e tecnologias de programação, na Seção \ref{sec:bibliotecasdevparalelo}. Também são mostrados algumas características do MPPA-256 na Seção \ref{sec:mppa256}.
 
 \section{Arquiteturas Paralelas}
 \label{sec:arquiteturasparalelas}
 
+Existem três tipos de sistemas com múltiplos processadores, segundo \textit{Tanenbaum} \etal : os multiprocessadores, os multicomputadores e os sistemas distribuídos \cite{TanenbaumMordenOS}. São detalhados nesta seção conceitos acerca das arquiteturas multiprocessadores e multicomputadores.
 
-\section{Processador Manycore MPPA-256}
+\subsection{Multiprocessadores}
+\label{sec:multiprocessadores}
+
+A principal característica de uma arquitetura multiprocessadores é o acesso compartilhado ao barramento de memória do sistema, a \RAM, por diversas \CPUs. Programas executando em qualquer um dessas \CPUs possuem espaços de endereçamento físicos únicos na \RAM e as \threads de um desses programas fazem uso de um mesmo espaço de memória, através de operações de escrita e leitura, para se comunicarem. Um fato peculiar dessa arquitetura é a possibilidade de ocorrer problemas de concorrência quando duas ou mais \threads de um mesmo programa executam em diferentes \CPUs, onde, na visão de uma \CPU, ela escreve um valor em uma posição de memória e lê outro valor daquela mesma posição, pois uma \thread executando em outra \CPU alterou o valor daquela posição. 
+
+Multiprocessadores são também classificados em dois tipos, de acordo com a velocidade de acesso a uma posição de memória. Quando uma certa palavra na memória pode ser lida na mesma velocidade que qualquer outra, são chamados de multiprocessadores com acesso uniforme a memória - \UMA. Já quando a velocidade de leitura em diferentes posições de memória muda, são chamados de multiprocessadores com acesso não uniforme a memória - \NUMA. 
+
+A arquitetura mais simples de um multiprocessador \UMA, exemplificada na Figura \ref{fig:umasimples}, envolve um único barramento conectando duas ou mais \CPUs a um módulo de memória, permitindo que todas as \CPUs realizem operações de leitura e escrita neste módulo. Quando uma \CPU necessita ler alguma palavra da memória, primeiramente ela verifica se o barramento está ocupado. Caso não, informa à memória, através do barramento, qual endereço deseja obter o valor, aguardando o recebimento deste pelo mesmo barramento. Caso esteja, a \CPU aguarda a liberação do barramento. Para uma pequena quantidade de \CPUs no \chip, o tempo de espera médio para o acesso ao barramento tende a ser pequeno e tolerável. Porém, quando elevam-se em algumas dezenas o número de \CPUs observa-se o principal problema deste exemplo de arquitetura \UMA: a ociosidade, por muito tempo, de grande parte das \CPUs, enquanto aguardam pelo acesso ao barramento.
+
+
+
+\begin{figure}[tb]
+  \centering
+  \caption{Diferentes esquemas possiveis de um multiprocessador UMA baseado em barramento.}
+  \subcaptionminipage[fig:umasimples]%
+    {.4\linewidth}%
+    {Sem \textit{cache}}%
+    {\includegraphics[width=.9\linewidth]{umasimples.pdf}}%
+  \hfill% 
+  \subcaptionminipage[fig:umacomcache]%
+    {.4\linewidth}%
+    {Com \textit{cache}}%
+    {\includegraphics[width=.9\linewidth]{umacomcache.pdf}}%
+  \hfill% 
+  \subcaptionminipage[fig:umacomcacheememprivada]%
+    {.4\linewidth}%
+    {Com \textit{cache} e memórias privadas}%
+    {\includegraphics[width=.9\linewidth]{umacomcacheememprivada.pdf}}%
+  \hfill% 
+  \fonte{Imagens desenvolvidas pelo autor, adaptadas de \textit{Tanenbaum} \etal \cite{TanenbaumMordenOS}.}
+\end{figure}
+
+Adicionar \caches às \CPUs, como na Figura \ref{fig:umacomcache}, é uma solução para reduzir o gargalo imposto sobre o barramento, já que agora valores podem ser lidos diretamente da \cache local, a qual está muito mais próxima da \CPU e possui tempo de acesso muito menor. Outra possibilidade é adicionar, além das \caches, memórias privadas locais,  como na Figura \ref{fig:umacomcacheememprivada}. Compiladores podem colocar nessas memórias todos os dados que são somente de leitura, por exemplo, constantes, o código do programa, strings e pilhas, utilizando assim esta segunda configuração de forma otimizada. Ambas configurações removem grande parte do tráfego no barramento, tornando seu uso exclusivamente para as variáveis compartilhadas entre \threads.
+
+A adição de \caches impõe uso de protocolos de coerência para que não haja inconsistência entre os valores de um mesmo endereço de memória nas diferentes \caches. Primeiramente, para otimizar as operações de leitura, quando uma palavra é referenciada, todo o bloco que contém essa palavra, geralmente de 32 ou 64 \bytes, é colocado na \cache. Já para garantir a coerência, cada bloco é marcado como sendo somente de leitura, podendo assim estar presente em outras \caches, ou de leitura e escrita, não devendo estar presente em nenhuma outra \cache neste caso. Quando uma \CPU tenta alterar um valor que está presente em outras \caches além de sua própria, o \hardware do barramento informa essa operação às outras \caches, as quais tratam esse contexto de duas formas. Caso o valor da \cache seja o mesmo em memória, podem simplesmente descartá-lo, buscando o novo valor na memória se necessário. Caso outra \cache tenha um valor diferente daquele em memória, é necessário ou salvá-lo na memória ou transferi-lo diretamente para a \cache que solicitou a operação de escrita.
+
+Quando necessita-se de um número de processadores na ordem das centenas, a arquitetura \UMA acaba sendo inviável. Assim, introduz-se a arquitetura \NUMA, trazendo com ela a ideia de diferentes tempos de acesso para diferentes posições de memória. Multiprocessadores \NUMA provém essa escalabilidade implementando um espaço de endereçamento único para todas as \CPUs através de uma rede de interconexão, como na Figura \ref{fig:multiprocessadornuma}, o que causa a diferença nos tempos de acesso, os quais serão totalmente dependentes do local da memória que se deseja acessar um valor relativo ao local da \CPU que requisitou este acesso. Logo, outra propriedade desta arquitetura é o acesso mais rápido à memória local de um ou um conjunto de \CPUs, em comparação com o acesso à memória remota. Vale salientar que programas desenvolvidos para multiprocessadores \UMA conseguem ser executados em arquiteturas \NUMA, devido a ambas possuírem um espaço de endereçamento único. Porém, estes programas irão obter performance inferior, já que não foram otimizados para considerar as diferenças de tempo entre acesso à memória local e remota.
+
+\begin{figure}[tb]
+  \centering
+  \caption{Esquema genérico de um multiprocessador NUMA.}
+  \label{fig:multiprocessadornuma}
+  \includegraphics[width=.9\linewidth, keepaspectratio]{numa.pdf}
+  \fonte{Imagem desenvolvida pelo autor, adaptada de \textit{Tanenbaum} \etal \cite{TanenbaumMordenOS}.}
+\end{figure}
+
+
+\subsection{Multicomputadores}
+\label{sec:multicomputadores}
+
+\section{MPPA-256}
 \label{sec:mppa256}
 
-
-\section{Bibliotecas de desenvolvimento de aplicações paralelas}
+\section{Desenvolvimento de Aplicações Paralelas}
 \label{sec:bibliotecasdevparalelo}
 
+\subsection{Bibliotecas multiplataforma}
+\label{sec:bibliotecasmultiplataforma}
+
+\subsection{Bibliotecas específicas para o MPPA-256}
+\label{sec:bibliotecasespecificasmppa}
 
 \chapter{Trabalhos Correlatos}
 \label{ch:trabcorrelatos}
@@ -98,11 +161,17 @@ Este trabalho está dividido da seguinte forma. O Capítulo 2 mostra os conceito
 \section{Benchmarks Voltados para HPC}
 \label{sec:benchprahpc}
 
-
 \section{Benchmarks Específicos para Manycores}
 \label{sec:benchpramanycores}
 
+\chapter{Desenvolvimento}
+\label{ch:desenvolvimento}
 
+\chapter{Resultados}
+\label{ch:resultados}
+
+\chapter{Conclusão}
+\label{ch:conclusao}
 
 \index{bobagem} Primeiro parágrafo da seção com uma frase sem sentido que só serve para ocasionar uma quebra e de demonstrar a configuração de indentação da primeira linha. Essa frase está aqui pois parágrafos de uma linha são feios.
 
