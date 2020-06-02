@@ -22,6 +22,7 @@
 \newcommand{\transistors}{\textit{transistors}\xspace}
 \newcommand{\manycore}{\textit{manycore}\xspace}
 \newcommand{\hardware}{\textit{hardware}\xspace}
+\newcommand{\mppa}{MPPA-256\xspace}
 
 \chapter{Introdução}
 \label{ch:introdução}
@@ -48,11 +49,11 @@ Com o interesse atual da comunidade científica em atingir o \exaescale e, ao me
   \fonte{Gráfico desenvolvido pelo autor.}
 \end{figure}
 
-Buscando novos tipos de arquiteturas paralelas que apresentem as características faltantes no problema de balanceamento apresentado acima, pesquisadores da área de \HPC realizaram diversos estudos voltados para essa questão, aplicando conceitos de \greencomputing \cite{greencomputingacm} no decorrer do desenvolvimento de suas soluções. Dentre estas soluções, temos o surgimento da classe de processadores \manycore de baixa potência, como o MPPA-256 \cite{mppa2562013}, objeto de estudo deste trabalho, o Adapteva Epiphany \cite{olofsson2014}, e o SW26010, utilizado no atual terceiro supercomputador mais poderoso do mundo, o \textit{Sunway TaihuLight} \cite{fu2016sunway}. Vale citar que o SW26010 desbancou em 2016 o supercomputador que assumia, desde 2013, a primeira posição do \ranking TOP500, obtendo duas vezes mais desempenho que esse e reduzindo em três vezes o consumo energético, explicando também o ganho elevado em eficiência em ambas as Figuras \ref{fig:eficienciaxcorestop500} e \ref{fig:eficienciaxyearstop500} no mês de junho de 2016.
+Buscando novos tipos de arquiteturas paralelas que apresentem as características faltantes no problema de balanceamento apresentado acima, pesquisadores da área de \HPC realizaram diversos estudos voltados para essa questão, aplicando conceitos de \greencomputing \cite{greencomputingacm} no decorrer do desenvolvimento de suas soluções. Dentre estas soluções, temos o surgimento da classe de processadores \manycore de baixa potência, como o \mppa \cite{mppa2562013}, objeto de estudo deste trabalho, o Adapteva Epiphany \cite{olofsson2014}, e o SW26010, utilizado no atual terceiro supercomputador mais poderoso do mundo, o \textit{Sunway TaihuLight} \cite{fu2016sunway}. Vale citar que o SW26010 desbancou em 2016 o supercomputador que assumia, desde 2013, a primeira posição do \ranking TOP500, obtendo duas vezes mais desempenho que esse e reduzindo em três vezes o consumo energético, explicando também o ganho elevado em eficiência em ambas as Figuras \ref{fig:eficienciaxcorestop500} e \ref{fig:eficienciaxyearstop500} no mês de junho de 2016.
 
-Para avaliar o desempenho e consumo energético do MPPA-256, \textit{Souza} \etal propuseram o desenvolvimento do \bench \capb, o qual, em sua primeira versão, utilizava uma \API de comunicação síncrona entre processos denominada \IPC \cite{mppa2562013}. Essa \API possui algumas deficiências, como o baixo nível de abstração, requerendo conhecimento prévio da arquitetura alvo para implementações paralelas eficientes, e a realização de sincronizações implícitas muitas vezes não necessárias nas operações de envio e recebimento de dados, o que leva a queda de desempenho da aplicação. Ao realizar a otimização do \bench, \textit{David} \etal o portaram com a \ASYNC, uma \API com maior nível de abstração e com conceitos de assincronismo, aumentando o potencial de desempenho da aplicação. Além disso, alterações na implementação de todas as aplicações foram realizadas de modo a otimizá-las ainda mais.
+Para avaliar o desempenho e consumo energético do \mppa, \textit{Souza} \etal propuseram o desenvolvimento do \bench \capb, o qual, em sua primeira versão, utilizava uma \API de comunicação síncrona entre processos denominada \IPC \cite{mppa2562013}. Essa \API possui algumas deficiências, como o baixo nível de abstração, requerendo conhecimento prévio da arquitetura alvo para implementações paralelas eficientes, e a realização de sincronizações implícitas muitas vezes não necessárias nas operações de envio e recebimento de dados, o que leva a queda de desempenho da aplicação. Ao realizar a otimização do \bench, \textit{David} \etal o portaram com a \ASYNC, uma \API com maior nível de abstração e com conceitos de assincronismo, aumentando o potencial de desempenho da aplicação. Além disso, alterações na implementação de todas as aplicações foram realizadas de modo a otimizá-las ainda mais.
 
-Portanto, para realizar uma comparação justa entre as \APIs citadas acima, faz-se necessário atualizar a lógica de implementação das aplicações da versão antiga do \bench, para que essas se equivalham às novas implementações, criando assim um ambiente propício para comparar aspectos puramente das tecnologias de comunicação citadas, utilizando as duas versões do \bench para isso. A comparação entre ambas as implementações será responsável por determinar qual \API se comporta de maneira mais robusta no MPPA-256 em certos contextos, onde os dados acerca do tempo de execução, quantidade de dados enviados e recebidos e gasto energético de cada aplicação serão as métricas para essa determinação. Assim, teremos dados de execução das duas \APIs numa mesma versão de placa do MPPA-256, resultando numa base de dados concreta para a tomada de decisão sobre qual das duas \APIs escolher na hora de implementar uma nova aplicação.
+Portanto, para realizar uma comparação justa entre as \APIs citadas acima, faz-se necessário atualizar a lógica de implementação das aplicações da versão antiga do \bench, para que essas se equivalham às novas implementações, criando assim um ambiente propício para comparar aspectos puramente das tecnologias de comunicação citadas, utilizando as duas versões do \bench para isso. A comparação entre ambas as implementações será responsável por determinar qual \API se comporta de maneira mais robusta no \mppa em certos contextos, onde os dados acerca do tempo de execução, quantidade de dados enviados e recebidos e gasto energético de cada aplicação serão as métricas para essa determinação. Assim, teremos dados de execução das duas \APIs numa mesma versão de placa do \mppa, resultando numa base de dados concreta para a tomada de decisão sobre qual das duas \APIs escolher na hora de implementar uma nova aplicação.
 
 \section{Objetivos}
 \label{sec:objetivos}
@@ -62,15 +63,15 @@ Com base no que foi exposto, são apresentados abaixo o objetivo geral e os obje
 \subsection{Objetivo Geral}
 \label{sec:objetivogeral}
 
-O objetivo deste trabalho é obter dados concretos acerca da execução de aplicações de diversos domínios de problemas no MPPA-256, utilizando as duas \APIs já citadas e o \capb, podendo assim comparar as execuções de cada aplicação em cada cenário específico possível dentro do processador, obtendo identificadores precisos que, em momentos futuros, possam apontar qual das duas \APIs utilizar, dependendo do domínio de problema de uma certa aplicação.
+O objetivo deste trabalho é obter dados concretos acerca da execução de aplicações de diversos domínios de problemas no \mppa, utilizando as duas \APIs já citadas e o \capb, podendo assim comparar as execuções de cada aplicação em cada cenário específico possível dentro do processador, obtendo identificadores precisos que, em momentos futuros, possam apontar qual das duas \APIs utilizar, dependendo do domínio de problema de uma certa aplicação.
 
 \subsection{Objetivos Específicos}
 \label{sec:objetivosespecifico}
 
 \begin{itemize}
-\item Investigar a viabilidade do uso do MPPA-256 para a área de \HPC.
-\item Estudar aspectos das \APIs de comunicação existentes no MPPA-256, mais especificamente, a \ASYNC e a \IPC.
-\item Avaliar os custos e benefícios do MPPA-256 em relação ao desempenho e gasto energético, assim como sua utilidade para a Computação Sustentável (\greencomputing)
+\item Investigar a viabilidade do uso do \mppa para a área de \HPC.
+\item Estudar aspectos das \APIs de comunicação existentes no \mppa, mais especificamente, a \ASYNC e a \IPC.
+\item Avaliar os custos e benefícios do \mppa em relação ao desempenho e gasto energético, assim como sua utilidade para a Computação Sustentável (\greencomputing)
 \item Comparar as \APIs \ASYNC e \IPC a fim de prover métricas precisas para a escolha de uma das duas numa futura implementação.
 \end{itemize}
 
@@ -79,7 +80,7 @@ O objetivo deste trabalho é obter dados concretos acerca da execução de aplic
 Este trabalho é continuação de um projeto de iniciação científica desenvolvido por \textit{David} \etal, o qual resultou em um resumo expandido publicado na Escola Regional de Alto Desempenho da Região Sul no ano de 2019:
 
 \begin{itemize}
-  \item ORDINE, D. G. V.; PODESTA JUNIOR, E. ; PENNA, P. H. ; CASTRO, M. \textbf{Otimização de Aplicações do CAP Bench para o Processador MPPA-256.} In: Escola Regional de Alto Desempenho da Região Sul (ERAD/RS), 2019, Três de Maio. Anais da Escola Regional de Alto Desempenho da Região Sul (ERAD/RS). Porto Alegre: Sociedade Brasileira de Computação (SBC), 2019.
+  \item ORDINE, D. G. V.; PODESTA JUNIOR, E. ; PENNA, P. H. ; CASTRO, M. \textbf{Otimização de Aplicações do CAP Bench para o Processador \mppa.} In: Escola Regional de Alto Desempenho da Região Sul (ERAD/RS), 2019, Três de Maio. Anais da Escola Regional de Alto Desempenho da Região Sul (ERAD/RS). Porto Alegre: Sociedade Brasileira de Computação (SBC), 2019.
 \end{itemize}
 
 \section{Organização do trabalho}
@@ -89,7 +90,7 @@ Este trabalho está dividido da seguinte forma. O Capítulo \ref{ch:fundamentaca
 \chapter{Fundamentação Teórica}
 \label{ch:fundamentacaoteorica}
 
-Neste capítulo são apresentados conceitos relacionados a Computação Paralela, por exemplo, padrões arquiteturais, na Seção \ref{sec:arquiteturasparalelas}, e tecnologias de programação, na Seção \ref{sec:bibliotecasdevparalelo}. Também são mostrados algumas características do MPPA-256 na Seção \ref{sec:mppa256}.
+Neste capítulo são apresentados conceitos relacionados a Computação Paralela, por exemplo, padrões arquiteturais, na Seção \ref{sec:arquiteturasparalelas}, e tecnologias de programação, na Seção \ref{sec:bibliotecasdevparalelo}. Também são mostrados algumas características do \mppa na Seção \ref{sec:mppa256}.
 
 \section{Arquiteturas Paralelas}
 \label{sec:arquiteturasparalelas}
@@ -169,16 +170,95 @@ Topologias mais complexas, como a malha (\textit{grid} ou \textit{mesh}), mostra
 
 A comunicação entre processos rodando em diferentes \CPUs, num multicomputador, se dá através da troca de mensagens entre estes. Basicamente, o \SO presente no multicomputador é o responsável por realizar essa troca, através de funções acessíveis somente a ele. Porém, bibliotecas podem fornecer abstrações a essas funções, tornando a troca de mensagens também disponível para os processos usuário e as simplificando, visto que abstraem toda uma lista de invocações de funções em uma única função. Essa troca de mensagens pode ser reduzida a duas funções, chamadas de \textit{send} e \textit{receive}. A função \textit{send} é responsável por enviar uma mensagem de uma \CPU para outra, passando parâmetros como o destino da mensagem e o endereço onde aquela mensagem se encontra. Já a função \textit{receive} é responsável por receber a mensagem, tendo como parâmetros, por exemplo, o endereço de onde a mensagem será lida e o endereço onde será armazenada. Por fim, essas funções podem ser síncronas, bloqueando o processo que envia ou recebe a mensagem até que a operação seja concluída, ou assíncronas, não bloqueando o processo que realizou tal operação.
 
-\section{MPPA-256}
+\section{\mppa}
 \label{sec:mppa256}
+
+\begin{figure}[tb]
+  \centering
+  \caption{Visão arquitetural simplificada do \mppa.}
+  \label{fig:mppa256overview}
+  \includegraphics[width=.7\linewidth, keepaspectratio]{mppa-overview.pdf}
+  \fonte{\cite{Penna2018OS}.}
+\end{figure}
+
+Desenvolvido pela empresa francesa Kalray, o \mppa é um processador de baixa potência que reflete o estado da arte dos \manycore. Uma visão geral do processador é mostrada na Figura \ref{fig:mppa256overview}. O \mppa possui 16 \CCs e 4 \textit{clusters} de \IO. Cada CC possui: \textbf{(i)} 16 núcleos para executar \textit{threads} de usuário em modo ininterrupto e não preemptivo, os quais atuam com frequência de 400 MHz; \textbf{(ii)} um gerenciador de recursos responsável por executar
+o sistema operacional e gerenciar comunicações; \textbf{(iii)} uma memória compartilhada de 2MB, possibilitando alta largura de banda e taxa de transferência entre núcleos de um mesmo \textit{cluster}; e  \textbf{(iv)} dois controladores de Rede-em-Chip \textit{Network-on-Chip} -- NoC), um para dados e outro para controle. Cada núcleo possui duas memórias \cache, uma para dados e outra para instruções. As \caches são associativas \textit{2-way} privadas e possuem 32kB \cite{Podesta2018Stencil}.
+
+Por outro lado, \textit{clusters} de \IO realizam comunicações com dispositivos externos, onde dois destes apresentam acesso às memórias externas \textit{Low-Power Double Data Rate 3 (LPDDR3)} de 2GB. É importante salientar que um \CC não pode acessar diretamente os dados da memória de outros \textit{clusters}. Logo, o processador apresenta um modelo de memória distribuído \cite{Castro-Souza-CCPE:2016, Podesta2018Stencil}.
 
 \section{Desenvolvimento de Aplicações Paralelas}
 \label{sec:bibliotecasdevparalelo}
 
+Durante o domínio de processadores \singlecore no mercado, para que uma aplicação ganhasse aumento em performance, bastava esta ser executada em um processador com maior frequência de \textit{clock}. Isso removia parte da responsabilidade do desenvolvedor em implementar melhorias na aplicação, já que bastava o \textit{upgrade} no hardware para obter essas melhorias. Nestes processadores, instruções são executadas de forma sequencial em um único núcleo. Já em processadores \multicore e \manycore, existem múltiplos núcleos executando diferentes instruções, possivelmente, de diferentes programas. Essa divisão de tarefas pode levar a diversos novos problemas, como \textit{deadlock} ou condições de corrida.
+
+Diversas \APIs voltadas a programação paralela foram criadas para simplificar tanto a solução desses problemas como o desenvolvimento de aplicações que implementam paralelismo. Abaixo serão apresentadas duas das mais conhecidas \APIs para multiplataformas, a \OpenMP e a \MPI, assim como duas \APIs específicas para o \mppa, a \ASYNC e a \IPC.
+
 \subsection{Bibliotecas multiplataforma}
 \label{sec:bibliotecasmultiplataforma}
 
-\subsection{Bibliotecas específicas para o MPPA-256}
+\subsubsection{Open Multi-Processing}
+\label{sec:openmp}
+
+A \OpenMP é uma das bibliotecas mais utilizadas para implementação de aplicações paralelas nas linguagens C, C++ e Fortran. Sua fama vem, principalmente, da abstração que a \API fornece, sendo possível ser utilizada em inúmeras plataformas. Por ser uma \API voltada ao \textit{multithreading}, utiliza-se do compartilhamento de memória entre as \threads de um mesmo programa para criar beneficios ao desenvolvedor, como variáveis de ambiente.
+
+Esta biblioteca é centrada no modelo \textit{fork-join} (Figura \ref{fig:forkjoin}), onde, em determinados momentos do fluxo de execução de uma aplicação, temos a \thread principal instanciando outras \threads através de diretivas de compilação fornecidas pela própria \API, as quais serão executadas de forma independente, paralelamente ou concorrentemente entre si. A \thread principal também realiza uma sincronização com as \threads criadas através de uma barreira implícita, aguardando o término de todas as \threads para continuar com a execução. A criação de novas \threads se dá ao atingir uma região paralela, definida por algumas diretivas de compilação, como \texttt{\#pragma omp parallel for}, que paraleliza a execução de um \textit{loop} entre múltiplas threads. O código \ref{lst:parallelloop} produz, de forma paralela, um array com 10 posições, onde cada posição armazena um inteiro igual ao índice daquela posição.
+
+
+\begin{figure}[tb]
+  \centering
+  \caption{Esquema do modelo \textit{fork-join}.}
+  \label{fig:forkjoin}
+  \includegraphics[width=.4\linewidth, keepaspectratio]{forkjoin.pdf}
+  \fonte{\cite{forkjoinarticle}.}
+\end{figure}
+
+\begin{listing}[tb]
+\caption{Execução de um \textit{loop} de forma paralela.}
+\label{lst:parallelloop}
+\begin{minted}[highlightlines={6}]{c}
+    static void createArray() {
+      int array[max];
+      int index;
+      int index_max = 10;
+
+      #pragma omp parallel for
+      for (index = 0; i < index_max; index++)
+          array[index] = index;
+    }
+\end{minted}
+\fonte{o autor.}
+\end{listing}
+
+As diretivas \texttt{private, default e reduction} permitem, na sequência, definir quais variáveis terão escopo privado, qual será o escopo padrão das variáveis, e qual variável será feito uma redução sobre e qual será o tipo de redução (reduções são operações primitivas seguras sobre uma variável compartilhada entre múltiplas \threads). O código \ref{lst:reductionloop} é parte de uma das aplicações do \capb, a \textit{Friendly Numbers}, e utiliza essas três diretivas para realizar uma contagem paralela, a qual será armazenada na variável \texttt{partial\_friendly\_sum}. Ambas implementações mostram que, com a adição de uma única linha, muda-se completamente o fluxo de execução do programa, sendo esta a maior vantagem da \OpenMP.
+
+\begin{listing}[tb]
+\caption{Leitura e armazenamento seguro em variável compartilhada entre \threads.}
+\label{lst:reductionloop}
+\begin{minted}[highlightlines={6}]{c}
+  static int partial_friendly_sum = 0;
+  ...
+  static void countFriends() {
+    int i; /* Loop indexes. */
+
+    #pragma omp parallel for private(i) default(shared) reduction(+: partial_friendly_sum)
+    for (i = offset; i < offset + tasksize; i++) {
+      for (int j = 0; j < i; j++) {
+        if ((allTasks[i].num == allTasks[j].num) && (allTasks[i].den == allTasks[j].den))
+          partial_friendly_sum++;
+      }
+    }
+  }
+\end{minted}
+\fonte{o autor.}
+\end{listing}
+
+Também pode-se definir qual será o nível de trabalho de cada \thread com a diretiva \texttt{schedule}. Através desta diretiva, podemos definir três tipos de escalonamentos para as \threads: \texttt{static}, \texttt{dynamic} e \texttt{guided}. Com o \texttt{static}, todas as \threads irão receber a mesma quantidade de trabalho, sendo este o escalonamento padrão. Já a diretiva \texttt{dynamic} é utilizada quando as iterações podem ter uma grande diferença no seu tempo de execução, realizando uma atribuição dinâmica de tarefas, onde cada \thread recebe uma nova tarefa ao terminar a iteração atual. Por fim, \texttt{guided} é similar ao \texttt{dynamic}, porém, começa recebendo um grande número de iterações, e se adaptando conforme executa, recebendo mais ou menos iterações, dependendo do tempo que leva para executá-las.
+
+
+\subsubsection{Message Passing Interface}
+\label{sec:mpi}
+
+\subsection{Bibliotecas específicas para o \mppa}
 \label{sec:bibliotecasespecificasmppa}
 
 \chapter{Trabalhos Correlatos}
