@@ -191,7 +191,7 @@ Por outro lado, \textit{clusters} de \IO realizam comunicações com dispositivo
 
 Durante o domínio de processadores \singlecore no mercado, para que uma aplicação ganhasse aumento em performance, bastava esta ser executada em um processador com maior frequência de \textit{clock}. Isso removia parte da responsabilidade do desenvolvedor em implementar melhorias na aplicação, já que bastava o \textit{upgrade} no hardware para obter essas melhorias. Nestes processadores, instruções são executadas de forma sequencial em um único núcleo. Já em processadores \multicore e \manycore, existem múltiplos núcleos executando diferentes instruções, possivelmente, de diferentes programas. Essa divisão de tarefas pode levar a diversos novos problemas, como \textit{deadlock} ou condições de corrida.
 
-Diversas \APIs voltadas a programação paralela foram criadas para simplificar tanto a solução desses problemas como o desenvolvimento de aplicações que implementam paralelismo. Abaixo serão apresentadas duas das mais conhecidas \APIs para multiplataformas, a \OpenMP e a \MPI, assim como duas \APIs específicas para o \mppa, a \ASYNC e a \IPC.
+Diversas \APIs voltadas a programação paralela foram criadas para simplificar tanto a solução desses problemas como o desenvolvimento de aplicações que implementam paralelismo. Abaixo serão apresentadas duas das mais conhecidas \APIs para multiplataformas, a \OpenMP e o \MPI, assim como duas \APIs específicas para o \mppa, a \ASYNC e a \IPC.
 
 \subsection{Bibliotecas multiplataforma}
 \label{sec:bibliotecasmultiplataforma}
@@ -252,11 +252,51 @@ As diretivas \texttt{private, default e reduction} permitem, na sequência, defi
 \fonte{o autor.}
 \end{listing}
 
-Também pode-se definir qual será o nível de trabalho de cada \thread com a diretiva \texttt{schedule}. Através desta diretiva, podemos definir três tipos de escalonamentos para as \threads: \texttt{static}, \texttt{dynamic} e \texttt{guided}. Com o \texttt{static}, todas as \threads irão receber a mesma quantidade de trabalho, sendo este o escalonamento padrão. Já a diretiva \texttt{dynamic} é utilizada quando as iterações podem ter uma grande diferença no seu tempo de execução, realizando uma atribuição dinâmica de tarefas, onde cada \thread recebe uma nova tarefa ao terminar a iteração atual. Por fim, \texttt{guided} é similar ao \texttt{dynamic}, porém, começa recebendo um grande número de iterações, e se adaptando conforme executa, recebendo mais ou menos iterações, dependendo do tempo que leva para executá-las.
-
+Também pode-se definir qual será o nível de trabalho de cada \thread com a diretiva \texttt{schedule}. Através desta diretiva, definem-se três tipos de escalonamentos para as \threads: \texttt{static}, \texttt{dynamic} e \texttt{guided}. Com o \texttt{static}, todas as \threads irão receber a mesma quantidade de trabalho, sendo este o escalonamento padrão. Já a diretiva \texttt{dynamic} é utilizada quando as iterações podem ter uma grande diferença no seu tempo de execução, realizando uma atribuição dinâmica de tarefas, onde cada \thread recebe uma nova tarefa ao terminar a iteração atual. Por fim, \texttt{guided} é similar ao \texttt{dynamic}, porém, a \thread começa recebendo um grande número de iterações, e se adaptando conforme executa, recebendo mais ou menos iterações, dependendo do tempo que leva para executá-las.
 
 \subsubsection{Message Passing Interface}
 \label{sec:mpi}
+
+\begin{listing}[tb]
+\caption{Exemplo de uma aplicação usando \MPI.}
+\label{lst:programmpi}
+\begin{minted}[highlightlines={11,16,19}]{c}
+  int main(int argc, char **argv) {
+    int rank, size;
+
+    MPI_Init(argc, argv);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+    char mensagem_bcast[25] = "Transmitindo um broadcast";
+    char mensagem_bcast_recebido[18];
+
+    MPI_Bcast(&mensagem_bcast, 25, MPI_CHAR, 0, MPI_COMM_WORLD);
+
+    if (rank > 0) {
+      mensagem_bcast_recebido[18] = "Broadcast recebido";
+
+      MPI_Send (&mensagem_bcast_recebido, 18, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
+    } else if (rank == 0) {
+      for (int i = 1; i < size; i++) {
+        MPI_Recv(&mensagem_bcast_recebido, 18, MPI_CHAR, i, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+      }
+    }
+
+    MPI_Finalize();
+    return 0;
+  }
+\end{minted}
+\fonte{o autor.}
+\end{listing}
+
+Diferentemente da \OpenMP, o \MPI é baseada no modelo \SPMD, onde um mesmo programa é executado por diferentes processos, cada qual tendo acesso a uma determinada região de memória. Assim, o \MPI é usada em supercomputadores para abstrair a difícil tarefa de implementar nestes o paralelismo através da troca de mensagens entre processos em baixo nível. Com esta \API de alto nível, implementar o envio e recebimento de mensagens torna-se algo tão simples como chamar uma função, já que o \MPI abstrai diversas etapas em uma única função. A \API também adiciona identificadores únicos e um grupo de comunicação para cada processo, os quais são usados como parâmetros em diversas de suas funções. Além disso, determinadas funções podem ser executadas de forma síncrona ou assíncrona, aumentando o desempenho da aplicação.
+
+Um fluxo simples de implementação utilizando o \MPI começa com a função \texttt{MPI\_Init()}, que inicia o ambiente de execução \MPI. Na sequência, obtém-se o \textit{id} de um processo através da função \texttt{MPI\_Comm\_rank()}, a qual recebe um comunicador, geralmente o comunicador padrão \texttt{MPI\_COMM\_WORLD}, como primeiro parâmetro e o endereço da variável que será armazenado o \textit{id} do processo como segundo. Também é possível obter o número máximo de processos em um grupo de comunicação através da função \texttt{MPI\_Comm\_size()}, a qual recebe no primeiro parâmetro um comunicador e no segundo o endereço da variável em que será armazenado este número. Além disso, existem as funções de envio e recebimento de mensagens, \texttt{MPI\_Send()} e \textttt{MPI\_Recv()}, as quais ambas recebem parâmetros como o buffer de dados sobre o qual será realizado a leitura ou armazenamento da mensagem, a quantidade de dados, o tipo do dado e o \textit{id} do processo que realizará o envio ou recebimento da mensagem, além de alguns parâmetros adicionais. Por fim, a função \texttt{MPI\_Finalize()} termina a execução do ambiente \MPI.
+
+Ao contrário das funções \textttt{MPI\_Recv()} e \texttt{MPI\_Send()}, que são voltadas para comunicação entre dois processos, funções como \texttt{MPI\_Bcast()} e \texttt{MPI\_Barrier()} são feitas para que haja comunicação entre um grupo de processos. Com a \texttt{MPI\_Bcast()} define-se o envio de uma mensagem de um processo para todos os outros processos associados a um grupo de comunicação. Já com a \texttt{MPI\_Barrier()} cria-se uma barreira, onde um certo processo, ao chegar nesta barreira, aguarda todos os outros processos de um grupo de comunicação chegarem nela antes de continuar sua execução.
+
+O código \ref{lst:programmpi} mostra um exemplo de implementação simples usando o \MPI. Neste exemplo, na linha 11 o processo com \textit{id} igual a 0 envia um \textit{broadcast} para todos os outros processos, os quais respondem na linha 16 ao processo de \textit{id} 0, que recebe esta resposta na linha 19. Assim, as linhas 18-20 são executadas somente pelo processo com \textit{id} igual a 0, enquanto que as linhas 14-16 são executadas por processos com \textit{id} maior que 0. 
 
 \subsection{Bibliotecas específicas para o \mppa}
 \label{sec:bibliotecasespecificasmppa}
