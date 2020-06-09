@@ -9,6 +9,7 @@
 \newcommand{\greencomputing}{\textit{Green Computing}\xspace}  
 \newcommand{\ranking}{\textit{ranking}\xspace}
 \newcommand{\bench}{\textit{benchmark}\xspace}
+\newcommand{\benchs}{\textit{benchmarks}\xspace}
 \newcommand{\capb}{CAP Bench\xspace}
 \newcommand{\etal}{\textit{et al}.\xspace}
 \newcommand{\thread}{\textit{thread}\xspace}
@@ -371,10 +372,12 @@ Operações \texttt{PUT} devem ser feitas com cuidado, caso contrário podem sob
 \chapter{Trabalhos Correlatos}
 \label{ch:trabcorrelatos}
 
-O tema central deste trabalho é de grande interesse por parte da comunidade científica de \HPC, existindo inúmeras pesquisas voltadas a medir o desempenho de processadores \multicore e \manycore, as quais são diretamente relacionadas a esta. Neste capítulo serão apresentados algumas pesquisas científicas voltadas a medição de parâmetros de desempenho de processadores que utilizam uma dessas duas arquiteturas.
+O tema central deste trabalho é de grande interesse por parte da comunidade científica de \HPC, existindo inúmeras pesquisas voltadas a medir o desempenho de processadores \multicore, \manycore e \chips \FPGA, as quais são diretamente relacionadas a esta. Neste capítulo serão apresentados algumas pesquisas científicas voltadas a medição de parâmetros de desempenho de processadores que utilizam uma dessas duas arquiteturas.
 
-\section{Benchmarks Voltados para HPC}
+\section{Benchmarks do Estado da Arte da Área de HPC}
 \label{sec:benchprahpc}
+
+\textit{Nabi} \etal \cite{nabifpgabenchmark} implementaram uma versão do \bench STREAM para arquiteturas \FPGA, \GPUs e \CPUs, chamando-o de STREAM-Multiplataforma, para dar foco a portabilidade de sua versão. O \bench STREAM original foi desenvolvido em 1995 por \textit{McCalpin} \etal \cite{mccalpinstreambench} e é um dos \benchs mais utilizados para medir a largura de banda em computadores. A principal contribuição deste trabalho é a introdução de um \bench que faça medições acerca da largura de banda alcançada em dispositivos \FPGA, já que faltam \benchs desse tipo para estes dispositivos. Os autores afirmam que, sendo a largura de banda um dos principais gargalos de aplicações \HPC \cite{asanoviclandscapeparallel}, este \bench possibilita mais um passo na direção de tornar convencional o uso de placas \FPGA.
 
 \section{Benchmarks Específicos para Manycores}
 \label{sec:benchpramanycores}
