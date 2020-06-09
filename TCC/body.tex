@@ -23,6 +23,8 @@
 \newcommand{\manycore}{\textit{manycore}\xspace}
 \newcommand{\hardware}{\textit{hardware}\xspace}
 \newcommand{\mppa}{MPPA-256\xspace}
+\newcommand{\cluster}{\textit{cluster}\xspace}
+\newcommand{\clusters}{\textit{clusters}\xspace}
 
 \chapter{Introdução}
 \label{ch:introdução}
@@ -181,10 +183,10 @@ A comunicação entre processos rodando em diferentes \CPUs, num multicomputador
   \fonte{\cite{Penna2018OS}.}
 \end{figure}
 
-Desenvolvido pela empresa francesa Kalray, o \mppa é um processador de baixa potência que reflete o estado da arte dos \manycore. Uma visão geral do processador é mostrada na Figura \ref{fig:mppa256overview}. O \mppa possui 16 \CCs e 4 \textit{clusters} de \IO. Cada CC possui: \textbf{(i)} 16 núcleos para executar \textit{threads} de usuário em modo ininterrupto e não preemptivo, os quais atuam com frequência de 400 MHz; \textbf{(ii)} um gerenciador de recursos responsável por executar
-o sistema operacional e gerenciar comunicações; \textbf{(iii)} uma memória compartilhada de 2MB, possibilitando alta largura de banda e taxa de transferência entre núcleos de um mesmo \textit{cluster}; e  \textbf{(iv)} dois controladores de Rede-em-Chip \textit{Network-on-Chip} -- NoC), um para dados e outro para controle. Cada núcleo possui duas memórias \cache, uma para dados e outra para instruções. As \caches são associativas \textit{2-way} privadas e possuem 32kB \cite{Podesta2018Stencil}.
+Desenvolvido pela empresa francesa Kalray, o \mppa é um processador de baixa potência que reflete o estado da arte dos \manycore. Uma visão geral do processador é mostrada na Figura \ref{fig:mppa256overview}. O \mppa possui 16 \CCs e 4 \clusters de \IO. Cada \CC possui: \textbf{(i)} 16 núcleos para executar \textit{threads} de usuário em modo ininterrupto e não preemptivo, os quais atuam com frequência de 400 MHz; \textbf{(ii)} um gerenciador de recursos responsável por executar
+o sistema operacional e gerenciar comunicações; \textbf{(iii)} uma memória compartilhada de 2MB, possibilitando alta largura de banda e taxa de transferência entre núcleos de um mesmo \cluster; e  \textbf{(iv)} dois controladores de Rede-em-Chip (\NoC), um para dados e outro para controle. Cada núcleo possui duas memórias \cache, uma para dados e outra para instruções. As \caches são associativas \textit{2-way} privadas e possuem 32kB \cite{Podesta2018Stencil}.
 
-Por outro lado, \textit{clusters} de \IO realizam comunicações com dispositivos externos, onde dois destes apresentam acesso às memórias externas \textit{Low-Power Double Data Rate 3 (LPDDR3)} de 2GB. É importante salientar que um \CC não pode acessar diretamente os dados da memória de outros \textit{clusters}. Logo, o processador apresenta um modelo de memória distribuído \cite{Castro-Souza-CCPE:2016, Podesta2018Stencil}.
+Por outro lado, \clusters de \IO realizam comunicações com dispositivos externos, onde dois destes apresentam acesso às memórias externas \textit{Low-Power Double Data Rate 3 (LPDDR3)} de 2GB. É importante salientar que um \CC não pode acessar diretamente os dados da memória de outros \clusters. Logo, o processador apresenta um modelo de memória distribuído \cite{Castro-Souza-CCPE:2016, Podesta2018Stencil}.
 
 \section{Desenvolvimento de Aplicações Paralelas}
 \label{sec:bibliotecasdevparalelo}
@@ -208,19 +210,17 @@ Esta biblioteca é centrada no modelo \textit{fork-join} (Figura \ref{fig:forkjo
   \centering
   \caption{Esquema do modelo \textit{fork-join}.}
   \label{fig:forkjoin}
-  \includegraphics[width=.4\linewidth, keepaspectratio]{forkjoin.pdf}
+  \includegraphics[width=.3\linewidth, keepaspectratio]{forkjoin.pdf}
   \fonte{\cite{forkjoinarticle}.}
 \end{figure}
 
 \begin{listing}[tb]
 \caption{Execução de um \textit{loop} de forma paralela.}
 \label{lst:parallelloop}
-\begin{minted}[highlightlines={6}]{c}
+\begin{minted}[highlightlines={4}]{c}
     static void createArray() {
-      int array[max];
-      int index;
+      int array[max], index;
       int index_max = 10;
-
       #pragma omp parallel for
       for (index = 0; i < index_max; index++)
           array[index] = index;
@@ -258,29 +258,26 @@ Também pode-se definir qual será o nível de trabalho de cada \thread com a di
 \label{sec:mpi}
 
 \begin{listing}[tb]
-\caption{Exemplo de uma aplicação usando \MPI.}
+\caption{Exemplo de uma aplicação usando a MPI.}
 \label{lst:programmpi}
-\begin{minted}[highlightlines={11,16,19}]{c}
+\begin{minted}[highlightlines={10,14,17}]{c}
   int main(int argc, char **argv) {
     int rank, size;
-
-    MPI_Init(argc, argv);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    MPI_Comm_size(MPI_COMM_WORLD, &size);
 
     char mensagem_bcast[25] = "Transmitindo um broadcast";
     char mensagem_bcast_recebido[18];
 
+    MPI_Init(argc, argv);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Bcast(&mensagem_bcast, 25, MPI_CHAR, 0, MPI_COMM_WORLD);
 
     if (rank > 0) {
       mensagem_bcast_recebido[18] = "Broadcast recebido";
-
       MPI_Send (&mensagem_bcast_recebido, 18, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
     } else if (rank == 0) {
-      for (int i = 1; i < size; i++) {
+      for (int i = 1; i < size; i++)
         MPI_Recv(&mensagem_bcast_recebido, 18, MPI_CHAR, i, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-      }
     }
 
     MPI_Finalize();
@@ -301,9 +298,80 @@ O código \ref{lst:programmpi} mostra um exemplo de implementação simples usan
 \subsection{Bibliotecas específicas para o \mppa}
 \label{sec:bibliotecasespecificasmppa}
 
+Na arquitetura do \mppa existem \clusters que gerenciam outros \clusters, chamados de mestres, e \clusters específicos para a realização de computações, chamados de escravos. Por isso, as bibliotecas do processador fornecem funções voltadas a implementação de aplicações do tipo \textit{mestre/escravo}, exemplificado na Figura \ref{fig:masterslave}, sendo uma das principais diferenças do processador para um x86 a divisão do programa em duas partes, cada uma compilada para um dos dois tipos de \clusters. Ao ativar um \cluster, associa-se um processo a ele, logo, a inicialização de \CCs acontece através de um processo mestre citando explicitamente em sua implementação o caminho do código binário que será executado no \CC. Cada processo escravo pode criar até 16 \threads do tipo POSIX, cada uma sendo executada em um núcleo diferente dentro daquele \cluster. Ambas \ASYNC e \IPC seguem esses conceitos na implementação de suas abstrações, porém, por ser mais nova, a \ASYNC permite uma abstração maior que a \IPC. 
+
+\begin{figure}[tb]
+  \centering
+  \caption{Fluxo de uma aplicação seguindo o modelo \textit{mestre/escravo} no \mppa.}
+  \label{fig:masterslave}
+  \includegraphics[width=.4\linewidth, keepaspectratio]{mppamasterslave.pdf}
+  \fonte{Documentação do MPPA sobre IPC.}
+\end{figure}
+
+Com a \IPC, processos mestres localizados em um dos quatro \clusters de \IO conseguem \textit{spawnar} outros processos nos \CCs passando argumentos tradicionais, como \texttt{argc} e \texttt{argv}. Porém, toda a lógica de comunicação e sincronização sobre a rede \NoC é abstraída através da realização de operações sobre descritores de arquivos e através do uso das diretivas do padrão POSIX IPC. O \textit{design} da API é baseado no modelo \textit{pipe-and-filters} \cite{softwarecomponentmodels}, onde os processos POSIX são os componentes atômicos e os objetos de comunicação são as conexões. Além disso, os objetos de comunicação possuem portas de transmissão e recepção de dados, chamadas de portais, as quais são abertas em dois possíveis modos, \texttt{O\_WRONLY} (somente escrita) ou \texttt{O\_RDONLY} (somente leitura), através da função \texttt{mppa\_open()}, que recebe no primeiro parâmetro o \textit{path} para o descritor de arquivo de um determinado portal e no segundo o modo no qual será aberto.
+
+Abrindo portais de comunicação específicos para cada \cluster, um para leitura e outro para escrita, e definindo quais \clusters ficarão em cada ponta desses portais, pode-se implementar uma aplicação que segue um fluxo semelhante a Figura \ref{fig:mppaipcflow}. Nela, o processo mestre \textit{spawna} dois processos escravos, os quais abrem portais que definem um caminho para o \cluster que os \textit{spawnou}. Um destes processos não faz uso da função \texttt{mppa\_read()} pois recebeu todos os dados necessários através dos parâmetros passados pelo processo de \IO na chamada a função \texttt{mppa\_spawn()}. Assim, este processo só precisa realizar a computação sobre aqueles dados e devolver o resultado para o \cluster de \IO através do portal que os liga, usando a função \texttt{mppa\_write()}. Já o outro \cluster faz uso da função \texttt{mppa\_read()} para ler dados enviados pelo processo mestre, mas não envia de volta nenhuma informação. Após realizar suas tarefas, os \CCs precisam fechar os descritores de arquivo dos portais que foram abertos e usados, o que é feito através da função \texttt{mppa\_close()}. Por fim, o processo mestre precisa esperar o término da execução dos processos escravos antes de continuar a sua execução, o que é feito com a função \texttt{mppa\_waitpid()}.
+
+\begin{figure}[tb]
+  \centering
+  \caption{Fluxo de uma aplicação usando funções do tipo POSIX da IPC no \mppa.}
+  \label{fig:mppaipcflow}
+  \includegraphics[width=.6\linewidth, keepaspectratio]{mppaipcflow.pdf}
+  \fonte{Documentação do MPPA sobre IPC.}
+\end{figure}
+
+Baseada em princípios de comunicação unilateral, os quais são aplicados em diversas \APIs usadas em supercomputadores, como a \API PNNL ARMCI \cite{armciapproach}, a \ASYNC é organizada em diversos conceitos que permitem abstrair ainda mais a implementação de paralelismo no \mppa. Dentre esses conceitos, pode-se citar três mais importantes: \textbf{(i)} segmentos de memória, ou seja, memória que não é diretamente acessível através de um dos núcleos de um \cluster; \textbf{(ii)} operações \texttt{PUT/GET}, as quais possuem diversos modos de realização, como linear, espaçada, por etapas e em blocos 2D ou 3D; e \textbf{(iii)} o modo assíncrono como as operações \texttt{PUT/GET} são realizadas, significando que essas funções retornam assim que completam a escrita ou leitura sobre uma porção de memória, não realizando qualquer tipo de sincronização com algum possível \textit{cluster} que irá receber aquela informação.
+ 
+\begin{figure}[tb]
+  \centering
+  \caption{Fluxo de uma aplicação usando a API ASYNC no \mppa.}
+  \label{fig:mppaasyncflow}
+  \includegraphics[width=.6\linewidth, keepaspectratio]{mppaasyncflow.pdf}
+  \fonte{o autor.}
+\end{figure}
+
+Na figura \ref{fig:mppaasyncflow}, onde os \clusters são representados por quadrados amarelos, é demonstrado o fluxo de implementação do paralelismo entre um processo mestre e um \CC ao usar a \ASYNC. Primeiramente um \cluster de \IO cria um segmento sobre uma porção de dados localizados na sua memória local através da função \texttt{mppa\_async\_segment\_create()}, associando a ele um identificador único do tipo \texttt{unsigned long long}. Após a criação do segmento, um \cluster de computação deve clonar esse segmento através da função \texttt{mppa\_async\_segment\_clone()}, usando, entre outros parâmetros, o identificador do segmento desejado. Chamadas essas duas funções, operações do tipo \texttt{PUT/GET} podem ser realizadas sobre o segmento através das funções \texttt{mppa\_async\_put()} e \texttt{mppa\_async\_get()}. Além disso, é preciso inicializar o contexto antes de realizar qualquer uma dessas operações, o que é feito com a função \texttt{mppa\_async\_init()}, e finalizar este contexto após realizar todas as operações necessárias, o que é feito com a função \texttt{mppa\_async\_final()}.
+
+Operações \texttt{PUT} devem ser feitas com cuidado, caso contrário podem sobrescrever operações anteriores que ainda não foram lidas por algum \cluster. Na versão \ASYNC do \capb, sincronizações são feitas através de operações \texttt{poke} sobre um segmento padrão construído na inicialização do contexto da \API. Essas sincronizações são definidas através de macros, que são expandidas para chamadas as funções \texttt{mppa\_async\_poke()} e \texttt{mppa\_async\_evalcond()}, as quais, respectivamente, alteram um valor remoto do tipo \texttt{long long} e aguardam uma expressão booleana se tornar verdadeira antes de continuar a execução. Os códigos \ref{lst:macrossyncio} e \ref{lst:macrossynccc} mostram como são definidas essas macros em um \cluster de \IO e em um \CC, respectivamente.
+
+\begin{listing}[tb]
+\caption{Definição das macros de sincronização em um \cluster de E/S.}
+\label{lst:macrossyncio}
+\begin{minted}{c}
+  /* Synchronization between slaves and IO. */
+  #define send_signal(i)                                     \
+  poke(mppa_async_default_segment((i)), sig_offsets[(i)], 1) \
+
+  /* Synchronization between slaves and IO. */
+  #define wait_signal(i) {                                           \
+  waitCondition(&cluster_signals[(i)], 1, MPPA_ASYNC_COND_EQ, NULL); \
+  cluster_signals[(i)] = 0;                                          \
+  }   
+\end{minted}
+\fonte{o autor.}
+\end{listing}
+
+\begin{listing}[tb]
+\caption{Definição das macros de sincronização em um \cluster de computação.}
+\label{lst:macrossynccc}
+\begin{minted}{c}
+  /* Synchronization between slaves and IO. */
+  #define send_signal()                        \
+  poke(MPPA_ASYNC_DDR_0, sigback_offset, 1) \
+
+  /* Synchronization between slaves and IO. */
+  #define wait_signal() {                                 \
+  waitCondition(&io_signal, 1, MPPA_ASYNC_COND_EQ, NULL); \
+  io_signal = 0;                                          \
+  }     
+\end{minted}
+\fonte{o autor.}
+\end{listing}
+
 \chapter{Trabalhos Correlatos}
 \label{ch:trabcorrelatos}
 
+O tema central deste trabalho é de grande interesse por parte da comunidade científica de \HPC, existindo inúmeras pesquisas voltadas a medir o desempenho de processadores \multicore e \manycore, as quais são diretamente relacionadas a esta. Neste capítulo serão apresentados algumas pesquisas científicas voltadas a medição de parâmetros de desempenho de processadores que utilizam uma dessas duas arquiteturas.
 
 \section{Benchmarks Voltados para HPC}
 \label{sec:benchprahpc}
