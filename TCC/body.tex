@@ -26,6 +26,8 @@
 \newcommand{\mppa}{MPPA-256\xspace}
 \newcommand{\cluster}{\textit{cluster}\xspace}
 \newcommand{\clusters}{\textit{clusters}\xspace}
+\newcommand{\kernel}{\textit{kernel}\xspace}
+\newcommand{\kernels}{\textit{kernels}\xspace}
 
 \chapter{Introdução}
 \label{ch:introdução}
@@ -378,6 +380,12 @@ O tema central deste trabalho é de grande interesse por parte da comunidade cie
 \label{sec:benchprahpc}
 
 \textit{Nabi} \etal \cite{nabifpgabenchmark} implementaram uma versão do \bench STREAM para arquiteturas \FPGA, \GPUs e \CPUs, chamando-o de STREAM-Multiplataforma, para dar foco a portabilidade de sua versão. O \bench STREAM original foi desenvolvido em 1995 por \textit{McCalpin} \etal \cite{mccalpinstreambench} e é um dos \benchs mais utilizados para medir a largura de banda da memória em computadores. A principal contribuição deste trabalho é a introdução de um \bench que faça esse tipo de medição em dispositivos \FPGA, já que faltam \benchs desse tipo para estes dispositivos. Além disso, parâmetros genéricos e específicos para certas arquiteturas foram introduzidos na nova versão, os quais afetam diretamente a largura de banda da memória. Os autores afirmam que, sendo esta largura de banda um dos principais gargalos das aplicações \HPC \cite{asanoviclandscapeparallel}, este \bench possibilita mais um passo na direção de tornar convencional o uso de placas \FPGA.
+
+Já \textit{Bennett} \etal \cite{bennettqcdbench} desenvolveram um \bench para avaliar a aptidão de um supercomputador ao executar simulações de modelos da física quântica que vão além do modelo padrão. Grande parte dos \benchs dessa área são derivados do modelo Quantum ChromoDynamics (QCD), que descreve a forte interação entre \textit{quarks} e \textit{gluons}. Porém, este modelo não tem a flexibilidade necessária para examinar outros que o estendem, como é o caso dos modelos da Teoria de Gauge, que inclui o QCD. Assim, a inovação deste \bench é ser derivado de implementações que simulam modelos da Teoria de Gauge, que é mais extensa. 
+
+Dentre os \benchs clássicos da comunidade de \HPC, o NAS Parallel Benchmark \cite{baileynasbench} se destaca por ter sido concebido puramente através de algoritmos, descrito por seus autores como um \bench com especificação de papel e caneta. Segundos os autores, optar por este caminho é uma maneira de evitar grande parte das dificuldades que uma implementação convencional de um \bench para sistemas \HPC enfrenta. Originalmente 7 \kernels foram descritos para o NAS, os quais simulam diferentes cargas de trabalho encontradas em aplicações \HPC. Todos estes \kernels usam ou uma \API de comunicação entre processos, como a \MPI, ou uma \API para sistemas com memória compartilhada, como a \OpenMP.
+
+Outro \bench clássico para aplicações CUDA + \MPI é o OMB-GPU \cite{bureddyomb}, que estende o OSU Micro-Benchmarks (OMB) adicionando \kernels que avaliam a performance de comunicações \MPI em sistemas de \clusters de \GPUs. O OMB-GPU surgiu durante o crescimento no uso de \GPUs em supercomputadores, devido a necessidade de um \bench padronizado para avaliar as novas bibliotecas \MPI que foram desenvolvidas para suportar comunicações \MPI nesses novos sistemas. Com o desenvolvimento da \UM para aplicações CUDA (tecnologia que mescla \textit{software} e \textit{hardware} para criar um espaço de endereço único e acessível por qualquer \GPU ou \CPU de um sistema), houve a necessidade de um novo \bench específico para os sistemas que passaram a utilizar essa tecnologia, já que os \benchs clássicos da época, como o OMB ou o OMB-GPU, não eram aptos para isso, pois não capturavam corretamente o comportamento do driver CUDA neste novo contexto. Assim, \textit{Manian} \etal desenvolveram o OMB-UM \cite{maniancudaum}, uma extensão do OMB para suportar aplicações CUDA + \MPI + \UM.
 
 \section{Benchmarks Específicos para Manycores}
 \label{sec:benchpramanycores}
