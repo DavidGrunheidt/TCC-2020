@@ -3,9 +3,9 @@
 \newcommand{\multicore}{\textit{multicore}\xspace}
 \newcommand{\chip}{\textit{chip}\xspace}
 \newcommand{\chips}{\textit{chips}\xspace}
-\newcommand{\singlecore}{\textit{singlecore}\xspace}
+\newcommand{\singlecore}{\textit{single core}\xspace}
 \newcommand{\tradeoff}{\textit{trade-off}\xspace}
-\newcommand{\exaescale}{\textit{Exaescale}\xspace}
+\newcommand{\exascale}{\textit{Exascale}\xspace}
 \newcommand{\greencomputing}{\textit{Green Computing}\xspace}  
 \newcommand{\ranking}{\textit{ranking}\xspace}
 \newcommand{\bench}{\textit{benchmark}\xspace}
@@ -36,7 +36,7 @@ Na última década, a indústria de semicondutores vem investindo largamente na 
 
 Arquiteturas paralelas do tipo \multicore atualmente seguem para uma barreira similar a encontrada pelas \singlecore, visto que, seu principal método de evolução, o aumento no número de núcleos em um mesmo \chip, possui uma limitação, sendo esta o tamanho mínimo que um \transistor pode alcançar, resultando no fim da possibilidade de alocação de mais núcleos em um mesmo espaço, tendo como única opção o aumento do tamanho do \chip. Além disso, soluções que utilizam esse tipo de arquitetura, por exemplo, supercomputadores, estão encontrando o mesmo problema de escalabilidade entre dissipação de calor e ganho em desempenho que os \singlecore encontraram no passado. A Figura \ref{fig:eficienciaxcorestop500} exemplifica esse problema, pois, utilizando a medida de performance \Flops, ou seja, a quantidade de operações de ponto flutuante que um computador realiza por segundo, compara seu crescimento com o aumento no número de núcleos dos supercomputadores com maior poder de computação do mundo ao passar os anos, segundo o \ranking TOP500, mostrando ao mesmo tempo a tendência em aumentar o número de núcleos e a difícil tarefa de encontrar escalabilidade entre esse aumento e o ganho em eficiência.\footnote{Os dados do \ranking TOP500 estão disponíveis no site TOP500: https://www.top500.org/}
 
-Com o interesse atual da comunidade científica em atingir o \exaescale e, ao mesmo tempo, em computação voltada para a eficiência energética, pode-se então afirmar que as arquiteturas do tipo \multicore não são mais uma solução viável para os supercomputadores. O alerta do Departamento de Defesa do Governo dos Estados Unidos (DARPA), uma das organizações mais importante do país, serve também como base para essa afirmação, o qual mostrou em um relatório \cite{darpa:exascale} que, para ser viável, um supercomputador que realiza o \exaescale deve atingir uma performance de 50 G\Flops/W, enquanto que, atualmente, o supercomputador com o maior poder de processamento do mundo atinge 14.719 G\Flops/W e o de melhor eficiência energética atinge 16.876 G\Flops/W. A Figura \ref{fig:eficienciaxyearstop500} mostra o crescimento na eficiência energética dos supercomputadores mais poderosos do mundo desde 2005\footnote{Foi escolhido este ano como início pois nos anos anteriores a eficiência energética ainda era menor que 0.1 GFlops/W.}, segundo o \ranking TOP500.
+Com o interesse atual da comunidade científica em atingir o \exascale e, ao mesmo tempo, em computação voltada para a eficiência energética, pode-se então afirmar que as arquiteturas do tipo \multicore não são mais uma solução viável para os supercomputadores. O alerta do Departamento de Defesa do Governo dos Estados Unidos (DARPA), uma das organizações mais importante do país, serve também como base para essa afirmação, o qual mostrou em um relatório \cite{darpa:exascale} que, para ser viável, um supercomputador que realiza o \exascale deve atingir uma performance de 50 G\Flops/W, enquanto que, atualmente, o supercomputador com o maior poder de processamento do mundo atinge 14.719 G\Flops/W e o de melhor eficiência energética atinge 16.876 G\Flops/W. A Figura \ref{fig:eficienciaxyearstop500} mostra o crescimento na eficiência energética dos supercomputadores mais poderosos do mundo desde 2005\footnote{Foi escolhido este ano como início pois nos anos anteriores a eficiência energética ainda era menor que 0.1 GFlops/W.}, segundo o \ranking TOP500.
 
 \begin{figure}[tb]
   \centering
