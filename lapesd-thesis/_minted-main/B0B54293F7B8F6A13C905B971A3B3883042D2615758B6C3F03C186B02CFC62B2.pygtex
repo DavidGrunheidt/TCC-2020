@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+  \PYG{c+cm}{/* Synchronization between slaves and IO. */}
+  \PYG{c+cp}{\PYGZsh{}define send\PYGZus{}signal(i)                                     \PYGZbs{}}
+\PYG{c+cp}{  poke(mppa\PYGZus{}async\PYGZus{}default\PYGZus{}segment((i)), sig\PYGZus{}offsets[(i)], 1) \PYGZbs{}}
+
+  \PYG{c+cm}{/* Synchronization between slaves and IO. */}
+  \PYG{c+cp}{\PYGZsh{}define wait\PYGZus{}signal(i) \PYGZob{}                                           \PYGZbs{}}
+\PYG{c+cp}{  waitCondition(\PYGZam{}cluster\PYGZus{}signals[(i)], 1, MPPA\PYGZus{}ASYNC\PYGZus{}COND\PYGZus{}EQ, NULL); \PYGZbs{}}
+\PYG{c+cp}{  cluster\PYGZus{}signals[(i)] = 0;                                          \PYGZbs{}}
+\PYG{c+cp}{  \PYGZcb{}}
+\end{Verbatim}
