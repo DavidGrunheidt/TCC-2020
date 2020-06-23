@@ -413,15 +413,3 @@
 \apptocmd{\index}{\ignorespaces}{}{} 
 
 \endinput
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Símbolos TCC David                                             %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newcommand{\etal}{\textit{et al}.\xspace}
-\newcommand{\mppa}{MPPA-256\xspace}
-\newcommand{\capb}{CAP Bench\xspace}
-\newcommand{\epiphany}{Adapteva Epiphany\xspace}
-\newcommand{\manycore}{\textit{manycore}\xspace}
-\newcommand{\manycores}{\textit{manycores}\xspace}
-\newcommand{\bench}{\textit{benchmark}\xspace}
