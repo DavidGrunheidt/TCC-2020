@@ -1,9 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\}]
-    \PYG{k}{static} \PYG{k+kt}{void} \PYG{n+nf}{createArray}\PYG{p}{()} \PYG{p}{\PYGZob{}}
-      \PYG{k+kt}{int} \PYG{n}{array}\PYG{p}{[}\PYG{n}{max}\PYG{p}{],} \PYG{n}{index}\PYG{p}{;}
-      \PYG{k+kt}{int} \PYG{n}{index\PYGZus{}max} \PYG{o}{=} \PYG{l+m+mi}{10}\PYG{p}{;}
-      \PYG{c+cp}{\PYGZsh{}pragma omp parallel for}
-      \PYG{k}{for} \PYG{p}{(}\PYG{n}{index} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n}{index\PYGZus{}max}\PYG{p}{;} \PYG{n}{index}\PYG{o}{++}\PYG{p}{)}
-          \PYG{n}{array}\PYG{p}{[}\PYG{n}{index}\PYG{p}{]} \PYG{o}{=} \PYG{n}{index}\PYG{p}{;}
-    \PYG{p}{\PYGZcb{}}
-\end{Verbatim}
