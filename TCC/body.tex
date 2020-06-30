@@ -28,6 +28,8 @@
 \newcommand{\clusters}{\textit{clusters}\xspace}
 \newcommand{\kernel}{\textit{kernel}\xspace}
 \newcommand{\kernels}{\textit{kernels}\xspace}
+\newcommand{\offset}{\textit{offset}\xspace}
+\newcommand{\offsets}{\textit{offsets}\xspace}
 
 \chapter{Introdução}
 \label{ch:introdução}
@@ -221,13 +223,13 @@ Esta biblioteca é centrada no modelo \textit{fork-join} (Figura \ref{fig:forkjo
 \caption{Execução de um \textit{loop} de forma paralela.}
 \label{lst:parallelloop}
 \begin{minted}[highlightlines={4}]{c}
-    static void createArray() {
-      int array[max], index;
-      int index_max = 10;
-      #pragma omp parallel for
-      for (index = 0; i < index_max; index++)
-          array[index] = index;
-    }
+static void createArray() {
+  int array[max], index;
+  int index_max = 10;
+  #pragma omp parallel for
+  for (index = 0; i < index_max; index++)
+    array[index] = index;
+}
 \end{minted}
 \fonte{o autor.}
 \end{listing}
@@ -238,19 +240,19 @@ As diretivas \texttt{private, default e reduction} permitem, na sequência, defi
 \caption{Leitura e armazenamento seguro em variável compartilhada entre \threads.}
 \label{lst:reductionloop}
 \begin{minted}[highlightlines={6}]{c}
-  static int partial_friendly_sum = 0;
-  ...
-  static void countFriends() {
-    int i; /* Loop indexes. */
+static int partial_friendly_sum = 0;
+...
+static void countFriends() {
+  int i; /* Loop indexes. */
 
-    #pragma omp parallel for private(i) default(shared) reduction(+: partial_friendly_sum)
-    for (i = offset; i < offset + tasksize; i++) {
-      for (int j = 0; j < i; j++) {
-        if ((allTasks[i].num == allTasks[j].num) && (allTasks[i].den == allTasks[j].den))
-          partial_friendly_sum++;
-      }
+  #pragma omp parallel for private(i) default(shared) reduction(+: partial_friendly_sum)
+  for (i = offset; i < offset + tasksize; i++) {
+    for (int j = 0; j < i; j++) {
+      if ((allTasks[i].num == allTasks[j].num) && (allTasks[i].den == allTasks[j].den))
+        partial_friendly_sum++;
     }
   }
+}
 \end{minted}
 \fonte{o autor.}
 \end{listing}
@@ -264,28 +266,29 @@ Também pode-se definir qual será o nível de trabalho de cada \thread com a di
 \caption{Exemplo de uma aplicação usando a MPI.}
 \label{lst:programmpi}
 \begin{minted}[highlightlines={10,14,17}]{c}
-  int main(int argc, char **argv) {
-    int rank, size;
+int main(int argc, char **argv) {
+  int rank, size;
 
-    char mensagem_bcast[25] = "Transmitindo um broadcast";
-    char mensagem_bcast_recebido[18];
+  char mensagem_bcast[25] = "Transmitindo um broadcast";
+  char mensagem_bcast_recebido[18];
 
-    MPI_Init(argc, argv);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    MPI_Comm_size(MPI_COMM_WORLD, &size);
-    MPI_Bcast(&mensagem_bcast, 25, MPI_CHAR, 0, MPI_COMM_WORLD);
+  MPI_Init(argc, argv);
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
+  MPI_Bcast(&mensagem_bcast, 25, MPI_CHAR, 0, MPI_COMM_WORLD);
 
-    if (rank > 0) {
-      mensagem_bcast_recebido[18] = "Broadcast recebido";
-      MPI_Send (&mensagem_bcast_recebido, 18, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
-    } else if (rank == 0) {
-      for (int i = 1; i < size; i++)
-        MPI_Recv(&mensagem_bcast_recebido, 18, MPI_CHAR, i, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    }
-
-    MPI_Finalize();
-    return 0;
+  if (rank > 0) {
+    mensagem_bcast_recebido[18] = "Broadcast recebido";
+    MPI_Send (&mensagem_bcast_recebido, 18, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
+  } else if (rank == 0) {
+    for (int i = 1; i < size; i++)
+      MPI_Recv(&mensagem_bcast_recebido, 18, MPI_CHAR, i, 
+        MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
   }
+
+  MPI_Finalize();
+  return 0;
+}
 \end{minted}
 \fonte{o autor.}
 \end{listing}
@@ -341,15 +344,15 @@ Operações \texttt{PUT} devem ser feitas com cuidado, caso contrário podem sob
 \caption{Definição das macros de sincronização em um \cluster de E/S.}
 \label{lst:macrossyncio}
 \begin{minted}{c}
-  /* Synchronization between slaves and IO. */
-  #define send_signal(i)                                     \
-  poke(mppa_async_default_segment((i)), sig_offsets[(i)], 1) \
+/* Synchronization between slaves and IO. */
+#define send_signal(i)                                     \
+poke(mppa_async_default_segment((i)), sig_offsets[(i)], 1) \
 
-  /* Synchronization between slaves and IO. */
-  #define wait_signal(i) {                                           \
-  waitCondition(&cluster_signals[(i)], 1, MPPA_ASYNC_COND_EQ, NULL); \
-  cluster_signals[(i)] = 0;                                          \
-  }   
+/* Synchronization between slaves and IO. */
+#define wait_signal(i) {                                           \
+waitCondition(&cluster_signals[(i)], 1, MPPA_ASYNC_COND_EQ, NULL); \
+cluster_signals[(i)] = 0;                                          \
+}   
 \end{minted}
 \fonte{o autor.}
 \end{listing}
@@ -358,15 +361,15 @@ Operações \texttt{PUT} devem ser feitas com cuidado, caso contrário podem sob
 \caption{Definição das macros de sincronização em um \cluster de computação.}
 \label{lst:macrossynccc}
 \begin{minted}{c}
-  /* Synchronization between slaves and IO. */
-  #define send_signal()                        \
-  poke(MPPA_ASYNC_DDR_0, sigback_offset, 1) \
+/* Synchronization between slaves and IO. */
+#define send_signal()                        \
+poke(MPPA_ASYNC_DDR_0, sigback_offset, 1) \
 
-  /* Synchronization between slaves and IO. */
-  #define wait_signal() {                                 \
-  waitCondition(&io_signal, 1, MPPA_ASYNC_COND_EQ, NULL); \
-  io_signal = 0;                                          \
-  }     
+/* Synchronization between slaves and IO. */
+#define wait_signal() {                                 \
+waitCondition(&io_signal, 1, MPPA_ASYNC_COND_EQ, NULL); \
+io_signal = 0;                                          \
+}     
 \end{minted}
 \fonte{o autor.}
 \end{listing}
@@ -394,6 +397,35 @@ Por fim, \textit{Tian} \etal \cite{tianbench} desenvolveram o BigDataBench-S, um
 \label{ch:desenvolvimento}
 
 Para a realização deste trabalho, foram feitas dois tipos de alterações em todas as aplicações do \capb. Primeiro, criou-se uma nova versão de cada aplicação, a qual teve parte de ou toda sua lógica de processamento alterada para que pudesse utilizar a \API \ASYNC. Após isso, alterou-se as versões antigas, que usam a \API \IPC, para que ficassem equivalente as novas aplicações em relação ao seu fluxo de processamento. Nesta seção serão mostradas todas as alterações feitas em cada aplicação e em cada etapa. Uma descrição mais detalhada de cada um dos \kernels pode ser encontrada no trabalho de \textit{Souza} \etal \cite{Castro-Souza-CCPE:2016}.
+
+\section{Alterações na Friendly Numbers}
+\label{sec:objetivos}
+
+A primeira aplicação portada com a \ASYNC foi a \FN, tendo pequenas alterações devido a sua baixa complexidade. Em ambas as versões, existe um array de tamanho fixo que define as tarefas de cada \cluster segundo intervalos de \offsets, onde em cada posição existem três variáveis do tipo \texttt{int} agrupadas em uma \texttt{struct}. Resumindo, o \cluster de \IO define um intervalo de números e seta cada número na variável \texttt{number}, enquanto que os \CCs devem calcular as variáveis \texttt{num} e \texttt{den}. O código \ref{lst:structitemtask} detalha como é feita a implementação de ambos array e \texttt{struct}.
+
+\begin{listing}[h]
+\caption{Definição das taréfas por  parte do \cluster de IO.}
+\label{lst:structitemtask}
+\begin{minted}{c}
+/* Items to be sent to slaves */
+typedef struct {
+    int number; /* Number    */
+    int num;  /* Numerator   */
+    int den;  /* Denominator */
+} Item;    
+
+#define MAX_TASK_SIZE 65536
+
+static Item tasks[MAX_TASK_SIZE];
+\end{minted}
+\fonte{o autor.}
+\end{listing}
+
+A versão \ASYNC reduziu bastante o fluxo de operações desta aplicação. Anteriormente, era necessário explicitamente realizar operações de envio e recebimento de mensagens no \cluster de \IO, através das macros \texttt{data\_send()} e \texttt{data\_receive()}, sendo essas operações totalmente bloqueantes. Com a introdução dos segmentos pela \API \ASYNC, duas linhas de código substituem ambas operações, ou seja, basta declarar um segmento e criá-lo, através da função \texttt{mppa\_async\_segment\_create()}, sobre o \textit{array} de tarefas. Assim, qualquer \CC que clona-lo poderá acessar seu conteúdo e modificá-lo, sendo essas modificações totalmente acessíveis ao cluster de \IO através do mesmo \textit{array} de tarefas.
+
+Dessa maneira, os \CCs só são \textit{spawnados} depois que todas as tarefas estão definidas no \textit{array} e o segmento foi criado. Após \textit{spawnado}, um \cluster de computação só precisa fazer uma operação \texttt{GET} em um certo intervalo no segmento, processar os dados, e enviá-los de volta através de uma operação \texttt{PUT} no mesmo intervalo no segmento. Como cada \CC possui um intervalo de \offsets diferente, não há sobreposição de tarefas e não existe nenhuma condição de corrida sobre uma certa posição no segmento. Por fim, como as operações \texttt{PUT} dos \CCs alteram o array no qual o segmento foi definido no \cluster de \IO, não há necessidade do processo \textit{master} realizar um \texttt{GET} sobre aquele segmento, bastando acessar o \textit{array} de tarefas diretamente. Logicamente, se o processo \textit{master} ler o \textit{array} antes da hora, irá obter valores \texttt{null} para as variáveis \texttt{num} e \texttt{den}, logo, é feita uma única sincronização, onde os \clusters de \IO aguardam a sinalização dos \CCs de que determinada tarefa já foi computada e colocada em um certo intervalo do segmento, antes de ler aquele intervalo.
+
+Mudanças sem relação com as \APIs também foram implementadas em ambas as versões. No código dos \textit{slaves}, existe uma função que computa a soma dos divisores de um número. Nesta função, era feito um \textit{loop} iniciando em 2 e terminando no número, onde em cada iteração verifica-se se o número daquela iteração era divisor do número passado como argumento para a função. Com a otimização, alterou-se o \textit{loop} para iterar até metade do número passado como argumento, já que, acima da metade, o único divisor de um número é ele mesmo. Outra otimização feita foi em relação ao paralelismo para verificar quais números tinham as variáveis \texttt{num} e \texttt{den} iguais. Na versão antiga utilizou-se \textit{POSIX Threads} para fazer uma soma parcial e depois uma redução na \textit{thread} principal, gastando mais de 50 linhas nessa lógica. Na nova versão, com a utilização de diretivas do \OpenMP, reduziu-se essas 50 linhas em 5, com um fluxo de execução mais fácil de ser entendido.
 
 \chapter{Resultados}
 \label{ch:resultados}
