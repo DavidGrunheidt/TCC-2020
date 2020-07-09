@@ -445,6 +445,35 @@ Poucas foram as alterações da \GF, sendo esta a aplicação com menos modifica
 
 Na primeira etapa, o \cluster de \IO realiza somente escritas sobre o segmento, onde cada escrita é seguida de uma leitura por algum \CC, o qual armazena o que foi lido em sua memória local e sinaliza ao processo \master para prosseguir com a inserção da próxima tarefa para o próximo \CC. Já na segunda etapa, após terem feito toda computação sobre o \textit{chunk} que receberam, os \CCs aguardam o processo \master sinalizar que está na hora de escrever o dado calculado sobre o mesmo segmento em que foi recebido o \textit{chunk}, e, quando sinalizados, escrevem-no. Enquanto isso, o \cluster de \IO aguarda cada \CC sinalizar que tal dado já foi escrito no segmento. Apesar de complexo, este método é ligeiramente melhor que o da versão \IPC, visto que as operações \texttt{PUT} e \texttt{GET} de envio e recebimento de mensagens só são realizadas no lado dos \clusters de computação, já que no processo \master só é necessário copiar o dado do segmento para algum lugar dentro do \textit{array} que irá conter a nova imagem. Assim, similar às demais aplicações, a troca de mensagens é reduzida pela metade.
 
+\section{Alterações na LU Factorization}
+\label{sec:alteracoesgf}
+
+A aplicação com maior número de modificações em sua lógica foi a \LU, principalmente por causa da implementação errônea do algoritmo na primeira versão. Basicamente, o algoritmo de decomposição LU transforma uma matriz \mathnormal{A} em duas matrizes, uma triangular inferior (\mathnormal{L}) e uma triangular superior (\mathnormal{U}), de modo que \mathnormal{A = L * U}. Porém, o erro da primeira versão foi implementar permutações de trocas de linha e coluna, as quais caracterizam outra decomposição, chamada de PLU e definida pela equação \mathnormal{P * A = L * U}, onde \mathnormal{P} é o agregado final de todas as matrizes de permutação aplicadas sobre A. Assim, funções de percorriam extensivamente a matriz em busca de um novo pivô e funções que trocavam linhas e colunas foram removidas. Além disso, blocos dentro da matriz eram enviados de forma errada aos \slaves, gerando um resultado final totalmente errado. A figura \ref{fig:rightandwrongblocks} mostra como um bloco de 9 elementos (3x3) deveria ser passado, segundo a matriz \mathnormal{B}, e como era passado primeira versão, segundo a matriz {A} (os blocos estão pintados em vermelho). Vale salientar que esse erro só foi possível pois a variável que guarda a matriz na verdade é um array unidimensional.
+
+\begin{figure}[h]
+  \centering
+  \caption{Exemplo de um bloco passado a um \slave em cada versão da LU.}
+  \label{fig:rightandwrongblocks}
+  \[
+    A=
+    \begin{bmatrix}
+      1  & 5  & 3  & 8  \\
+      12 & \color{red} 7  & \color{red} 15 & \color{red} 12 \\
+      \color{red}  3  & \color{red}  12 & \color{red}  92 & \color{red} 8 \\
+      \color{red}  6  & \color{red}  9  & 3  & 1 
+    \end{bmatrix}\quad
+    B=
+    \begin{bmatrix}
+      1  & 5  & 3  & 8  \\
+      12 & \color{red} 7  & \color{red} 15 & \color{red} 12 \\
+      3  & \color{red} 12 & \color{red} 92 & \color{red} 8 \\
+      6  & \color{red} 9  & \color{red} 3  & \color{red} 1 
+    \end{bmatrix}
+  \]
+\end{figure}
+
+Todos os erros citados no parágrafo anterior foram solucionados em ambas as versões. Quanto a versão \ASYNC, para tirar proveito desta \API foi criado um segmento sobre a matriz original e um segmento sobre um \textit{array} de tarefas. Deste modo, em uma certa iteração, um processo \slave consulta o segmento de tarefas usando seu próprio \textit{id} como \offset, recuperando um tarefa que contém, entre outras variáveis, os \offsets que serão aplicados para pegar um bloco no segmento da matriz. Quando um \CC não possui mais tarefas, o \cluster de \IO coloca uma mensagem de finalização no \offset deste \slave dentro do segmento de tarefas, o qual a recebe e finaliza sua execução. Devido aos dois segmentos citados acima, as operações \texttt{PUT} e \texttt{GET} são feitas somente pelos \CCs, enquanto que o processo \master só realiza sinalizações, quando coloca uma tarefa no segmento, e sincronizações, quando todos os \slaves finalizam uma iteração de computação.
+
 \chapter{Resultados}
 \label{ch:resultados}
 
