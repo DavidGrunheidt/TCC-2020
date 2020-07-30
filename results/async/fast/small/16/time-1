@@ -1,0 +1,38 @@
+Unable to open default board_mgmt interface (err: HW Interface error)
+IODDR0@0.0: RM 0: initializing...
+IODDR0@0.0: RM 0:   time spent: 1.280209
+IODDR0@0.0: RM 0: Detecting corners...
+IODDR0@0.0: RM 0: CPU timing statistics of FAST:
+IODDR0@0.0: RM 0:   master:        0.000000
+IODDR0@0.0: RM 0:   slave 0:       0.090634
+IODDR0@0.0: RM 0:   slave 1:       0.090270
+IODDR0@0.0: RM 0:   slave 2:       0.090183
+IODDR0@0.0: RM 0:   slave 3:       0.090169
+IODDR0@0.0: RM 0:   slave 4:       0.090159
+IODDR0@0.0: RM 0:   slave 5:       0.090171
+IODDR0@0.0: RM 0:   slave 6:       0.090234
+IODDR0@0.0: RM 0:   slave 7:       0.090188
+IODDR0@0.0: RM 0:   slave 8:       0.090194
+IODDR0@0.0: RM 0:   slave 9:       0.090293
+IODDR0@0.0: RM 0:   slave 10:       0.090189
+IODDR0@0.0: RM 0:   slave 11:       0.090191
+IODDR0@0.0: RM 0:   slave 12:       0.090170
+IODDR0@0.0: RM 0:   slave 13:       0.090215
+IODDR0@0.0: RM 0:   slave 14:       0.090230
+IODDR0@0.0: RM 0:   slave 15:       0.090756
+IODDR0@0.0: RM 0:   slave avg:     0.090265
+IODDR0@0.0: RM 0:   spawn 16 CC:    2.710028
+IODDR0@0.0: RM 0:   communication: 1.017223
+IODDR0@0.0: RM 0:   total time:    5.483427
+IODDR0@0.0: RM 0: asynchronous communication statistics:
+IODDR0@0.0: RM 0:   data put:         16777344
+IODDR0@0.0: RM 0:   data get:         18341248
+IODDR0@0.0: RM 0:   number of puts:   80
+IODDR0@0.0: RM 0:   number of gets:   80
+IODDR0@0.0: RM 0: Sum. of corners = 1177716
+====== BOARD 0 ======
+
+ - Acquisition time: 9.53 s
+ - MPPA 0 Power
+   - Power (avg): 5.11 W
+   - Energy     : 48.71 J
