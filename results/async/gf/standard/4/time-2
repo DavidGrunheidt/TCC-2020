@@ -1,0 +1,25 @@
+Unable to open default board_mgmt interface (err: HW Interface error)
+IODDR0@0.0: RM 0: initializing...
+IODDR0@0.0: RM 0:   time spent: 5.045664
+IODDR0@0.0: RM 0: applying filter...
+IODDR0@0.0: RM 0: CPU timing statistics of GF:
+IODDR0@0.0: RM 0:   master:        0.000000
+IODDR0@0.0: RM 0:   slave 0:       2.155105
+IODDR0@0.0: RM 0:   slave 1:       2.155135
+IODDR0@0.0: RM 0:   slave 2:       2.155137
+IODDR0@0.0: RM 0:   slave 3:       2.155138
+IODDR0@0.0: RM 0:   slave avg:     2.155128
+IODDR0@0.0: RM 0:   spawn 4 CC:    0.082227
+IODDR0@0.0: RM 0:   communication: 1.234078
+IODDR0@0.0: RM 0:   total time:    4.158657
+IODDR0@0.0: RM 0: asynchronous communication statistics:
+IODDR0@0.0: RM 0:   data put:         67108896
+IODDR0@0.0: RM 0:   data get:         69759776
+IODDR0@0.0: RM 0:   number of puts:   260
+IODDR0@0.0: RM 0:   number of gets:   260
+====== BOARD 0 ======
+
+ - Acquisition time: 11.53 s
+ - MPPA 0 Power
+   - Power (avg): 4.48 W
+   - Energy     : 51.64 J

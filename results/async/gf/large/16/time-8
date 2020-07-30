@@ -1,0 +1,37 @@
+Unable to open default board_mgmt interface (err: HW Interface error)
+IODDR0@0.0: RM 0: initializing...
+IODDR0@0.0: RM 0:   time spent: 20.157446
+IODDR0@0.0: RM 0: applying filter...
+IODDR0@0.0: RM 0: CPU timing statistics of GF:
+IODDR0@0.0: RM 0:   master:        0.000000
+IODDR0@0.0: RM 0:   slave 0:       2.155106
+IODDR0@0.0: RM 0:   slave 1:       2.155138
+IODDR0@0.0: RM 0:   slave 2:       2.155137
+IODDR0@0.0: RM 0:   slave 3:       2.155135
+IODDR0@0.0: RM 0:   slave 4:       2.155136
+IODDR0@0.0: RM 0:   slave 5:       2.155135
+IODDR0@0.0: RM 0:   slave 6:       2.155136
+IODDR0@0.0: RM 0:   slave 7:       2.155138
+IODDR0@0.0: RM 0:   slave 8:       2.155138
+IODDR0@0.0: RM 0:   slave 9:       2.155136
+IODDR0@0.0: RM 0:   slave 10:       2.155139
+IODDR0@0.0: RM 0:   slave 11:       2.155138
+IODDR0@0.0: RM 0:   slave 12:       2.155135
+IODDR0@0.0: RM 0:   slave 13:       2.155135
+IODDR0@0.0: RM 0:   slave 14:       2.155137
+IODDR0@0.0: RM 0:   slave 15:       2.155138
+IODDR0@0.0: RM 0:   slave avg:     2.155134
+IODDR0@0.0: RM 0:   spawn 16 CC:    2.714793
+IODDR0@0.0: RM 0:   communication: 2.883438
+IODDR0@0.0: RM 0:   total time:    9.834539
+IODDR0@0.0: RM 0: asynchronous communication statistics:
+IODDR0@0.0: RM 0:   data put:         268435584
+IODDR0@0.0: RM 0:   data get:         279039104
+IODDR0@0.0: RM 0:   number of puts:   1040
+IODDR0@0.0: RM 0:   number of gets:   1040
+====== BOARD 0 ======
+
+ - Acquisition time: 32.53 s
+ - MPPA 0 Power
+   - Power (avg): 5.24 W
+   - Energy     : 170.35 J
