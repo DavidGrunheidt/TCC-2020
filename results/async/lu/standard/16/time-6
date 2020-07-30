@@ -1,0 +1,37 @@
+Unable to open default board_mgmt interface (err: HW Interface error)
+IODDR0@0.0: RM 0: initializing...
+IODDR0@0.0: RM 0:   time spent: 0.178576
+IODDR0@0.0: RM 0: factorizing...
+IODDR0@0.0: RM 0: CPU timing statistics of LU:
+IODDR0@0.0: RM 0:   master:        0.225726
+IODDR0@0.0: RM 0:   slave 0:       0.380806
+IODDR0@0.0: RM 0:   slave 1:       0.364827
+IODDR0@0.0: RM 0:   slave 2:       0.332920
+IODDR0@0.0: RM 0:   slave 3:       0.308433
+IODDR0@0.0: RM 0:   slave 4:       0.285388
+IODDR0@0.0: RM 0:   slave 5:       0.265511
+IODDR0@0.0: RM 0:   slave 6:       0.251002
+IODDR0@0.0: RM 0:   slave 7:       0.235212
+IODDR0@0.0: RM 0:   slave 8:       0.220560
+IODDR0@0.0: RM 0:   slave 9:       0.206142
+IODDR0@0.0: RM 0:   slave 10:       0.192421
+IODDR0@0.0: RM 0:   slave 11:       0.180123
+IODDR0@0.0: RM 0:   slave 12:       0.168736
+IODDR0@0.0: RM 0:   slave 13:       0.157420
+IODDR0@0.0: RM 0:   slave 14:       0.145785
+IODDR0@0.0: RM 0:   slave 15:       0.132272
+IODDR0@0.0: RM 0:   slave avg:     0.239222
+IODDR0@0.0: RM 0:   spawn 16 CC:    2.731248
+IODDR0@0.0: RM 0:   communication: 3.938746
+IODDR0@0.0: RM 0:   total time:    8.608247
+IODDR0@0.0: RM 0: asynchronous communication statistics:
+IODDR0@0.0: RM 0:   data put:         536868992
+IODDR0@0.0: RM 0:   data get:         626083276
+IODDR0@0.0: RM 0:   number of puts:   19424
+IODDR0@0.0: RM 0:   number of gets:   58240
+====== BOARD 0 ======
+
+ - Acquisition time: 11.56 s
+ - MPPA 0 Power
+   - Power (avg): 5.54 W
+   - Energy     : 64.09 J
