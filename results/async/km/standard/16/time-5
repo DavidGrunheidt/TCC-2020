@@ -1,0 +1,37 @@
+Unable to open default board_mgmt interface (err: HW Interface error)
+IODDR0@0.0: RM 0: initializing...
+IODDR0@0.0: RM 0:   time spent: 0.017046
+IODDR0@0.0: RM 0: clustering data...
+IODDR0@0.0: RM 0: CPU timing statistics of KM:
+IODDR0@0.0: RM 0:   master:        0.359374
+IODDR0@0.0: RM 0:   slave 0:       5.770019
+IODDR0@0.0: RM 0:   slave 1:       5.769376
+IODDR0@0.0: RM 0:   slave 2:       5.769673
+IODDR0@0.0: RM 0:   slave 3:       5.770347
+IODDR0@0.0: RM 0:   slave 4:       5.769669
+IODDR0@0.0: RM 0:   slave 5:       5.769223
+IODDR0@0.0: RM 0:   slave 6:       5.769615
+IODDR0@0.0: RM 0:   slave 7:       5.769826
+IODDR0@0.0: RM 0:   slave 8:       5.769518
+IODDR0@0.0: RM 0:   slave 9:       5.769495
+IODDR0@0.0: RM 0:   slave 10:       5.769802
+IODDR0@0.0: RM 0:   slave 11:       5.769642
+IODDR0@0.0: RM 0:   slave 12:       5.769437
+IODDR0@0.0: RM 0:   slave 13:       5.769730
+IODDR0@0.0: RM 0:   slave 14:       5.769245
+IODDR0@0.0: RM 0:   slave 15:       5.769096
+IODDR0@0.0: RM 0:   slave avg:     5.769607
+IODDR0@0.0: RM 0:   spawn 16 CC:    2.735209
+IODDR0@0.0: RM 0:   communication: 1.818293
+IODDR0@0.0: RM 0:   total time:    11.560373
+IODDR0@0.0: RM 0: asynchronous communication statistics:
+IODDR0@0.0: RM 0:   data put:         37947904
+IODDR0@0.0: RM 0:   data get:         72550464
+IODDR0@0.0: RM 0:   number of puts:   1664
+IODDR0@0.0: RM 0:   number of gets:   2160
+====== BOARD 0 ======
+
+ - Acquisition time: 14.53 s
+ - MPPA 0 Power
+   - Power (avg): 8.13 W
+   - Energy     : 118.17 J

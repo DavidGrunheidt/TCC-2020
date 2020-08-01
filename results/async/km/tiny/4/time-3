@@ -1,0 +1,25 @@
+Unable to open default board_mgmt interface (err: HW Interface error)
+IODDR0@0.0: RM 0: initializing...
+IODDR0@0.0: RM 0:   time spent: 0.004266
+IODDR0@0.0: RM 0: clustering data...
+IODDR0@0.0: RM 0: CPU timing statistics of KM:
+IODDR0@0.0: RM 0:   master:        0.012416
+IODDR0@0.0: RM 0:   slave 0:       0.746064
+IODDR0@0.0: RM 0:   slave 1:       0.746072
+IODDR0@0.0: RM 0:   slave 2:       0.746079
+IODDR0@0.0: RM 0:   slave 3:       0.746093
+IODDR0@0.0: RM 0:   slave avg:     0.746077
+IODDR0@0.0: RM 0:   spawn 4 CC:    0.079568
+IODDR0@0.0: RM 0:   communication: 0.558093
+IODDR0@0.0: RM 0:   total time:    2.110501
+IODDR0@0.0: RM 0: asynchronous communication statistics:
+IODDR0@0.0: RM 0:   data put:         1479040
+IODDR0@0.0: RM 0:   data get:         2593040
+IODDR0@0.0: RM 0:   number of puts:   224
+IODDR0@0.0: RM 0:   number of gets:   284
+====== BOARD 0 ======
+
+ - Acquisition time: 4.53 s
+ - MPPA 0 Power
+   - Power (avg): 4.49 W
+   - Energy     : 20.37 J
