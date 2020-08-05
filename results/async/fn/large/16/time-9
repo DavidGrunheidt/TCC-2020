@@ -1,0 +1,35 @@
+Unable to open default board_mgmt interface (err: HW Interface error)
+IODDR0@0.0: RM 0: CPU timing statistics of FN:
+IODDR0@0.0: RM 0:   master:        8.375380
+IODDR0@0.0: RM 0:   slave 0:       60.557330
+IODDR0@0.0: RM 0:   slave 1:       60.572484
+IODDR0@0.0: RM 0:   slave 2:       60.587641
+IODDR0@0.0: RM 0:   slave 3:       60.602802
+IODDR0@0.0: RM 0:   slave 4:       60.617950
+IODDR0@0.0: RM 0:   slave 5:       60.633106
+IODDR0@0.0: RM 0:   slave 6:       60.648266
+IODDR0@0.0: RM 0:   slave 7:       60.663417
+IODDR0@0.0: RM 0:   slave 8:       60.678573
+IODDR0@0.0: RM 0:   slave 9:       60.693724
+IODDR0@0.0: RM 0:   slave 10:       60.708880
+IODDR0@0.0: RM 0:   slave 11:       60.724043
+IODDR0@0.0: RM 0:   slave 12:       60.739200
+IODDR0@0.0: RM 0:   slave 13:       60.754351
+IODDR0@0.0: RM 0:   slave 14:       60.769507
+IODDR0@0.0: RM 0:   slave 15:       60.784655
+IODDR0@0.0: RM 0:   slave avg:     60.670995
+IODDR0@0.0: RM 0:   spawn 16 CC:    2.713441
+IODDR0@0.0: RM 0:   communication: 3.731946
+IODDR0@0.0: RM 0:   total time:    74.534558
+IODDR0@0.0: RM 0: asynchronous communication statistics:
+IODDR0@0.0: RM 0:   data put:         393344
+IODDR0@0.0: RM 0:   data get:         393216
+IODDR0@0.0: RM 0:   number of puts:   32
+IODDR0@0.0: RM 0:   number of gets:   16
+IODDR0@0.0: RM 0:   Friendly Pairs = 0
+====== BOARD 0 ======
+
+ - Acquisition time: 77.55 s
+ - MPPA 0 Power
+   - Power (avg): 10.26 W
+   - Energy     : 795.44 J

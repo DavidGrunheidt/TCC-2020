@@ -1,0 +1,21 @@
+Unable to open default board_mgmt interface (err: HW Interface error)
+IODDR0@0.0: RM 0: CPU timing statistics of FN:
+IODDR0@0.0: RM 0:   master:        1.759347
+IODDR0@0.0: RM 0:   slave 0:       242.404652
+IODDR0@0.0: RM 0:   slave 1:       242.647123
+IODDR0@0.0: RM 0:   slave avg:     242.525887
+IODDR0@0.0: RM 0:   spawn 2 CC:    0.039667
+IODDR0@0.0: RM 0:   communication: 81.094100
+IODDR0@0.0: RM 0:   total time:    245.084531
+IODDR0@0.0: RM 0: asynchronous communication statistics:
+IODDR0@0.0: RM 0:   data put:         196624
+IODDR0@0.0: RM 0:   data get:         196608
+IODDR0@0.0: RM 0:   number of puts:   4
+IODDR0@0.0: RM 0:   number of gets:   2
+IODDR0@0.0: RM 0:   Friendly Pairs = 0
+====== BOARD 0 ======
+
+ - Acquisition time: 247.56 s
+ - MPPA 0 Power
+   - Power (avg): 5.31 W
+   - Energy     : 1314.61 J
