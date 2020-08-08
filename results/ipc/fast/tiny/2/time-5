@@ -1,0 +1,24 @@
+Unable to open default board_mgmt interface (err: HW Interface error)
+IODDR0@0.0: RM 0: initializing...
+IODDR0@0.0: RM 0:   time spent: 0.278432
+IODDR0@0.0: RM 0: Detecting corners...
+IODDR0@0.0: RM 0: timing statistics:
+IODDR0@0.0: RM 0:   master:           0.000000
+IODDR0@0.0: RM 0:   slave 0:          2.863349
+IODDR0@0.0: RM 0:   slave 1:          2.863091
+IODDR0@0.0: RM 0:   slave avg:     2.863220
+IODDR0@0.0: RM 0:   spawn 2 CC:       0.036704
+IODDR0@0.0: RM 0:   communication:    3.523543
+IODDR0@0.0: RM 0:   total time:       3.560513
+IODDR0@0.0: RM 0: data exchange statistics:
+IODDR0@0.0: RM 0:   data sent:            4385232
+IODDR0@0.0: RM 0:   number sends:         26
+IODDR0@0.0: RM 0:   data received:        4194312
+IODDR0@0.0: RM 0:   number receives:      18
+IODDR0@0.0: RM 0: Sum. of corners = 294842
+====== BOARD 0 ======
+
+ - Acquisition time: 6.55 s
+ - MPPA 0 Power
+   - Power (avg): 4.11 W
+   - Energy     : 26.89 J

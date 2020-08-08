@@ -1,0 +1,25 @@
+Unable to open default board_mgmt interface (err: HW Interface error)
+IODDR0@0.0: RM 0: initializing...
+IODDR0@0.0: RM 0:   time spent: 0.076847
+IODDR0@0.0: RM 0: factorizing...
+IODDR0@0.0: RM 0: timing statistics:
+IODDR0@0.0: RM 0:   master:        0.083374
+IODDR0@0.0: RM 0:   slave 0:       1.148369
+IODDR0@0.0: RM 0:   slave 1:       1.268702
+IODDR0@0.0: RM 0:   slave 2:       1.079529
+IODDR0@0.0: RM 0:   slave 3:       0.912728
+IODDR0@0.0: RM 0:   slave avg:     1.102332
+IODDR0@0.0: RM 0:   spawn 4 CC:    0.072539
+IODDR0@0.0: RM 0:   communication: 36.550977
+IODDR0@0.0: RM 0:   total time:    37.488467
+IODDR0@0.0: RM 0: data exchange statistics:
+IODDR0@0.0: RM 0:   data sent:            1449563052
+IODDR0@0.0: RM 0:   number sends:         529822
+IODDR0@0.0: RM 0:   data received:        1431654400
+IODDR0@0.0: RM 0:   number receives:      523776
+====== BOARD 0 ======
+
+ - Acquisition time: 39.55 s
+ - MPPA 0 Power
+   - Power (avg): 4.29 W
+   - Energy     : 169.68 J

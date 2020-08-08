@@ -1,0 +1,38 @@
+Unable to open default board_mgmt interface (err: HW Interface error)
+IODDR0@0.0: RM 0: initializing...
+IODDR0@0.0: RM 0:   time spent: 17.817943
+IODDR0@0.0: RM 0: Detecting corners...
+IODDR0@0.0: RM 0: timing statistics:
+IODDR0@0.0: RM 0:   master:           0.000000
+IODDR0@0.0: RM 0:   slave 0:          22.903909
+IODDR0@0.0: RM 0:   slave 1:          22.902161
+IODDR0@0.0: RM 0:   slave 2:          22.902835
+IODDR0@0.0: RM 0:   slave 3:          22.901941
+IODDR0@0.0: RM 0:   slave 4:          22.901532
+IODDR0@0.0: RM 0:   slave 5:          22.901898
+IODDR0@0.0: RM 0:   slave 6:          22.902066
+IODDR0@0.0: RM 0:   slave 7:          22.904648
+IODDR0@0.0: RM 0:   slave 8:          22.902608
+IODDR0@0.0: RM 0:   slave 9:          22.903263
+IODDR0@0.0: RM 0:   slave 10:          22.902540
+IODDR0@0.0: RM 0:   slave 11:          22.901334
+IODDR0@0.0: RM 0:   slave 12:          22.903051
+IODDR0@0.0: RM 0:   slave 13:          22.904577
+IODDR0@0.0: RM 0:   slave 14:          22.903007
+IODDR0@0.0: RM 0:   slave 15:          22.904441
+IODDR0@0.0: RM 0:   slave avg:     22.902863
+IODDR0@0.0: RM 0:   spawn 16 CC:       4.642046
+IODDR0@0.0: RM 0:   communication:    25.404621
+IODDR0@0.0: RM 0:   total time:       30.051197
+IODDR0@0.0: RM 0: data exchange statistics:
+IODDR0@0.0: RM 0:   data sent:            369053312
+IODDR0@0.0: RM 0:   number sends:         1104
+IODDR0@0.0: RM 0:   data received:        268435520
+IODDR0@0.0: RM 0:   number receives:      1040
+IODDR0@0.0: RM 0: Sum. of corners = 18840762
+====== BOARD 0 ======
+
+ - Acquisition time: 50.55 s
+ - MPPA 0 Power
+   - Power (avg): 4.54 W
+   - Energy     : 229.25 J
