@@ -493,6 +493,10 @@ Com a adição da \API \ASYNC, criou-se um segmento sobre o \textit{array} que a
 \chapter{Resultados}
 \label{ch:resultados}
 
+Este capítulo apresenta o estudo empírico sobre os resultados obtidos nas execuções de cada \kernel em cada versão do \capb, comparando-os através de métricas definidas para as duas versões. Dentre as variáveis medidas, são comparadas: \textbf{(i)} a média do tempo de execução de cada \CC em segundos; \textbf{(ii)} o tempo de execução do processo \master em segundos, excluindo o tempo de envio e recebimento de dados e o tempo em que este se encontra bloqueado; \textbf{(iii)} o tempo gasto durante a transferência de dados entre os processos \master e \slave, também em segundos, incluindo o tempo de sincronização de envio e recebimento de dados, no caso da \IPC; \textbf{(iv)} a quantidade de dados que o processo \master envia para os \slaves, em \textit{megabytes}; \textbf{(v)} a quantidade de dados que o processo \master recebe dos \slaves, também em \textit{megabytes}; \textbf{(vi)} a potência média durante a execução da aplicação, em \textit{watts}; e \textbf{(vii)} o consumo de energia durante a execução da aplicação, em \textit{joules}.
+
+As aplicações foram executadas com as classes de tamanho \textit{tiny}, \textit{small}, \textit{standard}, \textit{large} e \textit{huge}. Para cada classe, variou-se o número de \clusters de computação entre 1, 2, 4, 8 e 16. Além disso, 5 repetições foram realizadas para cada uma dessas variações. Como o \mppa possui características intrínsecas que garantem baixa variabilidade entre as execuções, somente 5 repetições foram suficientes para garantir um desvio padrão relativo menor que 1\% em todas as métricas de tempo e energia. Todos os experimentos consideram 16 núcleos de processamento ativos por \cluster utilizado. Por fim, as medições de energia foram coletadas através de sensores de energia e potência espalhados nos diferentes componentes de \textit{hardware} do processador, considerando todos os \clusters, os subsistemas de \IO, a \NoC e a memória.
+
 \chapter{Conclusão}
 \label{ch:conclusao}
 

@@ -1,0 +1,37 @@
+Unable to open default board_mgmt interface (err: HW Interface error)
+IODDR0@0.0: RM 0: initializing...
+IODDR0@0.0: RM 0:   time spent: 0.065627
+IODDR0@0.0: RM 0: clustering data...
+IODDR0@0.0: RM 0: timing statistics:
+IODDR0@0.0: RM 0:   master:        0.762389
+IODDR0@0.0: RM 0:   slave 0:       669.602071
+IODDR0@0.0: RM 0:   slave 1:       669.601154
+IODDR0@0.0: RM 0:   slave 2:       669.599251
+IODDR0@0.0: RM 0:   slave 3:       669.599593
+IODDR0@0.0: RM 0:   slave 4:       669.602252
+IODDR0@0.0: RM 0:   slave 5:       669.598630
+IODDR0@0.0: RM 0:   slave 6:       669.598870
+IODDR0@0.0: RM 0:   slave 7:       669.599343
+IODDR0@0.0: RM 0:   slave 8:       669.600742
+IODDR0@0.0: RM 0:   slave 9:       669.598600
+IODDR0@0.0: RM 0:   slave 10:       669.600070
+IODDR0@0.0: RM 0:   slave 11:       669.602381
+IODDR0@0.0: RM 0:   slave 12:       669.602154
+IODDR0@0.0: RM 0:   slave 13:       669.600450
+IODDR0@0.0: RM 0:   slave 14:       669.600570
+IODDR0@0.0: RM 0:   slave 15:       669.599917
+IODDR0@0.0: RM 0:   slave avg:     669.600378
+IODDR0@0.0: RM 0:   spawn 16 CC:    4.345968
+IODDR0@0.0: RM 0:   communication: 670.856645
+IODDR0@0.0: RM 0:   total time:    675.970326
+IODDR0@0.0: RM 0: data exchange statistics:
+IODDR0@0.0: RM 0:   data sent:            69472384
+IODDR0@0.0: RM 0:   number sends:         2080
+IODDR0@0.0: RM 0:   data received:        69341056
+IODDR0@0.0: RM 0:   number receives:      2992
+====== BOARD 0 ======
+
+ - Acquisition time: 678.60 s
+ - MPPA 0 Power
+   - Power (avg): 4.80 W
+   - Energy     : 3254.96 J

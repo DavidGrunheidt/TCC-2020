@@ -1,0 +1,21 @@
+Unable to open default board_mgmt interface (err: HW Interface error)
+IODDR0@0.0: RM 0: computing friendly numbers...
+IODDR0@0.0: RM 0: timing statistics:
+IODDR0@0.0: RM 0:   master:        0.567606
+IODDR0@0.0: RM 0:   slave 0:       4286.461958
+IODDR0@0.0: RM 0:   slave avg:     4286.461958
+IODDR0@0.0: RM 0:   spawn 1 CC:    0.018716
+IODDR0@0.0: RM 0:   communication: 4286.781280
+IODDR0@0.0: RM 0:   total time:    4287.367676
+IODDR0@0.0: RM 0: data exchange statistics:
+IODDR0@0.0: RM 0:   data sent:            98308
+IODDR0@0.0: RM 0:   number sends:         2
+IODDR0@0.0: RM 0:   data received:        98304
+IODDR0@0.0: RM 0:   number receives:      1
+IODDR0@0.0: RM 0:   Friendly Pairs = 0
+====== BOARD 0 ======
+
+ - Acquisition time: 4289.77 s
+ - MPPA 0 Power
+   - Power (avg): 4.28 W
+   - Energy     : 18371.08 J
