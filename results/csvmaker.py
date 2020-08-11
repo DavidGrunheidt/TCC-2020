@@ -75,7 +75,7 @@ def calculate_stats(time_files: 'list(str)') -> str:
 	stats.append(str(round(statistics.mean(energy_list), 2)))
 	stats.append(str(variation(energy_list) * 100))
 
-	return ','.join(stats)
+	return ';'.join(stats)
 
 def main():
 	versions = get_folders(os.getcwd())
@@ -92,11 +92,15 @@ def main():
 
 		for kernel in kernels:
 
-			classes = get_folders(enter_folder(kernel))
+			#We want a result sorted by this classes
+			classes_folders = get_folders(enter_folder(kernel))
+			classes = [x for x in ['tiny', 'small', 'standard', 'large', 'huge'] if x in classes_folders]
 
 			for kernel_class in classes:
 
-				nclusters_list = get_folders(enter_folder(kernel_class))
+				#We want a result sorted by this list of nclusters
+				nclusters_folders = get_folders(enter_folder(kernel_class))
+				nclusters_list = [x for x in ['1', '2', '4', '8', '16'] if x in nclusters_folders]
 
 				for nclusters in nclusters_list:
 
@@ -107,7 +111,7 @@ def main():
 
 					stats = calculate_stats(files)
 
-					line = initial_csv_line + ',' + stats + '\n'
+					line = initial_csv_line + ';' + stats + '\n'
 
 					stats_file.write(line)
 

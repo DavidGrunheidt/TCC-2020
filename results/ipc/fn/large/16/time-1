@@ -1,0 +1,36 @@
+Unable to open default board_mgmt interface (err: HW Interface error)
+IODDR0@0.0: RM 0: computing friendly numbers...
+IODDR0@0.0: RM 0: timing statistics:
+IODDR0@0.0: RM 0:   master:        27.656156
+IODDR0@0.0: RM 0:   slave 0:       1071.212424
+IODDR0@0.0: RM 0:   slave 1:       1071.481156
+IODDR0@0.0: RM 0:   slave 2:       1071.749838
+IODDR0@0.0: RM 0:   slave 3:       1072.018539
+IODDR0@0.0: RM 0:   slave 4:       1072.287237
+IODDR0@0.0: RM 0:   slave 5:       1072.555957
+IODDR0@0.0: RM 0:   slave 6:       1072.824649
+IODDR0@0.0: RM 0:   slave 7:       1073.093319
+IODDR0@0.0: RM 0:   slave 8:       1073.362049
+IODDR0@0.0: RM 0:   slave 9:       1073.630750
+IODDR0@0.0: RM 0:   slave 10:       1073.899390
+IODDR0@0.0: RM 0:   slave 11:       1074.168145
+IODDR0@0.0: RM 0:   slave 12:       1074.436815
+IODDR0@0.0: RM 0:   slave 13:       1074.705554
+IODDR0@0.0: RM 0:   slave 14:       1074.974198
+IODDR0@0.0: RM 0:   slave 15:       1075.242925
+IODDR0@0.0: RM 0:   slave avg:     1073.227684
+IODDR0@0.0: RM 0:   spawn 16 CC:    4.390862
+IODDR0@0.0: RM 0:   communication: 1076.219832
+IODDR0@0.0: RM 0:   total time:    1108.267684
+IODDR0@0.0: RM 0: data exchange statistics:
+IODDR0@0.0: RM 0:   data sent:            393280
+IODDR0@0.0: RM 0:   number sends:         32
+IODDR0@0.0: RM 0:   data received:        393216
+IODDR0@0.0: RM 0:   number receives:      16
+IODDR0@0.0: RM 0:   Friendly Pairs = 0
+====== BOARD 0 ======
+
+ - Acquisition time: 1110.59 s
+ - MPPA 0 Power
+   - Power (avg): 4.79 W
+   - Energy     : 5314.25 J
