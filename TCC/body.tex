@@ -493,9 +493,59 @@ Com a adição da \API \ASYNC, criou-se um segmento sobre o \textit{array} que a
 \chapter{Resultados}
 \label{ch:resultados}
 
-Este capítulo apresenta o estudo empírico sobre os resultados obtidos nas execuções de cada \kernel em cada versão do \capb, comparando-os através de métricas definidas para as duas versões. Dentre as variáveis medidas, são comparadas: \textbf{(i)} a média do tempo de execução de cada \CC em segundos; \textbf{(ii)} o tempo de execução do processo \master em segundos, excluindo o tempo de envio e recebimento de dados e o tempo em que este se encontra bloqueado; \textbf{(iii)} o tempo gasto durante a transferência de dados entre os processos \master e \slave, também em segundos, incluindo o tempo de sincronização de envio e recebimento de dados, no caso da \IPC; \textbf{(iv)} a quantidade de dados que o processo \master envia para os \slaves, em \textit{megabytes}; \textbf{(v)} a quantidade de dados que o processo \master recebe dos \slaves, também em \textit{megabytes}; \textbf{(vi)} a potência média durante a execução da aplicação, em \textit{watts}; e \textbf{(vii)} o consumo de energia durante a execução da aplicação, em \textit{joules}.
+Este capítulo apresenta o estudo empírico sobre os resultados obtidos nas execuções de cada \kernel em cada versão do \capb, comparando-os através de métricas definidas para as duas versões. Dentre as variáveis medidas, são comparadas: \textbf{(i)} o tempo de execução de cada \CC em segundos; \textbf{(ii)} o tempo de execução do processo \master em segundos, excluindo o tempo de envio e recebimento de dados e o tempo em que este se encontra bloqueado; \textbf{(iii)} o tempo gasto durante a transferência de dados entre os processos \master e \slave, também em segundos, incluindo o tempo de sincronização de envio e recebimento de dados, no caso da \IPC; \textbf{(iv)} a quantidade de dados que o processo \master envia para os \slaves, em \textit{megabytes}; \textbf{(v)} a quantidade de dados que o processo \master recebe dos \slaves, também em \textit{megabytes}; \textbf{(vi)} a potência média durante a execução da aplicação, em \textit{watts}; e \textbf{(vii)} o consumo de energia durante a execução da aplicação, em \textit{joules}.
 
-As aplicações foram executadas com as classes de tamanho \textit{tiny}, \textit{small}, \textit{standard}, \textit{large} e \textit{huge}. Para cada classe, variou-se o número de \clusters de computação entre 1, 2, 4, 8 e 16. Além disso, 5 repetições foram realizadas para cada uma dessas variações. Como o \mppa possui características intrínsecas que garantem baixa variabilidade entre as execuções, somente 5 repetições foram suficientes para garantir um desvio padrão relativo menor que 1\% nas métricas de tempo e energia. Todos os experimentos consideram 16 núcleos de processamento ativos por \cluster utilizado. Por fim, as medições de energia foram coletadas através de sensores de energia e potência espalhados nos diferentes componentes de \textit{hardware} do processador, considerando todos os \clusters, os subsistemas de \IO, a \NoC e a memória.
+As aplicações foram executadas com as classes de tamanho \textit{tiny}, \textit{small}, \textit{standard}, \textit{large} e \textit{huge}. Para cada classe, variou-se o número de \clusters de computação entre 1, 2, 4, 8 e 16. Além disso, 5 repetições foram realizadas para cada uma dessas variações. Assim, os resultados de cada métrica são sempre a média dessas execuções. Como o \mppa possui características intrínsecas que garantem baixa variabilidade entre as execuções, somente 5 repetições foram suficientes para garantir um desvio padrão relativo menor que 1\% nas métricas de tempo de execução e energia. Todos os experimentos consideram 16 núcleos de processamento ativos por \cluster utilizado. Por fim, as medições de energia foram coletadas através de sensores de energia e potência espalhados nos diferentes componentes de \textit{hardware} do processador, considerando todos os \clusters, os subsistemas de \IO, a \NoC e a memória.
+
+\begin{figure}[h]
+  \centering
+  \caption{Tempos de execução dos processos \slaves para cada aplicação.}
+  \label{fig:slavetime}
+  \includegraphics[width=.9\linewidth, keepaspectratio]{slave_time.pdf}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \caption{Tempos de execução do processo \master para cada aplicação.}
+  \label{fig:mastertime}
+  \includegraphics[width=.9\linewidth, keepaspectratio]{master_time.pdf}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \caption{Tempos de comunicação para cada aplicação.}
+  \label{fig:commtime}
+  \includegraphics[width=.9\linewidth, keepaspectratio]{comm_time.pdf}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \caption{Quantidade de dados que o processo \master envia aos \slaves.}
+  \label{fig:datasent}
+  \includegraphics[width=.9\linewidth, keepaspectratio]{data_sent.pdf}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \caption{Quantidade de dados que o processo \master recebe dos \slaves.}
+  \label{fig:datareceived}
+  \includegraphics[width=.9\linewidth, keepaspectratio]{data_received.pdf}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \caption{Potência média durante a execução de cada aplicação.}
+  \label{fig:avgpower}
+  \includegraphics[width=.9\linewidth, keepaspectratio]{avg_power.pdf}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \caption{Gasto energético de cada aplicação.}
+  \label{fig:energy}
+  \includegraphics[width=.9\linewidth, keepaspectratio]{energy.pdf}
+\end{figure}
+
 
 \chapter{Conclusão}
 \label{ch:conclusao}
