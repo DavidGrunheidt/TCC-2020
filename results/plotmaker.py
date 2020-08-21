@@ -77,7 +77,7 @@ def create_plot(async_groups: list, ipc_groups: list, kernel: str, labels: list,
 	fig.savefig(file_name, bbox_inches='tight', dpi=1000)
 
 def print_improvement(async_plots: list, ipc_plots: list, kernel: str):
-	imp = kernel + '='
+	imp = kernel + ' & '
 
 	best_improve = float("inf")
 	best_improve_async_result = 0
@@ -110,10 +110,66 @@ def print_improvement(async_plots: list, ipc_plots: list, kernel: str):
 	worst_improve = round((1 - worst_improve) * 100, 2)
 	best_improve = round((1 - best_improve) * 100, 2)
 
-	worst_improve_str = '(' + str(worst_improve_ipc_result) + ' -> ' + str(worst_improve_async_result) + ', ' + str(worst_improve) + ' [' + str(worst_improve_index) + '])'
-	best_improve_str = '(' + str(best_improve_ipc_result) + ' -> ' + str(best_improve_async_result) + ', ' + str(best_improve) + ' [' + str(best_improve_index) + '])'
+	def get_improved_iteration(is_km: bool, index: int):
+		tiny = range(0, 5)
+		small = range(5, 10)
+		standard = range(10, 15)
+		large = range(15,20)
+		large_km = range(15, 19)
+		huge = range(20, 25)
+		huge_km = range(19, 23)
 
-	imp += 'Worst improve = ' + worst_improve_str + ' || Best Improve = ' + str(best_improve_str) + '\n'
+		imp_class = ""
+		nclusters = 0
+
+		def get_nclusters(class_size: str, is_km: bool, index: int):
+			if (is_km and class_size in ["Large", "Huge"]):
+				if (class_size == "Large"):
+					return ["2", "4", "8", "16"][(index-15) % 4]
+				else:
+					return ["4", "8", "16"][(index-19) % 3]				
+			else:
+				return ["1", "2", "4", "8", "16"][index % 5]
+
+
+		if (index in tiny):
+			imp_class = "Tiny"
+			nclusters = get_nclusters(imp_class, False, index)
+
+		elif (index in small):
+			imp_class = "Small"
+			nclusters = get_nclusters(imp_class, False, index)
+
+		elif (index in standard):
+			imp_class = "Standard"
+			nclusters = get_nclusters(imp_class, False, index)
+
+		elif (not is_km and index in large):
+			imp_class = "Large"
+			nclusters = get_nclusters(imp_class, False, index)
+
+		elif (index in large_km):
+			imp_class = "Large"
+			nclusters = get_nclusters(imp_class, True, index)
+
+		elif (not is_km and index in huge):
+			imp_class = "Huge"
+			nclusters = get_nclusters(imp_class, False, index)
+
+		elif (index in huge_km):
+			imp_class = "Huge"
+			nclusters = get_nclusters(imp_class, True, index)
+
+		return imp_class, nclusters
+
+	worst_class, worst_nclusters = get_improved_iteration(kernel == "KM", worst_improve_index)
+
+	best_class, best_nclusters = get_improved_iteration(kernel == "KM", best_improve_index)
+
+	worst_improve_str = worst_class + ' & ' + worst_nclusters + ' & ' + str(worst_improve_ipc_result) + ' & ' + str(worst_improve_async_result) + ' & ' + str(worst_improve)
+	best_improve_str = best_class + ' & ' + best_nclusters + ' & ' + str(best_improve_ipc_result) + ' & ' + str(best_improve_async_result) + ' & ' + str(best_improve)
+
+	imp += worst_improve_str + ' & ' + str(best_improve_str) + '\n'
 
 	print(imp)
 
@@ -124,7 +180,7 @@ def main():
 
 	clusters_variations = 5
 	classes_variations = 5
-	column_index = 3
+	column_index = 13
 
 	show_improvement = True
 

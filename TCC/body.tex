@@ -504,10 +504,9 @@ Por último, as tabelas deste capítulo exibem a redução ou aumento de determi
 \section{Análise do Resultado das Métricas de Tempo}
 \label{sec:metricastempo}
 
-
 \begin{table}[h]
 \centering
-\caption{Reduções minima e máxima ao comparar-se os tempos dos processos \slaves.}
+\caption{Reduções ao comparar-se os tempos dos processos \slaves.}
 \label{tab:slavetable}
 \scalebox{0.6}{
 \begin{tabular}{l c c c c c c c c c l}
@@ -517,12 +516,12 @@ App & \multicolumn{5}{c}{Redução Mínima} & \multicolumn{5}{c}{Reduçã Máxim
 
 & Classe & NClusters & IPC(s) & ASYNC(s) & Redução(\%) & Classe & NClusters & IPC(s) & ASYNC(s) & Redução(\%)\\\midrule
 
-FAST  & Tiny  & 8  & 0.72     & 0.05    & 93.06 & Tiny     & 16 & 0.36    & 0.02   & 94.44  \\
-FN    & Huge  & 2  & 34412.07 & 1952.39 & 94.33 & Small    & 16 & 267.9   & 15.14  & 94.35  \\
-GF    & Tiny  & 4  & 1.38     & 0.09    & 93.48 & Tiny     & 8  & 0.69    & 0.04   & 94.2   \\
-IS    & Tiny  & 8  & 1.82     & 0.78    & 57.14 & Huge     & 1  & 282.06  & 115.03 & 59.22  \\
-KM    & Tiny  & 16 & 2.86     & 0.19    & 93.36 & Standard & 1  & 1427.49 & 91.55  & 93.59  \\
-LU    & Tiny  & 2  & 0.28     & 0.78    & 57.14 & Huge     & 2  & 40.15   & 9.02   & 77.53  \\ 
+FAST & Tiny & 8 & 0.72 & 0.05 & 93.06 & Tiny & 16 & 0.36 & 0.02 & 94.44 \\
+FN & Huge & 1 & 34412.07 & 1952.39 & 94.33 & Small & 16 & 267.9 & 15.14 & 94.35 \\
+GF & Tiny & 4 & 1.38 & 0.09 & 93.48 & Tiny & 8 & 0.69 & 0.04 & 94.2 \\ 
+IS & Tiny & 8 & 1.82 & 0.78 & 57.14 & Huge & 1 & 282.06 & 115.03 & 59.22 \\
+KM & Tiny & 16 & 2.86 & 0.19 & 93.36 & Standard & 1 & 1427.49 & 91.55 & 93.59 \\
+LU & Tiny & 2 & 0.28 & 0.09 & 67.86 & Huge & 2 & 40.15 & 9.02 & 77.53 \\
 
 \bottomrule
 \end{tabular}}
@@ -530,7 +529,7 @@ LU    & Tiny  & 2  & 0.28     & 0.78    & 57.14 & Huge     & 2  & 40.15   & 9.02
 
 \begin{table}[h]
 \centering
-\caption{Reduções minima e máxima ao comparar-se os tempos do processo \master.}
+\caption{Reduções ao comparar-se os tempos do processo \master.}
 \label{tab:mastertable}
 \scalebox{0.6}{
 \begin{tabular}{l c c c c c c c c c l}
@@ -540,12 +539,10 @@ App & \multicolumn{5}{c}{Redução Mínima} & \multicolumn{5}{c}{Reduçã Máxim
 
 & Classe & NClusters & IPC(s) & ASYNC(s) & Redução(\%) & Classe & NClusters & IPC(s) & ASYNC(s) & Redução(\%)\\\midrule
 
-FAST  & Tiny  & 8  & 0.72     & 0.05    & 93.06 & Tiny     & 16 & 0.36    & 0.02   & 94.44  \\
-FN    & Huge  & 2  & 34412.07 & 1952.39 & 94.33 & Small    & 16 & 267.9   & 15.14  & 94.35  \\
-GF    & Tiny  & 4  & 1.38     & 0.09    & 93.48 & Tiny     & 8  & 0.69    & 0.04   & 94.2   \\
-IS    & Tiny  & 8  & 1.82     & 0.78    & 57.14 & Huge     & 1  & 282.06  & 115.03 & 59.22  \\
-KM    & Tiny  & 16 & 2.86     & 0.19    & 93.36 & Standard & 1  & 1427.49 & 91.55  & 93.59  \\
-LU    & Tiny  & 2  & 0.28     & 0.78    & 57.14 & Huge     & 2  & 40.15   & 9.02   & 77.53  \\ 
+FN & Tiny & 1 & 0.14 & 0.08 & 42.86 & Huge & 1 & 118.54 & 35.32 & 70.2 \\
+IS & Standard & 1 & 12.27 & 10.96 & 10.68 & Huge & 8 & 56.72 & 46.5 & 18.02 \\
+KM & Tiny & 1 & 0.01 & 0.01 & 0.0 & Tiny & 4 & 0.02 & 0.01 & 50.0 \\
+LU & Huge & 2 & 0.66 & 0.85 & -28.79 & Tiny & 2 & 0.02 & 0.02 & 0.0 \\
 
 \bottomrule
 \end{tabular}}
@@ -553,7 +550,7 @@ LU    & Tiny  & 2  & 0.28     & 0.78    & 57.14 & Huge     & 2  & 40.15   & 9.02
 
 \begin{table}[h]
 \centering
-\caption{Reduções minima e máxima ao comparar-se os tempos de comunicação.}
+\caption{Reduções ao comparar-se os tempos de comunicação.}
 \label{tab:commtable}
 \scalebox{0.6}{
 \begin{tabular}{l c c c c c c c c c l}
@@ -563,12 +560,12 @@ App & \multicolumn{5}{c}{Redução Mínima} & \multicolumn{5}{c}{Reduçã Máxim
 
 & Classe & NClusters & IPC(s) & ASYNC(s) & Redução(\%) & Classe & NClusters & IPC(s) & ASYNC(s) & Redução(\%)\\\midrule
 
-FAST  & Tiny  & 8  & 0.72     & 0.05    & 93.06 & Tiny     & 16 & 0.36    & 0.02   & 94.44  \\
-FN    & Huge  & 2  & 34412.07 & 1952.39 & 94.33 & Small    & 16 & 267.9   & 15.14  & 94.35  \\
-GF    & Tiny  & 4  & 1.38     & 0.09    & 93.48 & Tiny     & 8  & 0.69    & 0.04   & 94.2   \\
-IS    & Tiny  & 8  & 1.82     & 0.78    & 57.14 & Huge     & 1  & 282.06  & 115.03 & 59.22  \\
-KM    & Tiny  & 16 & 2.86     & 0.19    & 93.36 & Standard & 1  & 1427.49 & 91.55  & 93.59  \\
-LU    & Tiny  & 2  & 0.28     & 0.78    & 57.14 & Huge     & 2  & 40.15   & 9.02   & 77.53  \\ 
+FAST & Tiny & 16 & 1.44 & 1.16 & 19.44 & Huge & 8 & 109.55 & 1.25 & 98.86 \\
+FN & Huge & 1 & 34412.4 & 976.35 & 97.16 & Huge & 16 & 2159.8 & 7.34 & 99.66 \\
+GF & Tiny & 16 & 1.31 & 1.1 & 16.03 & Huge & 4 & 1162.81 & 20.57 & 98.23 \\ 
+IS & Tiny & 16 & 1.14 & 3.57 & -213.16 & Huge & 1 & 286.46 & 80.34 & 71.95 \\
+KM & Tiny & 16 & 3.82 & 1.11 & 70.94 & Huge & 16 & 670.86 & 4.28 & 99.36 \\
+LU & Tiny & 16 & 7.22 & 1.36 & 81.16 & Large & 8 & 193.78 & 6.2 & 96.8 \\
 
 \bottomrule
 \end{tabular}}
@@ -595,8 +592,54 @@ LU    & Tiny  & 2  & 0.28     & 0.78    & 57.14 & Huge     & 2  & 40.15   & 9.02
   \includegraphics[width=.9\linewidth, keepaspectratio]{comm_time.pdf}
 \end{figure}
 
-% \section{Análise do Resultado das Métricas de Envio e Recebimento de Dados}
-% \label{sec:metricasdados}
+\section{Análise do Resultado das Métricas de Envio e Recebimento de Dados}
+\label{sec:metricasdados}
+
+\begin{table}[h]
+\centering
+\caption{Reduções ao comparar-se a quantidade de dados que o processo \master envia.}
+\label{tab:datasenttable}
+\scalebox{0.6}{
+\begin{tabular}{l c c c c c c c c c l}
+App & \multicolumn{5}{c}{Redução Mínima} & \multicolumn{5}{c}{Reduçã Máxima}
+
+\\\cmidrule(lr){2-6}\cmidrule(lr){7-11}
+
+& Classe & NClusters & IPC(MB) & ASYNC(MB) & Redução(\%) & Classe & NClusters & IPC(MB) & ASYNC(MB) & Redução(\%)\\\midrule
+
+FAST & Tiny & 1 & 4.18 & 4.0 & 4.31 & Huge & 1 & 899.93 & 576.0 & 36.0 \\
+FN & Tiny & 1 & 0.05 & 0.05 & 0.0 & Tiny & 2 & 0.05 & 0.05 & 0.0 \\ 
+GF & Tiny & 1 & 4.09 & 4.0 & 2.2 & Huge & 16 & 1080.81 & 1024.0 & 5.26 \\
+IS & Tiny & 1 & 32.0 & 32.0 & 0.0 & Tiny & 2 & 32.0 & 32.0 & 0.0 \\ 
+KM & Small & 8 & 5.53 & 5.88 & -6.33 & Large & 2 & 5.88 & 6.23 & -5.95 \\ 
+LU & Large & 1 & 1102.09 & 2730.66 & -147.77 & Huge & 1 & 1494.77 & 853.33 & 42.91 \\
+
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Reduções ao comparar-se a quantidade de dados que o processo \master recebe.}
+\label{tab:datareceivedtable}
+\scalebox{0.6}{
+\begin{tabular}{l c c c c c c c c c l}
+App & \multicolumn{5}{c}{Redução Mínima} & \multicolumn{5}{c}{Reduçã Máxima}
+
+\\\cmidrule(lr){2-6}\cmidrule(lr){7-11}
+
+& Classe & NClusters & IPC(MB) & ASYNC(MB) & Redução(\%) & Classe & NClusters & IPC(MB) & ASYNC(MB) & Redução(\%)\\\midrule
+
+FAST & Huge & 1 & 576.0 & 899.93 & -56.24 & Tiny & 2 & 4.0 & 4.18 & -4.5 \\ 
+FN & Tiny & 1 & 0.05 & 0.05 & 0.0 & Tiny & 2 & 0.05 & 0.05 & 0.0 \\
+GF & Huge & 16 & 1024.0 & 1080.79 & -5.55 & Small & 1 & 16.0 & 16.38 & -2.37 \\ 
+IS & Tiny & 1 & 32.0 & 32.01 & -0.03 & Huge & 1 & 512.0 & 512.03 & -0.01 \\
+KM & Tiny & 1 & 0.3 & 0.83 & -176.67 & Standard & 16 & 35.13 & 69.19 & -96.95 \\ 
+LU & Large & 1 & 1365.34 & 2996.33 & -119.46 & Tiny & 2 & 170.67 & 171.98 & -0.77 \\
+
+\bottomrule
+\end{tabular}}
+\end{table}
 
 \begin{figure}[h]
   \centering
@@ -612,8 +655,54 @@ LU    & Tiny  & 2  & 0.28     & 0.78    & 57.14 & Huge     & 2  & 40.15   & 9.02
   \includegraphics[width=.9\linewidth, keepaspectratio]{data_received.pdf}
 \end{figure}
 
-% \section{Análise do Resultado das Métricas de Energia}
-% \label{sec:metricasenergia}
+\section{Análise do Resultado das Métricas de Energia}
+\label{sec:metricasenergia}
+
+\begin{table}[h]
+\centering
+\caption{Reduções ao comparar-se a potência média durante execução.}
+\label{tab:datareceivedtable}
+\scalebox{0.6}{
+\begin{tabular}{l c c c c c c c c c l}
+App & \multicolumn{5}{c}{Redução Mínima} & \multicolumn{5}{c}{Reduçã Máxima}
+
+\\\cmidrule(lr){2-6}\cmidrule(lr){7-11}
+
+& Classe & NClusters & IPC(W) & ASYNC(W) & Redução(\%) & Classe & NClusters & IPC(W) & ASYNC(W) & Redução(\%)\\\midrule
+
+FAST & Small & 16 & 4.52 & 5.14 & -13.72 & Small & 1 & 4.27 & 4.11 & 3.75 \\
+FN & Large & 16 & 4.79 & 10.25 & -113.99 & Huge & 1 & 4.28 & 4.76 & -11.21 \\
+GF & Huge & 16 & 4.84 & 5.91 & -22.11 & Small & 1 & 4.27 & 4.17 & 2.34 \\
+IS & Large & 16 & 4.48 & 5.99 & -33.71 & Large & 1 & 4.28 & 4.41 & -3.04 \\
+KM & Huge & 16 & 4.82 & 11.21 & -132.57 & Small & 1 & 4.25 & 4.71 & -10.82 \\
+LU & Huge & 16 & 4.42 & 6.05 & -36.88 & Small & 1 & 4.23 & 4.09 & 3.31 \\
+
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Reduções ao comparar-se o gasto energético total.}
+\label{tab:datareceivedtable}
+\scalebox{0.6}{
+\begin{tabular}{l c c c c c c c c c l}
+App & \multicolumn{5}{c}{Redução Mínima} & \multicolumn{5}{c}{Reduçã Máxima}
+
+\\\cmidrule(lr){2-6}\cmidrule(lr){7-11}
+
+& Classe & NClusters & IPC(J) & ASYNC(J) & Redução(\%) & Classe & NClusters & IPC(J) & ASYNC(J) & Redução(\%)\\\midrule
+
+FAST & Tiny & 16 & 38.79 & 43.92 & -13.23 & Huge & 1 & 3759.55 & 456.35 & 87.86 \\
+FN & Tiny & 16 & 666.97 & 129.65 & 80.56 & Standard & 1 & 36549.92 & 2325.1 & 93.64 \\
+GF & Tiny & 16 & 38.4 & 44.64 & -16.25 & Huge & 1 & 20504.65 & 1783.83 & 91.3 \\
+IS & Tiny & 16 & 52.2 & 68.02 & -30.31 & Large & 1 & 751.9 & 395.02 & 47.46 \\
+KM & Tiny & 16 & 47.55 & 46.21 & 2.82 & Standard & 1 & 6131.17 & 460.56 & 92.49 \\
+LU & Tiny & 16 & 64.68 & 44.14 & 31.76 & Huge & 8 & 1535.77 & 103.8 & 93.24 \\
+
+\bottomrule
+\end{tabular}}
+\end{table}
 
 \begin{figure}[h]
   \centering
