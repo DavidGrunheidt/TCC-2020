@@ -497,6 +497,83 @@ Este capítulo apresenta o estudo empírico sobre os resultados obtidos nas exec
 
 As aplicações foram executadas com as classes de tamanho \textit{tiny}, \textit{small}, \textit{standard}, \textit{large} e \textit{huge}. Para cada classe, variou-se o número de \clusters de computação entre 1, 2, 4, 8 e 16. Além disso, 5 repetições foram realizadas para cada uma dessas variações. Assim, os resultados de cada métrica são sempre a média dessas execuções. Como o \mppa possui características intrínsecas que garantem baixa variabilidade entre as execuções, somente 5 repetições foram suficientes para garantir um desvio padrão relativo menor que 1\% nas métricas de tempo de execução e energia. Todos os experimentos consideram 16 núcleos de processamento ativos por \cluster utilizado. Por fim, as medições de energia foram coletadas através de sensores de energia e potência espalhados nos diferentes componentes de \textit{hardware} do processador, considerando todos os \clusters, os subsistemas de \IO, a \NoC e a memória.
 
+Cada gráfico mostrado neste capítulo compara determinada métrica de uma aplicação que usa a \API \ASYNC \textit{versus} esta mesma aplicação usando a \API \IPC. Essa comparação é então estendida para cada variação do número de \clusters e para cada variação da classe de tamanho do problema. Para a aplicação \KM, a classe \textit{large} não foi executada com 1 \cluster e a classe \textit{huge} não foi executada com 1 e 2 \clusters, pois segundo a lógica da aplicação, não é possível distribuir o trabalho para os \clusters nesse contexto, já que a memória destes não suporta o tamanho da tarefa que seria enviada em uma certa iteração. Devido ao grande intervalo entre os valores mínimo e máximo de quase todos os gráficos, adotou-se nestes uma escala em potência de 2 para melhor visualização dos resultados. Os gráficos que não possuem este problema utilizam uma escala linear.
+
+Por último, as tabelas deste capítulo exibem a redução ou aumento de determinada métrica através da fórmula \mathnormal{((Resultado \ASYNC / Resultado \IPC) - 1) * 100}, mostrando a porcentagem de redução dessa métrica na versão \ASYNC, caso positiva, ou de aumento, caso negativa. Desta maneira, as tabelas focam no melhor e pior resultado de redução, informando em qual variação ocorreu esse resultado, ou seja, em qual classe de problema e com quantos \clusters, disponibilizando também os resultados da medida na versão \IPC e \ASYNC que geraram essa porcentagem.
+
+\section{Análise do Resultado das Métricas de Tempo}
+\label{sec:metricastempo}
+
+
+\begin{table}[h]
+\centering
+\caption{Reduções minima e máxima ao comparar-se os tempos dos processos \slaves.}
+\label{tab:slavetable}
+\scalebox{0.6}{
+\begin{tabular}{l c c c c c c c c c l}
+App & \multicolumn{5}{c}{Redução Mínima} & \multicolumn{5}{c}{Reduçã Máxima}
+
+\\\cmidrule(lr){2-6}\cmidrule(lr){7-11}
+
+& Classe & NClusters & IPC(s) & ASYNC(s) & Redução(\%) & Classe & NClusters & IPC(s) & ASYNC(s) & Redução(\%)\\\midrule
+
+FAST  & Tiny  & 8  & 0.72     & 0.05    & 93.06 & Tiny     & 16 & 0.36    & 0.02   & 94.44  \\
+FN    & Huge  & 2  & 34412.07 & 1952.39 & 94.33 & Small    & 16 & 267.9   & 15.14  & 94.35  \\
+GF    & Tiny  & 4  & 1.38     & 0.09    & 93.48 & Tiny     & 8  & 0.69    & 0.04   & 94.2   \\
+IS    & Tiny  & 8  & 1.82     & 0.78    & 57.14 & Huge     & 1  & 282.06  & 115.03 & 59.22  \\
+KM    & Tiny  & 16 & 2.86     & 0.19    & 93.36 & Standard & 1  & 1427.49 & 91.55  & 93.59  \\
+LU    & Tiny  & 2  & 0.28     & 0.78    & 57.14 & Huge     & 2  & 40.15   & 9.02   & 77.53  \\ 
+
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Reduções minima e máxima ao comparar-se os tempos do processo \master.}
+\label{tab:mastertable}
+\scalebox{0.6}{
+\begin{tabular}{l c c c c c c c c c l}
+App & \multicolumn{5}{c}{Redução Mínima} & \multicolumn{5}{c}{Reduçã Máxima}
+
+\\\cmidrule(lr){2-6}\cmidrule(lr){7-11}
+
+& Classe & NClusters & IPC(s) & ASYNC(s) & Redução(\%) & Classe & NClusters & IPC(s) & ASYNC(s) & Redução(\%)\\\midrule
+
+FAST  & Tiny  & 8  & 0.72     & 0.05    & 93.06 & Tiny     & 16 & 0.36    & 0.02   & 94.44  \\
+FN    & Huge  & 2  & 34412.07 & 1952.39 & 94.33 & Small    & 16 & 267.9   & 15.14  & 94.35  \\
+GF    & Tiny  & 4  & 1.38     & 0.09    & 93.48 & Tiny     & 8  & 0.69    & 0.04   & 94.2   \\
+IS    & Tiny  & 8  & 1.82     & 0.78    & 57.14 & Huge     & 1  & 282.06  & 115.03 & 59.22  \\
+KM    & Tiny  & 16 & 2.86     & 0.19    & 93.36 & Standard & 1  & 1427.49 & 91.55  & 93.59  \\
+LU    & Tiny  & 2  & 0.28     & 0.78    & 57.14 & Huge     & 2  & 40.15   & 9.02   & 77.53  \\ 
+
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Reduções minima e máxima ao comparar-se os tempos de comunicação.}
+\label{tab:commtable}
+\scalebox{0.6}{
+\begin{tabular}{l c c c c c c c c c l}
+App & \multicolumn{5}{c}{Redução Mínima} & \multicolumn{5}{c}{Reduçã Máxima}
+
+\\\cmidrule(lr){2-6}\cmidrule(lr){7-11}
+
+& Classe & NClusters & IPC(s) & ASYNC(s) & Redução(\%) & Classe & NClusters & IPC(s) & ASYNC(s) & Redução(\%)\\\midrule
+
+FAST  & Tiny  & 8  & 0.72     & 0.05    & 93.06 & Tiny     & 16 & 0.36    & 0.02   & 94.44  \\
+FN    & Huge  & 2  & 34412.07 & 1952.39 & 94.33 & Small    & 16 & 267.9   & 15.14  & 94.35  \\
+GF    & Tiny  & 4  & 1.38     & 0.09    & 93.48 & Tiny     & 8  & 0.69    & 0.04   & 94.2   \\
+IS    & Tiny  & 8  & 1.82     & 0.78    & 57.14 & Huge     & 1  & 282.06  & 115.03 & 59.22  \\
+KM    & Tiny  & 16 & 2.86     & 0.19    & 93.36 & Standard & 1  & 1427.49 & 91.55  & 93.59  \\
+LU    & Tiny  & 2  & 0.28     & 0.78    & 57.14 & Huge     & 2  & 40.15   & 9.02   & 77.53  \\ 
+
+\bottomrule
+\end{tabular}}
+\end{table}
+
 \begin{figure}[h]
   \centering
   \caption{Tempos de execução dos processos \slaves para cada aplicação.}
@@ -518,6 +595,9 @@ As aplicações foram executadas com as classes de tamanho \textit{tiny}, \texti
   \includegraphics[width=.9\linewidth, keepaspectratio]{comm_time.pdf}
 \end{figure}
 
+% \section{Análise do Resultado das Métricas de Envio e Recebimento de Dados}
+% \label{sec:metricasdados}
+
 \begin{figure}[h]
   \centering
   \caption{Quantidade de dados que o processo \master envia aos \slaves.}
@@ -531,6 +611,9 @@ As aplicações foram executadas com as classes de tamanho \textit{tiny}, \texti
   \label{fig:datareceived}
   \includegraphics[width=.9\linewidth, keepaspectratio]{data_received.pdf}
 \end{figure}
+
+% \section{Análise do Resultado das Métricas de Energia}
+% \label{sec:metricasenergia}
 
 \begin{figure}[h]
   \centering

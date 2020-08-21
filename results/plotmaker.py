@@ -76,6 +76,46 @@ def create_plot(async_groups: list, ipc_groups: list, kernel: str, labels: list,
 	fig.tight_layout()
 	fig.savefig(file_name, bbox_inches='tight', dpi=1000)
 
+def print_improvement(async_plots: list, ipc_plots: list, kernel: str):
+	imp = kernel + '='
+
+	best_improve = float("inf")
+	best_improve_async_result = 0
+	best_improve_ipc_result = 0
+	best_improve_index = 0
+
+	worst_improve = 0
+	worst_improve_async_result = 0
+	worst_improve_ipc_result = 0
+	worst_improve_index = 0
+
+	for index in range(len(async_plots)):
+		async_result = async_plots[index]
+		ipc_result = ipc_plots[index]
+
+		improve = async_result / ipc_result
+
+		if (improve > worst_improve):
+			worst_improve = improve
+			worst_improve_ipc_result = ipc_result
+			worst_improve_async_result = async_result
+			worst_improve_index = index
+
+		elif (improve < best_improve):
+			best_improve = improve
+			best_improve_ipc_result = ipc_result
+			best_improve_async_result = async_result
+			best_improve_index = index
+
+	worst_improve = round((1 - worst_improve) * 100, 2)
+	best_improve = round((1 - best_improve) * 100, 2)
+
+	worst_improve_str = '(' + str(worst_improve_ipc_result) + ' -> ' + str(worst_improve_async_result) + ', ' + str(worst_improve) + ' [' + str(worst_improve_index) + '])'
+	best_improve_str = '(' + str(best_improve_ipc_result) + ' -> ' + str(best_improve_async_result) + ', ' + str(best_improve) + ' [' + str(best_improve_index) + '])'
+
+	imp += 'Worst improve = ' + worst_improve_str + ' || Best Improve = ' + str(best_improve_str) + '\n'
+
+	print(imp)
 
 def main():
 	colum_labels = ['kernel','class','nclusters','master','master_std','slave','slave_std','comm','comm_std','data_sent','data_received', 'power', 'power_std', 'energy', 'energy_std']
@@ -84,7 +124,9 @@ def main():
 
 	clusters_variations = 5
 	classes_variations = 5
-	column_index = 13
+	column_index = 3
+
+	show_improvement = True
 
 	data = get_data('ipc_stats.csv', 'async_stats.csv', column_index)
 
@@ -94,6 +136,12 @@ def main():
 
 		async_plots = kernel[0]
 		ipc_plots = kernel[1]
+
+		if (show_improvement):
+			if (column_index == 3 and kernel_index in [1, 2]):
+				continue
+			print_improvement(async_plots, ipc_plots, kernels[kernel_index])
+			continue
 
 		if (kernel_index == 3):
 			async_plots = async_plots[:15] + [0] + async_plots[15:19] + [0, 0] + async_plots[19:]
