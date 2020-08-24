@@ -1,0 +1,1 @@
+kernel [0];class [1];nclusters [2];master (s) [3];master relative stdev (%) [4];slave (s) [5];slave relative stdev (%) [6];comm (s) [7];comm relative stdev (%) [8];data sent (MB) [9];data received (MB) [10];power (W) [11];power relative stdev (%) [12];energy (J) [13];energy relative stdev (%) [14]

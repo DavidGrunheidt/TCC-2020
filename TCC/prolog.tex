@@ -63,14 +63,19 @@ São diversas as pesquisas que trazem como resultado um \textit{benchmark} capaz
 
 \section*{Desenvolvimento} 
 
-\section*{Resultados preliminares} 
+O desenvolvimento deste trabalho passou pela alteração de todas as aplicações do \capb, desde sua lógica de implementação, até o tipo de tecnologia utilizada. Ao início deste trabalho, todas as aplicações foram testadas, e em todas foram achados \textit{bugs} que comprometiam a corretude do resultado em relação ao que a aplicação significava. Assim, todas as aplicações foram testadas e corrigidas utilizando a API ASYNC, de modo a apresentar um resultado congruente com seu significado. Após isso, a lógica implementada na ASYNC foi portada para a versão que utiliza a IPC, tornando a biblioteca de comunicação a única diferença entre as versões.
+
+\section*{Resultados} 
+
+Os resultados mostraram diminuição em todas as métricas e em quase todos os contextos, ao se utilizar a API ASYNC. Com reduções de até 94.44 \% nos tempos de execução dos \textit{clusters} de computação, 70.2 \% nos tempos de execução dos processos \textit{master}, 99.66 \% nos tempos de comunicação e 93.64 \% no consumo de energia, a biblioteca de comunicação assíncrona mostra ser a melhor opção ao se pensar em \textit{Green Computing}. Em alguns cenários houve aumento na versão assíncrona do \capb, porém, a grande maioria destes foi nos cenários mais sensíveis, em que a escala dos resultados de certa métrica é extremamente pequena e pequenos fatores podem afetar grande parte do valor total desta variável. Além disso, são mostradas métricas de envio e recebimento de dados, a fim de mostrar similaridade entre as versões através da carga de trabalho destas.
 
 \section*{Conclusão}
+
+Diversos comportamentos característicos de cada biblioteca de comunicação foram observados ao se analisar todas as métricas definidas no capítulo de resultados. De todas as maneiras, a versão ASYNC mostrou-se superior a IPC em todas as métricas e quase todos os cenários. Assim, percebe-se que o uso de diretivas assíncronas em aplicações que rodam em processadores de arquiteturas \manycore, similares ao \mppa, seria um caminho interessante para a convergência ao \textit{Green Computing}.
 
 \vspace{\baselineskip}  % Atenção! manter igual ao resumo
 \textbf{Palavras-chave:} Benchmark. Manycore. Desempenho. Green-Computing.
 \end{resumo}
-
 
 \begin{abstract}
 Throughout the evolving process of \textit{single-core} processors, the main method to gain performance was to increase the processor \textit{clock} frequency, which led to the growing disproportion between energy consumption and increase in performance, making this method not viable anymore. This disproportion was then the barrier to the evolution of this class of processors. \textit{Multi-core} processors solutions, for example, supercomputers, also face a similar barrier nowadays when grouping this processors into \textit{clusters}, or grouping several \textit{cores} into a single \textit{chip}. Low consumption \manycore processors, for instance, the \mppa and the \epiphany, are arising to solve this problem. However, due to architectural characteristics, such as a limited and distributed memory, implementing applications that fully benefits from the hardware of a processor of this class is not an easy task. Yet, when a good implementation is done, it can outstand state-of-the-art processors, through lower energy consumption. This project proposes to the \capb, a \bench developed to evaluate both \mppa performance and energy consumption, optimizations to its applications and the implementation of a new version, using a new communication technology, based on asynchronous primitives, aiming to analyze the technologies used in each version. The results until now show that the applications that use the new technology have a better performance than the old ones. This is due, mainly, by the asynchronous characteristic of this library.
@@ -82,24 +87,8 @@ Throughout the evolving process of \textit{single-core} processors, the main met
 \listoffigures*  % O * evita que apareça no sumário
 \listoftables*
 \listoflistings*  
-\listofalgorithms*
 
 \listadesiglas*[5em]
-
-\begin{listadesimbolos}
-  $\gets$   & Atribuição \\
-  $\exists$   & Quantificação existencial \\
-  $\rightarrow$   & Implicação \\
-  $\wedge$   & E lógico \\
-  $\vee$   & Ou lógico \\
-  $\neg$   & Negação lógica \\
-  $\mapsto$   & Mapeia para \\
-  $\sqsubseteq$   & Subclasse (em ontologias) \\
-  $\subseteq$   & Subconjunto: $\forall x\;.\; x \in A \rightarrow x \in B$ \\
-  $\langle\ldots\rangle$ & Tupla \\
-  $\forall$   & Quantificação universal \\
-  mmmmm & Nenhum sentido, apenas estou aqui para demonstrar a largura máxima dessas colunas. Ao abrir o ambiente \texttt{listadesimbolos}, pode-se fornecer um argumento opcional indicando a largura da coluna da esquerda (o default é de 5em): \texttt{\textbackslash{}begin\{listadesimbolos\}[2cm] .... \textbackslash{}end\{listadesimbolos\}} \\
-\end{listadesimbolos}
 
 \tableofcontents*%
 

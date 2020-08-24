@@ -180,9 +180,9 @@ def main():
 
 	clusters_variations = 5
 	classes_variations = 5
-	column_index = 13
+	column_index = 10
 
-	show_improvement = True
+	show_improvement = False
 
 	data = get_data('ipc_stats.csv', 'async_stats.csv', column_index)
 

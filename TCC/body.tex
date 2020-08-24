@@ -117,8 +117,6 @@ Multiprocessadores são também classificados em dois tipos, de acordo com a vel
 
 A arquitetura mais simples de um multiprocessador \UMA, exemplificada na Figura \ref{fig:umasimples}, envolve um único barramento conectando duas ou mais \CPUs a um módulo de memória, permitindo que todas as \CPUs realizem operações de leitura e escrita neste módulo. Quando uma \CPU necessita ler alguma palavra da memória, primeiramente ela verifica se o barramento está ocupado. Caso não, informa à memória, através do barramento, qual endereço deseja obter o valor, aguardando o recebimento deste pelo mesmo barramento. Caso esteja, a \CPU aguarda a liberação do barramento. Para uma pequena quantidade de \CPUs, o tempo de espera médio para o acesso ao barramento tende a ser pequeno e tolerável. Porém, quando elevam-se em algumas dezenas o número de \CPUs observa-se o principal problema deste exemplo de arquitetura \UMA: a ociosidade, por muito tempo, de grande parte das \CPUs, enquanto aguardam pelo acesso ao barramento.
 
-
-
 \begin{figure}[tb]
   \centering
   \caption{Diferentes esquemas possiveis de um multiprocessador UMA baseado em barramento.}
@@ -493,16 +491,18 @@ Com a adição da \API \ASYNC, criou-se um segmento sobre o \textit{array} que a
 \chapter{Resultados}
 \label{ch:resultados}
 
-Este capítulo apresenta o estudo empírico sobre os resultados obtidos nas execuções de cada \kernel em cada versão do \capb, comparando-os através de métricas definidas para as duas versões. Dentre as variáveis medidas, são comparadas: \textbf{(i)} o tempo de execução de cada \CC em segundos; \textbf{(ii)} o tempo de execução do processo \master em segundos, excluindo o tempo de envio e recebimento de dados e o tempo em que este se encontra bloqueado; \textbf{(iii)} o tempo gasto durante a transferência de dados entre os processos \master e \slave, também em segundos, incluindo o tempo de sincronização de envio e recebimento de dados, no caso da \IPC; \textbf{(iv)} a quantidade de dados que o processo \master envia para os \slaves, em \textit{megabytes}; \textbf{(v)} a quantidade de dados que o processo \master recebe dos \slaves, também em \textit{megabytes}; \textbf{(vi)} a potência média durante a execução da aplicação, em \textit{watts}; e \textbf{(vii)} o consumo de energia durante a execução da aplicação, em \textit{joules}.
+Este capítulo apresenta os resultados obtidos nas execuções de cada \kernel em cada versão do \capb, comparando-os através de métricas definidas para as duas versões. Dentre as variáveis medidas, são comparadas: \textbf{(i)} o tempo de execução de cada \CC em segundos; \textbf{(ii)} o tempo de execução do processo \master em segundos, excluindo o tempo de envio e recebimento de dados e o tempo em que este se encontra bloqueado; \textbf{(iii)} o tempo gasto durante a transferência de dados entre os processos \master e \slave, também em segundos, incluindo o tempo de sincronização de envio e recebimento de dados, no caso da \IPC, ou da sincronização por meio de barreiras, no caso da \ASYNC; \textbf{(iv)} a quantidade de dados que o processo \master envia para os \slaves, em \textit{megabytes}; \textbf{(v)} a quantidade de dados que o processo \master recebe dos \slaves, também em \textit{megabytes}; \textbf{(vi)} a potência média durante a execução da aplicação, em \textit{watts}; e \textbf{(vii)} o consumo de energia durante a execução da aplicação, em \textit{joules}.
 
-As aplicações foram executadas com as classes de tamanho \textit{tiny}, \textit{small}, \textit{standard}, \textit{large} e \textit{huge}. Para cada classe, variou-se o número de \clusters de computação entre 1, 2, 4, 8 e 16. Além disso, 5 repetições foram realizadas para cada uma dessas variações. Assim, os resultados de cada métrica são sempre a média dessas execuções. Como o \mppa possui características intrínsecas que garantem baixa variabilidade entre as execuções, somente 5 repetições foram suficientes para garantir um desvio padrão relativo menor que 1\% nas métricas de tempo de execução e energia. Todos os experimentos consideram 16 núcleos de processamento ativos por \cluster utilizado. Por fim, as medições de energia foram coletadas através de sensores de energia e potência espalhados nos diferentes componentes de \textit{hardware} do processador, considerando todos os \clusters, os subsistemas de \IO, a \NoC e a memória.
+As aplicações foram executadas com as classes de tamanho \textit{tiny}, \textit{small}, \textit{standard}, \textit{large} e \textit{huge}. Para cada classe, variou-se o número de \clusters de computação entre 1, 2, 4, 8 e 16. Além disso, 5 repetições foram realizadas para cada uma dessas variações. Assim, os resultados de cada métrica são sempre a média dessas execuções. Como o \mppa possui características intrínsecas que garantem baixa variabilidade entre as execuções, somente 5 repetições foram suficientes para garantir um desvio padrão relativo menor que 1\% nas métricas de tempo de execução e energia. Todos os experimentos consideram 16 núcleos de processamento ativos por \cluster utilizado. As medições de energia foram coletadas através de sensores de energia e potência espalhados nos diferentes componentes de \textit{hardware} do processador, considerando todos os \clusters, os subsistemas de \IO, a \NoC e a memória. Por fim, ambas versões foram executadas com a \textit{flag} de otimização \texttt{-O3} do GCC.
 
 Cada gráfico mostrado neste capítulo compara determinada métrica de uma aplicação que usa a \API \ASYNC \textit{versus} esta mesma aplicação usando a \API \IPC. Essa comparação é então estendida para cada variação do número de \clusters e para cada variação da classe de tamanho do problema. Para a aplicação \KM, a classe \textit{large} não foi executada com 1 \cluster e a classe \textit{huge} não foi executada com 1 e 2 \clusters, pois segundo a lógica da aplicação, não é possível distribuir o trabalho para os \clusters nesse contexto, já que a memória destes não suporta o tamanho da tarefa que seria enviada em uma certa iteração. Devido ao grande intervalo entre os valores mínimo e máximo de quase todos os gráficos, adotou-se nestes uma escala em potência de 2 para melhor visualização dos resultados. Os gráficos que não possuem este problema utilizam uma escala linear.
 
 Por último, as tabelas deste capítulo exibem a redução ou aumento de determinada métrica através da fórmula \mathnormal{((Resultado \ASYNC / Resultado \IPC) - 1) * 100}, mostrando a porcentagem de redução dessa métrica na versão \ASYNC, caso positiva, ou de aumento, caso negativa. Desta maneira, as tabelas focam no melhor e pior resultado de redução, informando em qual variação ocorreu esse resultado, ou seja, em qual classe de problema e com quantos \clusters, disponibilizando também os resultados da medida na versão \IPC e \ASYNC que geraram essa porcentagem.
 
-\section{Análise do Resultado das Métricas de Tempo}
+\section{Resultado das Métricas de Tempo}
 \label{sec:metricastempo}
+
+As métricas de tempo mostram um resultado positivo quanto a otimização do \capb utilizando a \API \ASYNC. Para os tempos de execução dos \slaves, houve melhoria em todos os \kernels, com a porcentagem de redução variando entre 57.14 \% até 94.44 \%, conforme mostrado na Tabela \ref{tab:slavetable}. Além disso, essa tabela mostra uma grande consistência na porcentagem de redução de todas as variações de execução, já que a diferença entre a redução mínima e máxima é pequena para todos os \kernels. A Figura \ref{fig:slavetime} mostra os resultados dos tempos de execução dos \slaves.
 
 \begin{table}[h]
 \centering
@@ -527,6 +527,8 @@ LU & Tiny & 2 & 0.28 & 0.09 & 67.86 & Huge & 2 & 40.15 & 9.02 & 77.53 \\
 \end{tabular}}
 \end{table}
 
+Já para os tempos de execução do processo \master, houve melhoria em todos os \kernels com exceção do \LU, conforme mostrado na Tabela \ref{tab:mastertable}. A porcentagem de redução variou entre -28.79 \% até 70.2 \%. A variação no número de \clusters só afeta significativamente essa variável na aplicação \KM, visto que este é o único \kernel em que o peso de certas computações no processo \master é consideravelmente influenciado pelo número de \clusters. Além disso, as aplicações \KM e \LU tem uma pequena variação entre os resultados mínimo e máximo, conforme a Figura \ref{fig:mastertime}. Levando isso como argumento, pode-se considerar que esses 2 \kernels obtiveram resultados semelhantes em ambas as versões nessa variável, excluindo a possibilidade do aumento na \LU ser algo negativo, principalmente porque este mesmo \kernel obteve uma boa redução no tempo de execução dos \slaves, segundo a Tabela \ref{tab:slavetable}, e no tempo de comunicação, segundo a Tabela \ref{tab:commtable}. Os \kernels \FAST e \GF não são mostrados nem na tabela nem no gráfico dessa variável, já que ambos não executam computações no processo \master, tornando o resultado dessa variável igual a 0 para estes.
+
 \begin{table}[h]
 \centering
 \caption{Reduções ao comparar-se os tempos do processo \master.}
@@ -547,6 +549,8 @@ LU & Huge & 2 & 0.66 & 0.85 & -28.79 & Tiny & 2 & 0.02 & 0.02 & 0.0 \\
 \bottomrule
 \end{tabular}}
 \end{table}
+
+Por fim, os tempos de comunicação também melhoraram em todos os \kernels com exceção do \IS, o qual obteve aumento nessa variável em todas as classes de problemas ao executar com 8 e 16 \clusters. A Tabela \ref{tab:commtable} mostra que a porcentagem de redução dessa métrica variou entre -213.16 \% até 99.66 \%, porém, a Figura \ref{fig:commtime} mostra que houve melhorias nesse \kernel para todas as outras variações de \clusters. Os gráficos dessa figura mostram também que, diferentemente da \IPC, a \API \ASYNC é mais custosa conforme aumento no número de \clusters, mostrando uma tendência de parábola, a qual consegue ser reduzida até um certo número e, após este, cresce novamente. Conclui-se então que o maior número de \clusters é um fator relevante no tempo de comunicação da \API \ASYNC.
 
 \begin{table}[h]
 \centering
@@ -573,17 +577,19 @@ LU & Tiny & 16 & 7.22 & 1.36 & 81.16 & Large & 8 & 193.78 & 6.2 & 96.8 \\
 
 \begin{figure}[h]
   \centering
+  \caption{Tempos de execução do processo \master para cada aplicação.}
+  \label{fig:mastertime}
+  \includegraphics[width=.9\linewidth, keepaspectratio]{master_time.pdf}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
   \caption{Tempos de execução dos processos \slaves para cada aplicação.}
   \label{fig:slavetime}
   \includegraphics[width=.9\linewidth, keepaspectratio]{slave_time.pdf}
 \end{figure}
 
-\begin{figure}[h]
-  \centering
-  \caption{Tempos de execução do processo \master para cada aplicação.}
-  \label{fig:mastertime}
-  \includegraphics[width=.9\linewidth, keepaspectratio]{master_time.pdf}
-\end{figure}
+\clearpage
 
 \begin{figure}[h]
   \centering
@@ -592,54 +598,12 @@ LU & Tiny & 16 & 7.22 & 1.36 & 81.16 & Large & 8 & 193.78 & 6.2 & 96.8 \\
   \includegraphics[width=.9\linewidth, keepaspectratio]{comm_time.pdf}
 \end{figure}
 
-\section{Análise do Resultado das Métricas de Envio e Recebimento de Dados}
+\clearpage
+
+\section{Resultado das Métricas de Envio e Recebimento de Dados}
 \label{sec:metricasdados}
 
-\begin{table}[h]
-\centering
-\caption{Reduções ao comparar-se a quantidade de dados que o processo \master envia.}
-\label{tab:datasenttable}
-\scalebox{0.6}{
-\begin{tabular}{l c c c c c c c c c l}
-App & \multicolumn{5}{c}{Redução Mínima} & \multicolumn{5}{c}{Reduçã Máxima}
-
-\\\cmidrule(lr){2-6}\cmidrule(lr){7-11}
-
-& Classe & NClusters & IPC(MB) & ASYNC(MB) & Redução(\%) & Classe & NClusters & IPC(MB) & ASYNC(MB) & Redução(\%)\\\midrule
-
-FAST & Tiny & 1 & 4.18 & 4.0 & 4.31 & Huge & 1 & 899.93 & 576.0 & 36.0 \\
-FN & Tiny & 1 & 0.05 & 0.05 & 0.0 & Tiny & 2 & 0.05 & 0.05 & 0.0 \\ 
-GF & Tiny & 1 & 4.09 & 4.0 & 2.2 & Huge & 16 & 1080.81 & 1024.0 & 5.26 \\
-IS & Tiny & 1 & 32.0 & 32.0 & 0.0 & Tiny & 2 & 32.0 & 32.0 & 0.0 \\ 
-KM & Small & 8 & 5.53 & 5.88 & -6.33 & Large & 2 & 5.88 & 6.23 & -5.95 \\ 
-LU & Large & 1 & 1102.09 & 2730.66 & -147.77 & Huge & 1 & 1494.77 & 853.33 & 42.91 \\
-
-\bottomrule
-\end{tabular}}
-\end{table}
-
-\begin{table}[h]
-\centering
-\caption{Reduções ao comparar-se a quantidade de dados que o processo \master recebe.}
-\label{tab:datareceivedtable}
-\scalebox{0.6}{
-\begin{tabular}{l c c c c c c c c c l}
-App & \multicolumn{5}{c}{Redução Mínima} & \multicolumn{5}{c}{Reduçã Máxima}
-
-\\\cmidrule(lr){2-6}\cmidrule(lr){7-11}
-
-& Classe & NClusters & IPC(MB) & ASYNC(MB) & Redução(\%) & Classe & NClusters & IPC(MB) & ASYNC(MB) & Redução(\%)\\\midrule
-
-FAST & Huge & 1 & 576.0 & 899.93 & -56.24 & Tiny & 2 & 4.0 & 4.18 & -4.5 \\ 
-FN & Tiny & 1 & 0.05 & 0.05 & 0.0 & Tiny & 2 & 0.05 & 0.05 & 0.0 \\
-GF & Huge & 16 & 1024.0 & 1080.79 & -5.55 & Small & 1 & 16.0 & 16.38 & -2.37 \\ 
-IS & Tiny & 1 & 32.0 & 32.01 & -0.03 & Huge & 1 & 512.0 & 512.03 & -0.01 \\
-KM & Tiny & 1 & 0.3 & 0.83 & -176.67 & Standard & 16 & 35.13 & 69.19 & -96.95 \\ 
-LU & Large & 1 & 1365.34 & 2996.33 & -119.46 & Tiny & 2 & 170.67 & 171.98 & -0.77 \\
-
-\bottomrule
-\end{tabular}}
-\end{table}
+Um fator importante ao comparar-se a similaridade das aplicações em cada versão é a quantidade de dados trocados entre o \cluster de \IO e os \CCs. Nessa análise, os resultados das métricas de envio e recebimento de dados são mostrados somente via gráficos, na Figura \ref{fig:datasent} e \ref{fig:datareceived}, visto que estes já são suficientes para uma prova simplificada de que o peso de execução das aplicações é o mesmo para ambas as versões. Além disso, a tabela de redução mínima e máxima não faz sentido para a maioria das aplicações, já que nestas em todas as variações o resultado foi o mesmo, não havendo máximo ou mínimo.
 
 \begin{figure}[h]
   \centering
@@ -648,6 +612,10 @@ LU & Large & 1 & 1365.34 & 2996.33 & -119.46 & Tiny & 2 & 170.67 & 171.98 & -0.7
   \includegraphics[width=.9\linewidth, keepaspectratio]{data_sent.pdf}
 \end{figure}
 
+\clearpage
+
+Duas aplicações são exceções para o que foi afirmado no parágrafo anterior. A \KM obteve resultados com uma redução entre 6.67 \% e 48.51 \% para os dados enviados e entre -1.56 \% e 19.83 \% para os dados recebidos. Já a \LU obteve resultados iguais para todas as classes de problema exceto a \textit{large}, a qual teve uma redução de -100 \% nos dados enviados e -171.88 \% nos dados recebidos. Como as aplicações foram implementadas de modo semelhante em ambas versões, esses resultados são uma grande indicação de que, na versão \ASYNC dessas duas aplicações, pode existir \textit{bugs} em relação a medição dessa variável, mesmo não tendo sido encontrados após reanálise. Assim, tomam-se esses resultados como verdadeiros. Em conclusão, vale ressaltar a importância dessa métrica na busca por \textit{bugs} em futuras aplicações no \mppa.
+
 \begin{figure}[h]
   \centering
   \caption{Quantidade de dados que o processo \master recebe dos \slaves.}
@@ -655,13 +623,17 @@ LU & Large & 1 & 1365.34 & 2996.33 & -119.46 & Tiny & 2 & 170.67 & 171.98 & -0.7
   \includegraphics[width=.9\linewidth, keepaspectratio]{data_received.pdf}
 \end{figure}
 
-\section{Análise do Resultado das Métricas de Energia}
+\clearpage
+
+\section{Resultado das Métricas de Energia}
 \label{sec:metricasenergia}
+
+As métricas de energia confirmam o que foi observado na Seção \ref{sec:metricastempo} desta capitulo. Realmente a \API \ASYNC é mais custosa conforme o aumento no número de \clusters, contudo, a \IPC também apresenta esse comportamento. A Tabela \ref{tab:avgpower} mostra que a potência média de execução das aplicações é maior na grande maioria das variações, o que é confirmado pelo gráfico \ref{fig:avgpower}. A redução dessa variavel foi de -132.57 \% até 3.75 \%. De fato, a \ASYNC é mais custosa do que a \IPC nessa métrica pois aloca mais recursos do processador para gerenciar toda a abstração que proporciona.
 
 \begin{table}[h]
 \centering
 \caption{Reduções ao comparar-se a potência média durante execução.}
-\label{tab:datareceivedtable}
+\label{tab:avgpower}
 \scalebox{0.6}{
 \begin{tabular}{l c c c c c c c c c l}
 App & \multicolumn{5}{c}{Redução Mínima} & \multicolumn{5}{c}{Reduçã Máxima}
@@ -681,10 +653,12 @@ LU & Huge & 16 & 4.42 & 6.05 & -36.88 & Small & 1 & 4.23 & 4.09 & 3.31 \\
 \end{tabular}}
 \end{table}
 
+Mais importante que a potência média é o gasto energético total da aplicação. Apesar da biblioteca \ASYNC ser mais custosa em questão de potência, como ela otimiza consideravelmente o tempo de execução das aplicações, o gasto energético acaba por ser menor na grande maioria delas. A Tabela \ref{tab:energy} exibe as reduções dessa variável, as quais variaram entre -30.31 \% e 93.64 \% e a Figura \ref{fig:energy} mostra os resultados de todas as variações. Igualmente aos tempos de comunicação, os gráficos dessa métrica mostram uma tendência de parábola, a qual é regida pelo número de \clusters de determinada execução.
+
 \begin{table}[h]
 \centering
 \caption{Reduções ao comparar-se o gasto energético total.}
-\label{tab:datareceivedtable}
+\label{tab:energy}
 \scalebox{0.6}{
 \begin{tabular}{l c c c c c c c c c l}
 App & \multicolumn{5}{c}{Redução Mínima} & \multicolumn{5}{c}{Reduçã Máxima}
@@ -704,12 +678,16 @@ LU & Tiny & 16 & 64.68 & 44.14 & 31.76 & Huge & 8 & 1535.77 & 103.8 & 93.24 \\
 \end{tabular}}
 \end{table}
 
+É possível observar que o aumento dessa métrica na versão \ASYNC acontece em contextos mais sensíveis. A Tabela \ref{tab:energy} mostra que todas as reduções mínimas aconteceram com a classe \textit{Tiny} e 16 \clusters em execução, o que é esperado, pois é nessa variação em que, segundo a Figura \ref{fig:slavetime}, sempre ocorre o menor tempo de execução. Aliado a isso, é possível ver nos gráficos dessa variável que os \kernels \FAST e \GF só obtiveram reduções negativas onde, novamente na Figura \ref{fig:slavetime}, a escala de tempo é baixíssima. Nesse contexto, como a escala do gasto energético dessas duas aplicações, se comparada às demais, também é baixa, o custo de inicialização do ambiente \ASYNC pesa bastante no resultado final. Assim, considera-se que o pequeno aumento dessa métrica nestes 2 \kernels não é algo negativo, devido a sensibilidade do contexto em que ocorre. Quanto a aplicação \IS, não é possível fazer essa afirmação pois o aumento ocorre em escalas maiores também.
+
 \begin{figure}[h]
   \centering
   \caption{Potência média durante a execução de cada aplicação.}
   \label{fig:avgpower}
   \includegraphics[width=.9\linewidth, keepaspectratio]{avg_power.pdf}
 \end{figure}
+
+\clearpage
 
 \begin{figure}[h]
   \centering
@@ -718,162 +696,14 @@ LU & Tiny & 16 & 64.68 & 44.14 & 31.76 & Huge & 8 & 1535.77 & 103.8 & 93.24 \\
   \includegraphics[width=.9\linewidth, keepaspectratio]{energy.pdf}
 \end{figure}
 
-
 \chapter{Conclusão}
 \label{ch:conclusao}
 
-\index{bobagem} Primeiro parágrafo da seção com uma frase sem sentido que só serve para ocasionar uma quebra e de demonstrar a configuração de indentação da primeira linha. Essa frase está aqui pois parágrafos de uma linha são feios.
+Neste artigo foi proposto uma detalhada comparação entre duas \APIs de  comunicação entre \clusters feitas para o processador \mppa. A solução proposta passa por medir diferentes variáveis durante a execução das aplicações do \capb, a fim de compará-las, assim como comparar os resultados nos diferentes cenários que o \capb abrange.  Os resultados mostraram que a \API \ASYNC se sobressai em comparação com a \IPC na maioria dos cenários, ao levar em conta todas as métricas. Também foi possível observar comportamentos característicos de cada biblioteca, por exemplo, o peso maior que a \ASYNC exerce sobre a potência média ou a tendência das medições em gasto energético e tempos de comunicação formarem uma parábola em ambas as bibliotecas de comunicação, mostrando que o aumento no número de \clusters só influencia positivamente essas variáveis até certo ponto.
 
-Resultado do uso de siglas:
-\begin{itemize}
-\item Sigla que nunca expande: \API;
-\item Sigla normal, expande no primeiro uso: \DHT, mas não no segundo: \DHT;
-\item Siglas com plurais automaticos: \APIs e \DHTs;
-\item Plural não-trivial: \SQs;
-\item Forçando uma expansão (e no plural) \Glsfirstplural{DHT};
-\item Usando uma sigla cujo comando é diferente da sigla: \WTC.
-\end{itemize}
+De maneira geral, este trabalho mostra que diretivas assíncronas são, na maioria das vezes, a melhor escolha para projetos de execução paralela. Neste caminho e, associado a um processador de arquitetura voltada ao \textit{Green Computing}, os resultados mostram também que, caso feita de maneira correta, \APIs de comunicação assíncrona em processadores de arquitetura similar podem reduzir ainda o gasto energético de determinada aplicação, bastando somente uma implementação inteligente desta.
 
-Resultado do glossário:
-\begin{itemize}
-\item Dois termos, \polling e \proxy;
-\item Plural: \proxys.
-\end{itemize}
-
-Resultado de \mla|index|: primeiro um link normal \indexterm{tomate}, depois um capitalizado \indexTerm{tomate}.
-
-\begin{defn}
-  Exemplo de definição
-\end{defn}
-
-\begin{theorem}
-  Exemplo de teorema
-\end{theorem}
-
-\begin{theoremproof}
-  Exemplo de prova \qed
-\end{theoremproof}
-
-(Sub)enumerações e citações (verificar se OK com o idioma):
-\begin{enumerate}
-\item \cite{turing1937}:
-  \begin{enumerate}
-  \item \citeonline{turing1937}:
-    \begin{enumerate}
-    \item \citeonline{dijkstra1968};
-    \end{enumerate}
-  \end{enumerate}
-\item \cite{turing1937,dijkstra1968};
-\item \citeonline{turing1937,dijkstra1968}.
-\end{enumerate}
-
-
-\begin{listing}[tb]
-\caption{Meta informações do presente documento.}
-\label{lst:meta}
-\begin{minted}[highlightlines={1,4-5}]{latex}
-\titulo{Template \LaTeX{} para testes e dissertações do LAPESD/UFSC}
-\autor{Omar Ravenhurst}
-\data{1 de agosto de 2019} % ou \today
-\tese % ou \dissertacao
-\titulode{Doutor em Ciência da Computação}
-\orientador{Prof. Ben Trovato, Dr.}
-\coorientador{Prof. Lars Thørväld, Dr.}
-
-\membrobanca{Prof. Valerie Béranger, Dr.}{Universidade Federal de Santa Catarina}
-\membrobanca{Prof. Mordecai Malignatus, Dr.}{Universidade Federal de Santa Catarina}
-\membrobanca{Prof. Huifen Chan, Dr.}{Universidade Federal de Santa Catarina}
-\coordenador{Prof. Charles Palmer, Dr.}
-\end{minted}
-\fonte{o autor.}
-\end{listing}
-
-
-Resultado de \mla|\autoref|s:
-\begin{itemize}
-\item \autoref{lst:meta};
-\item \autoref{alg:algoritmo};
-\item \autoref{fig:figura} tem subfiguras:
-  \begin{itemize}
-  \item \autoref{fig:svg}
-  \item \autoref{fig:brasao}
-  \end{itemize}
-\item \autoref{tb:tabela};
-\item \autoref{ch:exemplo};
-\item \autoref{sec:frutas};
-\item \autoref{sec:goiaba};
-\item \autoref{sec:jabuticaba};
-\item \autoref{sec:tomate}.
-\end{itemize}
-
-
-\begin{algorithm}
-  \caption{Exemplo do ambiente \texttt{algorithimic}.}
-  \label{alg:algoritmo}
-  \begin{algorithmic}[1]
-    \Procedure{Closure}{C, A}
-      \State{$H \gets \emptyset$}\Comment{Direct cache}
-      \For{$i \in [1, n]$}\Comment{Parallel, (dynamic,32) scheduling}
-        \State{$H \gets H \cup \Call{DoImportantStuff}{i}$}
-      \EndFor
-    \EndProcedure
-  \end{algorithmic}
-  \fonte{o autor.}
-\end{algorithm}
-
-\begin{figure}[tb]
-  \centering
-  \caption{Exemplo de figura com duas subfiguras.}   
-  \label{fig:figura}
-  
-  % Subfiguras são feitas usando as funcionalidades do memoir. Não
-  % inclua outros pacotes, pois eles podem fazer o memoir dar ragequit
-  % 
-  % Há duas maneiras, a maneira limpinha (só no lapesd-thesis.cls) e a
-  % maneira do memoir (aviso: \subtop não funciona direito).
-  \subcaptionminipage[fig:svg]%
-    {.49\linewidth}%
-    {O Makefile compila SVGs em PDFs usando o inkscape}%
-    {\includegraphics[width=.2\linewidth]{alphachannel.pdf}}%
-  \hfill% 
-  % o comando acima expande para o equivalente disso:
-  \begin{minipage}[t]{.49\linewidth}%
-    \centering
-    \subcaption{Brasão da UFSC.\label{fig:brasao}}
-    \includegraphics[width=.2\linewidth]{\jobname-logo.pdf}
-  \end{minipage}
-
-  \fonte{o autor.}
-\end{figure}
-
-\begin{table}[tb]
-  \centering
-  \caption{Exemplo de tabela e símbolos}
-  \label{tb:tabela}
-  \begin{tabular}{lccp{5cm}}
-    \toprule
-    Esquerda & Coluna 1    & \rotatebox{90}{90 graus}  & Parágrafo com \mla|p{5cm}|   \\
-    \midrule
-    $r_1$    & \cmk        &  \xmk                     & \circledi    \\
-    $r_2$    &     \multicolumn{2}{c}{merged cell}     & \circledii   \\
-    $r_3$    & \circlediii & \circlediv                & \circledv    \\
-    $r_4$    & \circledvi  & \circledvii               & \circledviii \\
-    $r_5$    & \circledix  &  x                        & y           \\
-    \bottomrule 
-  \end{tabular}
-  \fonte{o autor.}
-\end{table}
-
-\begin{figure}[tb]
-  \centering
-  \caption{Segunda Figura.}
-  \label{fig:segunda-fig}
-  \includegraphics[width=.2\linewidth]{\jobname-logo.pdf}
-  \fonte{o autor.}
-\end{figure}
-
-\xindex{tomate} \lipsum[4]
-
+Como trabalhos futuros, pretende-se comparar os resultados das versão \ASYNC com outros processadores \manycore e \multicore do estado da arte, a fim de avaliar se o \mppa consegue competir com estes. Além disso, para um futuro artigo, pretende-se analisar detalhadamente as aplicações \capb que não obtiveram o resultado esperado nas variáveis de dados enviados e recebidos, a fim de reexaminar a possibilidade de \textit{bugs} e corrigi-los, para que nestes trabalhos possam ser apresentados resultados que batam com o que foi esperado. Por fim, pretende-se utilizar os resultados desse artigo para uma publicação em alguma revista associada a área deste.
 
 %%% Local Variables:
 %%% mode: latex

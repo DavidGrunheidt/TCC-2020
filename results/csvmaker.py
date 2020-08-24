@@ -17,7 +17,7 @@ def get_files(actual_dir: str):
 def back_folder():
 	os.chdir(os.path.join(os.getcwd(), ".."))
 
-def calculate_stats(time_files: 'list(str)') -> str:
+def calculate_stats(time_files: 'list(str)', kernel: str, version: str) -> str:
 	master_times = list()
 	slave_avg_times = list()
 	comm_times = list()
@@ -40,11 +40,21 @@ def calculate_stats(time_files: 'list(str)') -> str:
 		while('communication:' not in line): line = file.readline()
 		comm_times.append(float(re.findall("\d+\.\d+", line).pop()))
 
-		while('data sent:' not in line and 'data put:' not in line): line = file.readline()
-		data_sent_list.append(int(re.findall("\d+", line).pop()))
+		while('data received:' not in line and 'data put:' not in line): line = file.readline()
 
-		while('data received:' not in line and 'data get:' not in line): line = file.readline()
-		data_received_list.append(int(re.findall("\d+", line).pop()))
+		if (kernel == "km" and version == "async"):
+			data_sent_list.append(int(re.findall("\d+", line).pop())/2)
+		else:
+			data_sent_list.append(int(re.findall("\d+", line).pop()))
+
+		file.seek(0)
+
+		while('data sent:' not in line and 'data get:' not in line): line = file.readline()
+
+		if (kernel == "km" and version == "async"):
+			data_received_list.append(int(re.findall("\d+", line).pop())/2)
+		else:
+			data_received_list.append(int(re.findall("\d+", line).pop()))
 
 		while('Power (avg):' not in line): line = file.readline()
 		power_avg_list.append(float(re.findall("\d+\.\d+", line).pop()))
@@ -109,7 +119,7 @@ def main():
 
 					initial_csv_line = ';'.join([kernel, kernel_class, nclusters])
 
-					stats = calculate_stats(files)
+					stats = calculate_stats(files, kernel, version)
 
 					line = initial_csv_line + ';' + stats + '\n'
 
