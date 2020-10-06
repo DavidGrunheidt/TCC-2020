@@ -10,8 +10,8 @@
 \imprimircapa%
 \imprimirfolhaderosto*
 % Atenção! esse \protect é importante
-\protect\incluirfichacatalografica{ficha.pdf}
-\imprimirfolhadecertificacao
+%\protect\incluirfichacatalografica{ficha.pdf}
+%\imprimirfolhadecertificacao
 
 
 \begin{dedicatoria}
@@ -20,7 +20,7 @@
 
 
 \begin{agradecimentos}
-  Agradeço a todos os meus colegas de trabalho e de curso, os quais contribuíram significativamente para a conclusão deste trabalho, através da troca de experiência e conhecimentos técnicos. Em especial, agradeço ao meu orientador, Márcio Bastos Castro, e meu co-orientador, Pedro Henrique Penna, por despertarem em mim interesse na área da computação paralela e me ajudarem no processo de aprendizado e desenvolvimento deste trabalho.
+  Agradeço a todos os meus colegas de trabalho e de curso, os quais contribuíram significativamente para a conclusão deste trabalho, através da troca de experiência e conhecimentos técnicos. Em especial, agradeço ao meu orientador, Márcio Bastos Castro, e ao Pedro Henrique Penna, por despertarem em mim interesse na área da computação paralela e me ajudarem no processo de aprendizado e desenvolvimento deste trabalho.
 \end{agradecimentos}
 
 
@@ -31,7 +31,7 @@
 
 
 \begin{resumo}[Resumo]
-  O principal método para o ganho em desempenho, no processo de evolução dos processadores \textit{single-core}, foi o aumento da frequência de \textit{clock} do processador, o qual, com a crescente desproporção entre o gasto energético e o aumento de performance, deixou de ser viável. Diz-se então que esta desproporção foi a barreira de evolução para esta classe de processadores. Soluções que utilizam processadores \textit{multi-core}, por exemplo, supercomputadores, também enfrentam uma barreira similar, nos dias de hoje, ao agrupar diversos destes processadores em \textit{clusters}, ou agrupar diversos núcleos em um mesmo \textit{chip}. Processadores \manycore de baixo consumo energético, como o \mppa e o \epiphany, surgiram como uma possível solução para este problema. Entretanto, devido a questões arquiteturais, como uma memória distribuída e limitada no \textit{chip}, a implementação de uma aplicação que beneficia-se totalmente do \textit{hardware} de um processador desta classe mostra-se desafiadora. Porém, quando bem feita, sobressai alguns processadores \textit{multi-core} do estado da arte, através do menor consumo energético. Neste projeto foram propostas para o \capb, um \bench desenvolvido para avaliar o desempenho e o consumo de energia do \mppa, otimizações nas aplicações da versão atual e a criação de uma versão das aplicações que utiliza uma nova tecnologia de comunicação assíncrona entre \textit{clusters}, com objetivo de analisar as duas tecnologias de cada versão. Os resultados até o momento mostram que as aplicações que utilizam a nova biblioteca apresentam melhor desempenho sobre as aplicações da versão antiga. Isso se deve principalmente pela característica assíncrona desta biblioteca.
+  O principal método para o ganho em desempenho, no processo de evolução dos processadores \textit{single-core}, foi o aumento da frequência de \textit{clock} do processador, o qual, com a crescente desproporção entre o gasto energético e o aumento de performance, deixou de ser viável. Diz-se então que esta desproporção foi a barreira de evolução para esta classe de processadores. Soluções que utilizam processadores \textit{multi-core}, por exemplo, supercomputadores, também enfrentam uma barreira similar, nos dias de hoje, ao agrupar diversos destes processadores em \textit{clusters}, ou agrupar diversos núcleos em um mesmo \textit{chip}. Processadores \manycore de baixo consumo energético, como o \mppa e o \epiphany, surgiram como uma possível solução para este problema. Entretanto, devido a questões arquiteturais, como uma memória distribuída e limitada no \textit{chip}, a implementação de uma aplicação que beneficia-se totalmente do \textit{hardware} de um processador desta classe mostra-se desafiadora. Porém, quando bem feita, sobressai alguns processadores \textit{multi-core} do estado da arte, através do menor consumo energético. Neste projeto foram propostas para o \capb, um \bench desenvolvido para avaliar o desempenho e o consumo de energia do \mppa, otimizações nas aplicações da versão atual e a criação de uma versão das aplicações que utiliza uma nova tecnologia de comunicação assíncrona entre \textit{clusters}, com objetivo de analisar as duas tecnologias de cada versão. Os resultados mostraram que as aplicações que utilizam a nova biblioteca apresentam melhor desempenho sobre as aplicações da versão antiga. Isso se deve principalmente pela característica assíncrona desta biblioteca.
 
 
 
@@ -41,48 +41,48 @@
 \end{resumo}
 
 
-\begin{resumo}[Resumo Estendido]
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Atenção: normas e templates contraditórios!!!                    %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% - Modelo da BU: https://repositorio.ufsc.br/handle/123456789/197458
-% - A BU exige no **mínimo** 2 páginas e no **máximo** 5
-% - Regimento do PPGCC, Art 40 Entende-se  por  resumo  estendido  um  documento  que  contenha  as  informações  mais  relevantes  de  cada  capítulo  da  tese  ou  da  dissertação.
-% O mais seguro é ignorar o regimento e seguir a BU.
-    % Atenção! A BU diz que o resumo **deve** conter as seções abaixo!
-\section*{Introdução} % Deve ser  subsection*, devido a formatação usada no modelo
+%\begin{resumo}[Resumo Estendido]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Atenção: normas e templates contraditórios!!!                    %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% - Modelo da BU: https://repositorio.ufsc.br/handle/123456789/197458
+%% - A BU exige no **mínimo** 2 páginas e no **máximo** 5
+%% - Regimento do PPGCC, Art 40 Entende-se  por  resumo  estendido  um  documento  que  contenha  as  informações  mais  relevantes  de  cada  capítulo  da  tese  ou  da  dissertação.
+%% O mais seguro é ignorar o regimento e seguir a BU.
+%    % Atenção! A BU diz que o resumo **deve** conter as seções abaixo!
+%\section*{Introdução} % Deve ser  subsection*, devido a formatação usada no modelo
+%
+%Similar ao que aconteceu com os sistemas que utilizavam processadores \textit{single core}, os supercomputadores da atualidade estão se deparando com uma barreira que impede o avanço em direção ao \textit{Exascale}. A principal causa deste impedimento tem relação com as características intrínsecas da arquitetura de processadores \textit{multicore} que compõem muitos destes supercomputadores. Assim como processadores \textit{singlecore} não puderam mais aumentar a frequência de clock de um núcleo após um certo limite, só é possível diminuir o tamanho dos transistores que formam um núcleo de processamento até um certo ponto, e da mesma maneira, só é possível alocar uma certa quantidade de núcleos em um \textit{chip}, antes que o gerenciamento desses núcleos fique algo inviável de ser implementado ou o tamanho do \textit{chip} fique muito grande. Além disso, ao longo do tempo a relação entre dissipação de calor e ganho em performance mostrou-se não escalável para esta arquitetura. Assim, a comunidade científica de \HPC começou a pesquisar e desenvolver novas arquiteturas que apresentassem melhor escalabilidade entre as variáveis citadas acima, surgindo então a classe de processadores \textit{manycore} de baixo consumo energético, por exemplo, o MPPA-256, que será estudado neste trabalho.
+%
+%\section*{Fundamentação Teórica} 
+%Atualmente, arquiteturas com múltiplos processadores são algo comum em diversos sistemas, porém, nem todos sabem como caracterizar estes sistemas de acordo com a disposição dos elementos que os compõem. Dentre essas arquiteturas, temos os sistemas multiprocessadores e os multicomputadores, sendo a principal diferença entre eles o compartilhamento ou não de memória por parte dos núcleos de processamento. Enquanto os sistemas de multiprocessadores conectam esses núcleos a uma memória através de um barramento, os multicomputadores conectam as unidades de processamento através de uma rede, onde cada unidade tem sua memória privada, e a comunicação entre as unidades é feita via troca de mensagens através de alguma API. Além disso, os multiprocessadores podem ser divididos em duas categorias, os UMA e NUMA, onde o que os difere é o tempo de acesso a uma palavra na memória ser o mesmo ou não, para qualquer palavra. Vale citar que o MPPA-256, processador usado neste trabalho, se enquadra na classe dos multiprocessadores. Para estes sistemas existem diversas bibliotecas e padrões voltados a programação paralela, sendo os mais comuns o MPI, padrão o qual bibliotecas de troca de mensagem entre processos se baseiam, e a OpenMP, API muito usada quando o assunto é \textit{multithreading}. Ambos permitem abstrair qual plataforma o programa paralelo em questão irá executar, o que facilita a implementação deste programa, sendo esse um dos principais motivos pelo q ual são amplamente adotados. Já para o MPPA-256, duas bibliotecas são estudadas neste trabalho. A biblioteca IPC, utilizada na primeira versão do \textit{benchmark}, tem um baixo nível de abstração, sendo necessário conhecer vários aspectos da arquitetura do processador para que seja feita uma implementação otimizada e eficiente de alguma aplicação. Já a ASYNC tem um alto nível de abstração e permite a troca de mensagens de modo assíncrono, o que muitas vezes pode ser uma vantagem para determinadas aplicações.
+%
+%\section*{Trabalhos Correlatos} 
+%  
+%São diversas as pesquisas que trazem como resultado um \textit{benchmark} capaz de medir um ou diversos sistemas da área de \HPC. \textit{Benchmarks} híbridos são os mais comuns na atualidade, mas com os trabalhos mostrados é possível notar desde \textit{benchmarks} específicos para certas arquiteturas, como sistemas de grande processamento que usam placas FPGA ou supercomputadores que usam GPUs, até específicos para certas aplicações que executam em um supercomputador, como as aplicações que simulam diversos modelos da física, por exemplo, a física quântica ou física atmosférica, e até para sistemas de gerenciamento e análise de \textit{Big Data}. A característica comum a todos estes trabalhos é que todos foram desenvolvidos para medir o desempenho de alguma aplicação ou sistema durante a ascensão no uso deste, para que futuras aplicações ou sistemas semelhantes possam ser medidos através de um padrão bem definido.
+%
+%\section*{Desenvolvimento} 
+%
+%O desenvolvimento deste trabalho passou pela alteração de todas as aplicações do \capb, desde sua lógica de implementação, até o tipo de tecnologia utilizada. Ao início deste trabalho, todas as aplicações foram testadas, e em todas foram achados \textit{bugs} que comprometiam a corretude do resultado em relação ao que a aplicação significava. Assim, todas as aplicações foram testadas e corrigidas utilizando a API ASYNC, de modo a apresentar um resultado congruente com seu significado. Após isso, a lógica implementada na ASYNC foi portada para a versão que utiliza a IPC, tornando a biblioteca de comunicação a única diferença entre as versões.
+%
+%\section*{Resultados} 
+%
+%Os resultados mostraram diminuição em todas as métricas e em quase todos os contextos, ao se utilizar a API ASYNC. Com reduções de até 94.44 \% nos tempos de execução dos \textit{clusters} de computação, 70.2 \% nos tempos de execução dos processos \textit{master}, 99.66 \% nos tempos de comunicação e 93.64 \% no consumo de energia, a biblioteca de comunicação assíncrona mostra ser a melhor opção ao se pensar em \textit{Green Computing}. Em alguns cenários houve aumento na versão assíncrona do \capb, porém, a grande maioria destes foi nos cenários mais sensíveis, em que a escala dos resultados de certa métrica é extremamente pequena e pequenos fatores podem afetar grande parte do valor total desta variável. Além disso, são mostradas métricas de envio e recebimento de dados, a fim de mostrar similaridade entre as versões através da carga de trabalho destas.
+%
+%\section*{Conclusão}
+%
+%Diversos comportamentos característicos de cada biblioteca de comunicação foram observados ao se analisar todas as métricas definidas no capítulo de resultados. De todas as maneiras, a versão ASYNC mostrou-se superior a IPC em todas as métricas e quase todos os cenários. Assim, percebe-se que o uso de diretivas assíncronas em aplicações que rodam em processadores de arquiteturas \manycore, similares ao \mppa, seria um caminho interessante para a convergência ao \textit{Green Computing}.
+%
+%\vspace{\baselineskip}  % Atenção! manter igual ao resumo
+%\textbf{Palavras-chave:} Benchmark. Manycore. Desempenho. Green-Computing.
+%\end{resumo}
 
-Similar ao que aconteceu com os sistemas que utilizavam processadores \textit{single core}, os supercomputadores da atualidade estão se deparando com uma barreira que impede o avanço em direção ao \textit{Exascale}. A principal causa deste impedimento tem relação com as características intrínsecas da arquitetura de processadores \textit{multicore} que compõem muitos destes supercomputadores. Assim como processadores \textit{singlecore} não puderam mais aumentar a frequência de clock de um núcleo após um certo limite, só é possível diminuir o tamanho dos transistores que formam um núcleo de processamento até um certo ponto, e da mesma maneira, só é possível alocar uma certa quantidade de núcleos em um \textit{chip}, antes que o gerenciamento desses núcleos fique algo inviável de ser implementado ou o tamanho do \textit{chip} fique muito grande. Além disso, ao longo do tempo a relação entre dissipação de calor e ganho em performance mostrou-se não escalável para esta arquitetura. Assim, a comunidade científica de \HPC começou a pesquisar e desenvolver novas arquiteturas que apresentassem melhor escalabilidade entre as variáveis citadas acima, surgindo então a classe de processadores \textit{manycore} de baixo consumo energético, por exemplo, o MPPA-256, que será estudado neste trabalho.
-
-\section*{Fundamentação Teórica} 
-Atualmente, arquiteturas com múltiplos processadores são algo comum em diversos sistemas, porém, nem todos sabem como caracterizar estes sistemas de acordo com a disposição dos elementos que os compõem. Dentre essas arquiteturas, temos os sistemas multiprocessadores e os multicomputadores, sendo a principal diferença entre eles o compartilhamento ou não de memória por parte dos núcleos de processamento. Enquanto os sistemas de multiprocessadores conectam esses núcleos a uma memória através de um barramento, os multicomputadores conectam as unidades de processamento através de uma rede, onde cada unidade tem sua memória privada, e a comunicação entre as unidades é feita via troca de mensagens através de alguma API. Além disso, os multiprocessadores podem ser divididos em duas categorias, os UMA e NUMA, onde o que os difere é o tempo de acesso a uma palavra na memória ser o mesmo ou não, para qualquer palavra. Vale citar que o MPPA-256, processador usado neste trabalho, se enquadra na classe dos multiprocessadores. Para estes sistemas existem diversas bibliotecas e padrões voltados a programação paralela, sendo os mais comuns o MPI, padrão o qual bibliotecas de troca de mensagem entre processos se baseiam, e a OpenMP, API muito usada quando o assunto é \textit{multithreading}. Ambos permitem abstrair qual plataforma o programa paralelo em questão irá executar, o que facilita a implementação deste programa, sendo esse um dos principais motivos pelo q ual são amplamente adotados. Já para o MPPA-256, duas bibliotecas são estudadas neste trabalho. A biblioteca IPC, utilizada na primeira versão do \textit{benchmark}, tem um baixo nível de abstração, sendo necessário conhecer vários aspectos da arquitetura do processador para que seja feita uma implementação otimizada e eficiente de alguma aplicação. Já a ASYNC tem um alto nível de abstração e permite a troca de mensagens de modo assíncrono, o que muitas vezes pode ser uma vantagem para determinadas aplicações.
-
-\section*{Trabalhos Correlatos} 
-  
-São diversas as pesquisas que trazem como resultado um \textit{benchmark} capaz de medir um ou diversos sistemas da área de \HPC. \textit{Benchmarks} híbridos são os mais comuns na atualidade, mas com os trabalhos mostrados é possível notar desde \textit{benchmarks} específicos para certas arquiteturas, como sistemas de grande processamento que usam placas FPGA ou supercomputadores que usam GPUs, até específicos para certas aplicações que executam em um supercomputador, como as aplicações que simulam diversos modelos da física, por exemplo, a física quântica ou física atmosférica, e até para sistemas de gerenciamento e análise de \textit{Big Data}. A característica comum a todos estes trabalhos é que todos foram desenvolvidos para medir o desempenho de alguma aplicação ou sistema durante a ascensão no uso deste, para que futuras aplicações ou sistemas semelhantes possam ser medidos através de um padrão bem definido.
-
-\section*{Desenvolvimento} 
-
-O desenvolvimento deste trabalho passou pela alteração de todas as aplicações do \capb, desde sua lógica de implementação, até o tipo de tecnologia utilizada. Ao início deste trabalho, todas as aplicações foram testadas, e em todas foram achados \textit{bugs} que comprometiam a corretude do resultado em relação ao que a aplicação significava. Assim, todas as aplicações foram testadas e corrigidas utilizando a API ASYNC, de modo a apresentar um resultado congruente com seu significado. Após isso, a lógica implementada na ASYNC foi portada para a versão que utiliza a IPC, tornando a biblioteca de comunicação a única diferença entre as versões.
-
-\section*{Resultados} 
-
-Os resultados mostraram diminuição em todas as métricas e em quase todos os contextos, ao se utilizar a API ASYNC. Com reduções de até 94.44 \% nos tempos de execução dos \textit{clusters} de computação, 70.2 \% nos tempos de execução dos processos \textit{master}, 99.66 \% nos tempos de comunicação e 93.64 \% no consumo de energia, a biblioteca de comunicação assíncrona mostra ser a melhor opção ao se pensar em \textit{Green Computing}. Em alguns cenários houve aumento na versão assíncrona do \capb, porém, a grande maioria destes foi nos cenários mais sensíveis, em que a escala dos resultados de certa métrica é extremamente pequena e pequenos fatores podem afetar grande parte do valor total desta variável. Além disso, são mostradas métricas de envio e recebimento de dados, a fim de mostrar similaridade entre as versões através da carga de trabalho destas.
-
-\section*{Conclusão}
-
-Diversos comportamentos característicos de cada biblioteca de comunicação foram observados ao se analisar todas as métricas definidas no capítulo de resultados. De todas as maneiras, a versão ASYNC mostrou-se superior a IPC em todas as métricas e quase todos os cenários. Assim, percebe-se que o uso de diretivas assíncronas em aplicações que rodam em processadores de arquiteturas \manycore, similares ao \mppa, seria um caminho interessante para a convergência ao \textit{Green Computing}.
-
-\vspace{\baselineskip}  % Atenção! manter igual ao resumo
-\textbf{Palavras-chave:} Benchmark. Manycore. Desempenho. Green-Computing.
-\end{resumo}
-
-\begin{abstract}
-Throughout the evolving process of \textit{single-core} processors, the main method to gain performance was to increase the processor \textit{clock} frequency, which led to the growing disproportion between energy consumption and increase in performance, making this method not viable anymore. This disproportion was then the barrier to the evolution of this class of processors. \textit{Multi-core} processors solutions, for example, supercomputers, also face a similar barrier nowadays when grouping this processors into \textit{clusters}, or grouping several \textit{cores} into a single \textit{chip}. Low consumption \manycore processors, for instance, the \mppa and the \epiphany, are arising to solve this problem. However, due to architectural characteristics, such as a limited and distributed memory, implementing applications that fully benefits from the hardware of a processor of this class is not an easy task. Yet, when a good implementation is done, it can outstand state-of-the-art processors, through lower energy consumption. This project proposes to the \capb, a \bench developed to evaluate both \mppa performance and energy consumption, optimizations to its applications and the implementation of a new version, using a new communication technology, based on asynchronous primitives, aiming to analyze the technologies used in each version. The results until now show that the applications that use the new technology have a better performance than the old ones. This is due, mainly, by the asynchronous characteristic of this library.
-
-  \vspace{\baselineskip} 
-  \textbf{Keywords:} Benchmark. Manycore. Performance. Green-Computing.
-\end{abstract}
+%\begin{abstract}
+%Throughout the evolving process of \textit{single-core} processors, the main method to gain performance was to increase the processor \textit{clock} frequency, which led to the growing disproportion between energy consumption and increase in performance, making this method not viable anymore. This disproportion was then the barrier to the evolution of this class of processors. \textit{Multi-core} processors solutions, for example, supercomputers, also face a similar barrier nowadays when grouping this processors into \textit{clusters}, or grouping several \textit{cores} into a single \textit{chip}. Low consumption \manycore processors, for instance, the \mppa and the \epiphany, are arising to solve this problem. However, due to architectural characteristics, such as a limited and distributed memory, implementing applications that fully benefits from the hardware of a processor of this class is not an easy task. Yet, when a good implementation is done, it can outstand state-of-the-art processors, through lower energy consumption. This project proposes to the \capb, a \bench developed to evaluate both \mppa performance and energy consumption, optimizations to its applications and the implementation of a new version, using a new communication technology, based on asynchronous primitives, aiming to analyze the technologies used in each version. The results until now show that the applications that use the new technology have a better performance than the old ones. This is due, mainly, by the asynchronous characteristic of this library.
+%
+%  \vspace{\baselineskip} 
+%  \textbf{Keywords:} Benchmark. Manycore. Performance. Green-Computing.
+%\end{abstract}
 
 \listoffigures*  % O * evita que apareça no sumário
 \listoftables*
