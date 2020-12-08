@@ -114,7 +114,7 @@
 \captionsetup{labelformat=simple}
 \captionsetup[table]{belowskip=0pt}
 
-\title[Comparação de Tecnologias de Comunicação entre Clusters no Processador MPPA-256: Um Estudo com Aplicações do CAP Benchmarks]{
+\title[Comparação de Tecnologias de Comunicação no MPPA-256]{
    \textbf{Comparação de Tecnologias de Comunicação entre Clusters no Processador MPPA-256: Um Estudo com Aplicações do CAP Benchmarks}}
 \author[Grunheidt, D.]{\textbf{David Grunheidt Vilela Ordine}, Márcio Castro}
 \date{27 de dezembro de 2020}
@@ -148,7 +148,7 @@
 \section{Introdução}
 \begin{frame}\frametitle{Contexto}
     \begin{itemize}
-        \item{Objetivo de alcançar a computação em \textit{Exaescale}}
+        \item{Objetivo de alcançar a computação em \textit{Exascale}}
         \item{Viável - 50 GFlops/W X Máximo - 14.719 GFlops/W}
         \item{\textit{Trade-off} desproporcional entre desempenho e consumo energético (barreira de potência)}
         \begin{figure}[tb]
@@ -255,7 +255,7 @@
 
 \begin{frame}\frametitle{Open Multi-Processing}
     \begin{itemize}
-        \item Diretivas de compilação e regiões paralelas
+        \item Cláusulas OpenMP
         \begin{itemize}
             \item private, default e reduction
         \end{itemize}
@@ -273,9 +273,10 @@
     \begin{itemize}
         \item \textit{Clusters} de E/S gerenciam os \textit{clusters} de computação
         \item Execução de códigos binários diferentes
+        \item Cada cluster executa um código paralelizado com OpenMP 
         \begin{figure}[tb]
           \centering
-          \includegraphics[width=.5\linewidth, keepaspectratio]{figs/mppamasterslave.pdf}
+          \includegraphics[width=.4\linewidth, keepaspectratio]{figs/mppamasterslave.pdf}
           \caption{Fluxo de uma aplicação seguindo o modelo \textit{mestre-escravo} no MPPA-256.}
           \label{fig:masterslave}
         \end{figure}
@@ -320,13 +321,29 @@
 \begin{frame}\frametitle{CAP-Benchmarks \cite{Castro-Souza-CCPE:2016}}
     \begin{itemize}
         \item {Conjunto de 7 aplicações desenvolvidas em C}
+        \begin{itemize}
+            \item {Uma das aplicações não foi portada neste trabalho}
+        \end{itemize}
     	\item {Domínios de problemas variados}
     	\item {Diferentes padrões paralelos}
     	\item {Testar o processador em diversas condições}
+        \item {Criado para avaliar diferentes processadores de arquitetura \textit{Manycore}}
     \end{itemize}
 \end{frame}
 
 \section{Desenvolvimento}
+\begin{frame}\frametitle{Desenvolvimento}
+    \begin{itemize}
+        \item Fluxo de desenvolvimento de cada aplicação
+        \begin{itemize}
+            \item Alterações de otimização
+            \item Alterações de tecnologia de comunicação
+        \end{itemize}
+        \item Otimizações valem para ambas as versões
+        \item Comparação dos resultados leva em conta somente a tecnologia
+    \end{itemize}
+\end{frame}
+
 \subsection{Friendly Numbers}
 \begin{frame}\frametitle{Friendly Numbers}
     \begin{itemize}
@@ -555,15 +572,24 @@
 
 \section{Resultados}
 \begin{frame}\frametitle{Métricas definidas}
-    \begin{itemize}
-        \item {Tempo de execução de cada CC em segundos}
-        \item {Tempo de execução do processo \textit{master} em segundos}
-        \item {Tempo de comunicação entre o processo \textit{master} e os \textit{slaves} em segundos}
-        \item {Quantidade de dados que o processo \textit{master} envia para os \textit{slaves} em \textit{megabytes}}
-        \item {Quantidade de dados que o processo \textit{master} recebe dos \textit{slaves} em \textit{megabytes}}
-        \item {Potência média durante a execução da aplicação em \textit{watts}}
-        \item {Consumo de energia durante a execução da aplicação em \textit{joules}}
-    \end{itemize}
+    \begin{table}[h]
+    \centering
+    \scalebox{0.75}{
+        \begin{tabular}{c c}
+            Métrica & Unidade \\\midrule
+            Média do tempo de execução dos \textit{slaves} & Segundos \\
+            Tempo de execução do processo \textit{master} & Segundos \\
+            Tempo total de comunicação entre \textit{master} e \textit{slaves} & Segundos \\
+            Quantidade de dados que o \textit{master} envia aos \textit{slaves} & \textit{Megabytes} \\
+            Quantidade de dados que o \textit{master} recebe dos \textit{slaves} & \textit{Megabytes} \\
+            Potência média durante a execução da aplicação & \textit{Watts} \\
+            Consumo de energia durante a execução da aplicação & \textit{joules} \\
+            \bottomrule
+        \end{tabular}
+    }
+    \caption{Métricas definidas para comparação das tecnologias.}
+    \label{tab:slavetable}
+    \end{table}
 \end{frame}
 
 \begin{frame}\frametitle{Variações de execução}
@@ -703,22 +729,6 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}\frametitle{Dados do \textit{master} para os \textit{slaves}}
-    \begin{figure}[h]
-      \centering
-      \label{fig:datasent}
-      \includegraphics[width=.65\linewidth, keepaspectratio]{figs/data_sent.pdf}
-    \end{figure}
-\end{frame}
-
-\begin{frame}\frametitle{Dados dos \textit{slaves} para o \textit{master}}
-    \begin{figure}[h]
-      \centering
-      \label{fig:datareceived}
-      \includegraphics[width=.65\linewidth, keepaspectratio]{figs/data_received.pdf}
-    \end{figure}
-\end{frame}
-
 \subsection{Consumo energético}
 \begin{frame}\frametitle{Potência média}
     \begin{itemize}
@@ -784,9 +794,6 @@
 \begin{frame}\frametitle{Conclusão}
     \begin{itemize}
         \item {ASYNC se sobressai em comparação a IPC}
-        \begin{itemize}
-            \item {Diferença menor quanto maior o número de \textit{clusters}}
-        \end{itemize}
         \item {Diretivas assíncronas são uma boa escolha em diversos contextos}
         \item {Comunicações assíncronas tem grande potencial de ganho em desempenho}
         \item {Trabalhos futuros}
