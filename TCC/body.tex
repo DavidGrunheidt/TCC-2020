@@ -86,6 +86,8 @@ Este trabalho é continuação de um projeto de iniciação científica desenvol
   \item ORDINE, D. G. V.; PODESTA JUNIOR, E. ; PENNA, P. H. ; CASTRO, M. \textbf{Otimização de Aplicações do CAP Bench para o Processador \mppa.} In: Escola Regional de Alto Desempenho da Região Sul (ERAD/RS), 2019, Três de Maio. Anais da Escola Regional de Alto Desempenho da Região Sul (ERAD/RS). Porto Alegre: Sociedade Brasileira de Computação (SBC), 2019.
 \end{itemize}
 
+É possível conferir a implementação do projeto citado acima e deste trabalho no seguinte repositório público do \textit{GitHub}: \href{https://github.com/DavidGrunheidt/CAPBench}{https://github.com/DavidGrunheidt/CAPBench}.
+
 \section{Organização do trabalho}
 
 Este trabalho está dividido da seguinte forma. O Capítulo \ref{ch:fundamentacaoteorica} mostra os conceitos teóricos que foram utilizados para a produção deste trabalho. O Capítulo \ref{ch:trabcorrelatos} apresenta alguns trabalhos relacionados a este. O Capítulo \ref{ch:desenvolvimento} apresenta a proposta do trabalho. O Capítulo \ref{ch:resultados} apresenta os resultados obtidos. Por fim, o Capítulo \ref{ch:conclusao} conclui este trabalho.
@@ -394,6 +396,8 @@ Nenhum dos \textit{benchmarks} descritos anteriormente foi desenvolvido com foco
 \label{ch:desenvolvimento}
 
 Para a realização deste trabalho, foram feitos dois tipos de alteração em todas as aplicações do \capb. Primeiro, criou-se uma nova versão de cada aplicação, na qual foram realizadas modificações em sua lógica de processamento para que pudesse utilizar a \API \ASYNC. Após isso, alterou-se as versões antigas, que usam a \API \IPC, para que ficassem equivalente as novas aplicações em relação ao seu fluxo de processamento. Nesta seção serão mostradas todas as alterações feitas em cada aplicação e em cada etapa. Uma descrição mais detalhada de cada um dos \kernels pode ser encontrada no trabalho de \textit{Souza} \etal \cite{Castro-Souza-CCPE:2016}.
+
+O \bench desenvolvido a partir desse trabalho se encontra no repositório público do \textit{GitHub} \href{https://github.com/DavidGrunheidt/CAPBench}{https://github.com/DavidGrunheidt/CAPBench}, onde é possível conferir toda implementação feita pelo autor.
 
 \section{Alterações na \textit{Friendly Numbers}}
 \label{sec:alteracoesfn}
